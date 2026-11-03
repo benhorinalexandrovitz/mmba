@@ -556,6 +556,140 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
 @media (max-width:1020px){#hofForm{grid-template-columns:1fr 1fr}}
 @media (max-width:680px){#hofForm{grid-template-columns:1fr}.reel-stage{height:clamp(420px,70vh,620px)}.sl-num{display:none}.rb span{display:none}.win-img{margin:0 -24px 4px}.reel-nav button{width:46px;height:46px}}
 
+
+/* ---------- hero additions ---------- */
+.hero-about{margin-top:30px;max-width:44ch;color:var(--muted);font-size:1.12rem;line-height:1.6;padding-right:16px;border-right:2px solid var(--gold)}
+.cat.gold{background:radial-gradient(120% 140% at 0% 0%,rgba(201,163,90,.22),transparent 55%),linear-gradient(165deg,#221c12,var(--ink-2))}
+/* whatsapp-style client chat */
+.chat{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--ink-2);box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.chat-head{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(180deg,var(--ink-3),var(--ink-2));border-bottom:1px solid var(--line)}
+.chat-av{width:38px;height:38px;border-radius:50%;background:var(--ink);border:1px solid rgba(201,163,90,.35);display:grid;place-items:center;overflow:hidden;flex:none}
+.chat-av img{width:24px;height:auto}
+.chat-head b{display:block;font-size:.98rem}
+.chat-head small{color:var(--ok);font-size:.78rem}
+.chat-icons{margin-right:auto;color:var(--dim);font-size:1.2rem}
+.chat-body{height:300px;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;overflow:hidden;background-color:#0f0d0a;background-image:radial-gradient(rgba(201,163,90,.07) 1px,transparent 1.2px),radial-gradient(rgba(179,18,58,.06) 1px,transparent 1.2px);background-size:22px 22px,22px 22px;background-position:0 0,11px 11px}
+.bub{align-self:flex-start;position:relative;max-width:88%;background:#1f1b15;border:1px solid rgba(201,163,90,.14);border-radius:4px 14px 14px 14px;padding:7px 11px 6px;box-shadow:0 2px 0 rgba(0,0,0,.25);transform-origin:top right;animation:bubIn .55s cubic-bezier(.2,1.3,.4,1) both;transition:opacity .45s,transform .45s,max-height .5s var(--ease),margin .5s,padding .5s;max-height:200px}
+.bub::before{content:"";position:absolute;top:-1px;right:-8px;width:10px;height:12px;background:#1f1b15;clip-path:polygon(0 0,100% 0,0 100%);border-top:1px solid rgba(201,163,90,.14)}
+.bub b{display:block;font-size:.78rem;color:var(--gold-hi);margin-bottom:1px}
+.bub p{font-size:.92rem;line-height:1.4;color:var(--cream)}
+.bub time{display:block;text-align:left;font-size:.66rem;color:var(--dim);margin-top:2px;font-variant-numeric:tabular-nums}
+.bub.out{opacity:0;transform:translateY(-14px) scale(.96);max-height:0;padding-block:0;margin-top:-8px;border-width:0}
+.bub.typing{padding:10px 14px;display:flex;gap:4px}
+.bub.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tdot 1s infinite}
+.bub.typing i:nth-child(2){animation-delay:.15s}.bub.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{0%,60%,100%{opacity:.25;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@keyframes bubIn{from{opacity:0;transform:translateY(14px) scale(.85)}to{opacity:1;transform:none}}
+
+/* ---------- nomination ---------- */
+.drops{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.thumb.vid{width:140px}
+.thumb.vid video{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .tag{position:absolute;bottom:4px;right:4px;font-size:.65rem;background:rgba(0,0,0,.7);color:var(--gold-hi);border-radius:4px;padding:1px 5px}
+.cat-pick label.taken{display:none}
+.cat-pick.locked label{opacity:.35;pointer-events:none}
+.counter.over{color:var(--bad)}
+.rules-link{color:var(--gold);font-size:.92rem}
+.preview-wrap{margin:34px auto 0;max-width:560px;text-align:right}
+.preview-wrap .eyebrow{display:block;text-align:center}
+.pv-lbl{text-align:center;color:var(--muted);margin:8px 0 16px}
+
+/* ---------- nomination card (ballot + preview) ---------- */
+.ncards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.ncard{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(170deg,var(--ink-3),var(--ink-2) 60%);display:flex;flex-direction:column;transition:transform .45s var(--ease),border-color .3s,box-shadow .4s;min-width:0;text-align:right}
+.ncard:hover{transform:translateY(-4px);border-color:rgba(201,163,90,.45)}
+.ncard.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 24px 50px rgba(0,0,0,.45),0 0 60px rgba(201,163,90,.12)}
+.ncard.own{opacity:.4}
+.ncard.own:hover{transform:none;border-color:var(--line)}
+.nc-media{position:relative;aspect-ratio:16/10;background:#060504;overflow:hidden}
+.nc-media>img,.nc-media>video{width:100%;height:100%;object-fit:cover;display:block}
+.nc-media .noimg{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(80% 90% at 70% 20%,rgba(201,163,90,.25),transparent 60%),radial-gradient(70% 80% at 10% 100%,rgba(179,18,58,.3),transparent 60%),#0d0b08;color:var(--gold)}
+.nc-media .noimg svg{width:56px;height:56px;opacity:.85}
+.nc-thumbs{display:flex;gap:6px;padding:8px 12px 0;overflow-x:auto}
+.nc-thumb{flex:none;width:52px;height:38px;border-radius:7px;overflow:hidden;border:1px solid var(--line);padding:0;cursor:pointer;background:#000;position:relative}
+.nc-thumb.on{border-color:var(--gold)}
+.nc-thumb img,.nc-thumb video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.nc-thumb .pl{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:.7rem;background:rgba(0,0,0,.35)}
+.nc-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.nc-cat{font-family:var(--lat);letter-spacing:.2em;font-size:.72rem;color:var(--gold);text-transform:uppercase}
+.ncard h4{margin:0;font-size:1.3rem;line-height:1.25}
+.nc-meta{font-size:.88rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.nc-meta .dep{display:inline-flex;align-items:center;gap:6px}
+.nc-meta .dep::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--bordeaux)}
+.nc-desc{font-size:.92rem;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+.ncard.open .nc-desc{-webkit-line-clamp:unset;display:block}
+.nc-more{background:none;border:0;color:var(--gold);font-size:.82rem;padding:0;cursor:pointer;align-self:flex-start}
+.nc-link{font-size:.88rem;color:var(--gold-hi);text-decoration:none;align-self:flex-start}
+.nc-link:hover{text-decoration:underline}
+.nc-pick{margin-top:auto;padding-top:10px}
+.nc-pick .btn{width:100%}
+.ncard.sel .nc-pick .btn{color:var(--ink)}
+.ncard.sel .nc-pick .btn::before{transform:none}
+.nc-own{font-size:.82rem;color:var(--bad);margin-top:auto}
+.nc-badge{position:absolute;top:12px;left:12px;z-index:2;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;transform:scale(0);transition:transform .45s cubic-bezier(.2,1.4,.4,1)}
+.nc-badge svg{width:16px;height:16px}
+.ncard.sel .nc-badge{transform:none}
+
+/* ---------- voting wizard ---------- */
+.saved{font-size:.85rem;color:var(--ok);min-width:90px;transition:opacity .4s}
+.stepper{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:26px;scrollbar-width:thin}
+.stp{flex:1;min-width:92px;border:0;background:transparent;padding:10px 0 0;cursor:pointer;text-align:right;color:var(--dim);font-size:.78rem}
+.stp i{display:block;height:3px;border-radius:3px;background:var(--line);margin-bottom:8px;transition:background .4s}
+.stp.done i{background:var(--gold-lo)}
+.stp.on i{background:linear-gradient(90deg,var(--bordeaux),var(--gold-hi))}
+.stp.on{color:var(--gold-hi)}
+.stp.done{color:var(--muted)}
+.stp span{font-family:var(--lat);letter-spacing:.08em;white-space:nowrap}
+.wz{animation:wzIn .6s var(--ease)}
+.wz.back{animation-name:wzBack}
+@keyframes wzIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes wzBack{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+.wz-head{display:flex;align-items:center;gap:18px;margin-bottom:24px}
+.wz-head .ico{width:64px;height:64px;border-radius:50%;border:1px solid rgba(201,163,90,.4);display:grid;place-items:center;color:var(--gold);flex:none}
+.wz-head .ico svg{width:30px;height:30px}
+.wz-head small{display:block;color:var(--dim);font-size:.82rem;letter-spacing:.1em}
+.wz-head h3{font-family:var(--lat);font-weight:500;font-size:clamp(1.5rem,3vw,2.2rem);margin:2px 0}
+.wz-head p{color:var(--gold-hi)}
+.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px;padding:14px;border-radius:99px;background:rgba(20,18,14,.9);border:1px solid rgba(201,163,90,.3);position:sticky;bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:20;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);flex-wrap:wrap}
+.wz-nav .mid{color:var(--muted);font-size:.9rem;text-align:center;flex:1}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.9rem}
+.sum-list{display:flex;flex-direction:column;gap:8px;margin:24px auto 0;max-width:720px;text-align:right}
+.sum-row{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px 14px;background:var(--ink-2)}
+.sum-row .st-img{width:56px;height:42px;border-radius:8px;overflow:hidden;background:var(--ink-3);display:grid;place-items:center;color:var(--gold)}
+.sum-row .st-img img{width:100%;height:100%;object-fit:cover}
+.sum-row .st-img svg{width:22px;height:22px}
+.sum-row small{display:block;font-family:var(--lat);color:var(--gold);letter-spacing:.12em;font-size:.72rem}
+.sum-row b{font-size:1rem}
+.sum-row.nopick b{color:var(--dim);font-weight:400}
+.sum-head{text-align:center;margin-bottom:6px}
+.sum-head h2{font-size:clamp(2rem,4vw,3rem)}
+.sum-head p{color:var(--muted);margin-top:8px}
+.sum-actions{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+
+/* ---------- rules page ---------- */
+.rules-page{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.rcard{position:relative;border:1px solid var(--line);border-radius:22px;padding:34px 30px 30px;background:linear-gradient(170deg,var(--ink-3),var(--ink-2) 70%);overflow:hidden;min-width:0}
+.rcard .rnum{position:absolute;top:14px;left:22px;font-family:var(--lat);font-size:4.4rem;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(201,163,90,.35)}
+.rcard h2{font-size:1.7rem;margin-bottom:16px;color:var(--gold-hi)}
+.rcard p,.rcard li{color:var(--cream);line-height:1.65;font-size:1.04rem}
+.rcard p+p{margin-top:12px}
+.rcard ul{margin:0;padding:0 18px 0 0;display:flex;flex-direction:column;gap:10px}
+.rcard li::marker{color:var(--bordeaux)}
+.rcard .ex{color:var(--muted);font-size:.96rem;border-right:2px solid var(--gold-lo);padding-right:12px}
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.judge div{border-radius:14px;padding:16px;background:rgba(201,163,90,.08);border:1px solid rgba(201,163,90,.25)}
+.judge div:last-child{background:rgba(179,18,58,.12);border-color:rgba(179,18,58,.35)}
+.judge b{display:block;font-family:var(--lat);font-size:2.2rem;font-weight:500;line-height:1.1}
+.judge span{color:var(--muted);font-size:.92rem}
+
+/* ---------- admin voters ---------- */
+.vstat{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.vstat details summary{cursor:pointer;color:var(--gold);font-size:.82rem}
+.vstat ul{margin:6px 0 0;padding:0 16px 0 0;font-size:.82rem;color:var(--muted)}
+.vstat ul .lat{color:var(--gold-hi);font-size:.75rem}
+@media (max-width:1020px){.rules-page{grid-template-columns:1fr}}
+@media (max-width:680px){.drops{grid-template-columns:1fr}.ncards{grid-template-columns:1fr}.chat-body{height:280px}.wz-nav{border-radius:20px}.sum-row{grid-template-columns:44px 1fr}.sum-row .linkbtn{grid-column:1/-1}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1020px){
   .links{display:none}
@@ -637,6 +771,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
       <a href="#categories" data-r="categories">הקטגוריות</a>
       <a href="#nominate" data-r="nominate">הגשת מועמדות</a>
       <a href="#vote" data-r="vote">הצבעה</a>
+      <a href="#rules" data-r="rules">כללי התחרות</a>
       <a href="#hall" data-r="hall">היכל התהילה</a>
       <a href="#about" data-r="about">אודות</a>
     </nav>
@@ -651,6 +786,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
   <a href="#categories">הקטגוריות <small>AWARDS</small></a>
   <a href="#nominate">הגשת מועמדות <small>NOMINATE</small></a>
   <a href="#vote">הצבעה <small>VOTE</small></a>
+  <a href="#rules">כללי התחרות <small>RULES</small></a>
   <a href="#hall">היכל התהילה <small>HALL OF FAME</small></a>
   <a href="#about">אודות <small>ABOUT</small></a>
 </nav>
@@ -671,6 +807,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
             <a class="btn solid" href="#nominate"><span data-e="hero.cta1">מגישים מועמדות</span> <span class="arrow">←</span></a>
             <a class="btn ghost" href="#categories"><span data-e="hero.cta2">9 הקטגוריות</span></a>
           </div>
+          <p class="hero-about rv" data-e="hero.about">ממב״א הוא טקס הפרסים השנתי של בן חורין אלכסנדרוביץ׳. במה למהלכים, לרעיונות ולצוותים שמאחוריהם.</p>
         </div>
         <aside class="hero-side rv">
           <div class="date-card">
@@ -685,6 +822,10 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
             </div>
           </div>
           <div class="phase"><span class="pulse"></span><span id="phaseText">ההגשות נפתחות ב־15.11</span></div>
+          <div class="chat" aria-label="הודעות מלקוחות">
+            <div class="chat-head"><span class="chat-av"><img src="data:image/png;base64,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" alt=""></span><div><b data-e="chat.title">לקוחות מרוצים</b><small id="chatStatus">מחוברים עכשיו</small></div><span class="chat-icons" aria-hidden="true">⋮</span></div>
+            <div class="chat-body" id="chatBody" aria-live="off"></div>
+          </div>
         </aside>
       </div>
     </div>
@@ -758,7 +899,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
       </div>
       <div class="tl" id="tl">
         <div class="rail"><i></i></div>
-        <div class="tl-item rv" data-d="2026-11-15"><div class="tl-date"><span data-e="t1.d">15.11</span><small data-e="t1.day">יום ראשון</small></div><div class="tl-body"><h3 data-e="t1.h">ההגשות נפתחות</h3><p data-e="t1.p">הגשה אחת לכל מחלקה בכל קטגוריה. בצל״ש: עד שלושה צוותים.</p></div></div>
+        <div class="tl-item rv" data-d="2026-11-15"><div class="tl-date"><span data-e="t1.d">15.11</span><small data-e="t1.day">יום ראשון</small></div><div class="tl-body"><h3 data-e="t1.h">ההגשות נפתחות</h3><p data-e="t1.p">הגשה אחת לכל מחלקה בכל קטגוריה.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-03"><div class="tl-date"><span data-e="t2.d">03.12</span><small data-e="t2.day">יום חמישי</small></div><div class="tl-body"><h3 data-e="t2.h">ההגשות נסגרות</h3><p data-e="t2.p">אחרי התאריך הזה המועמדויות עוברות לאישור.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-08"><div class="tl-date"><span data-e="t3.d">08–10.12</span><small data-e="t3.day">שלישי 10:00 עד חמישי 10:00</small></div><div class="tl-body"><h3 data-e="t3.h">הקלפי פתוחה</h3><p data-e="t3.p">48 שעות של הצבעת עובדים, בחירה אחת בכל קטגוריה.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-10"><div class="tl-date"><span data-e="t4.d">10.12</span><small data-e="t4.day">יום חמישי</small></div><div class="tl-body"><h3 data-e="t4.h">שקלול התוצאות</h3><p data-e="t4.p">50% עובדים, 50% מנכ״לים. התוצאות נשארות חסויות.</p></div></div>
@@ -796,11 +937,12 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
     <div class="wrap">
       <div class="cats" id="allCats"></div>
       <div class="rules">
-        <div class="rule rv"><b>אחת לכל קטגוריה</b><p>הגשה אחת למחלקה או לצוות עצמאי בכל קטגוריה.</p></div>
-        <div class="rule rv"><b>צל״ש: עד שלושה</b><p>כל מחלקה יכולה להגיש עד שלושה צוותים שונים.</p></div>
+        <div class="rule rv"><b>אחת לכל קטגוריה</b><p>מחלקה או צוות עצמאי מגישים מועמדות אחת בלבד בכל קטגוריה.</p></div>
+        <div class="rule rv"><b>עד 250 מילים</b><p>הסבר על המהלך, ולצדו הוויזואליה: תמונות, סרטון וקישור.</p></div>
         <div class="rule rv"><b>הגשה משותפת</b><p>ב־SWAG, smART ו־CollaBHA. נספרת במכסה של כל השותפות.</p></div>
         <div class="rule rv"><b>אישור לפני הצבעה</b><p>רק מועמדויות מאושרות עולות לקלפי.</p></div>
       </div>
+      <p class="rv" style="margin-top:26px"><a class="btn ghost" href="#rules">לכל כללי התחרות <span class="arrow">←</span></a></p>
     </div>
   </section>
 </div>
@@ -831,11 +973,19 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
         <form id="nomForm" novalidate>
           <div class="form-grid">
             <div class="field full">
-              <label>קטגוריה <span class="req">*</span></label>
-              <div class="cat-pick" id="catPick"></div>
+              <label for="nDept">1. מחלקה / צוות מגיש <span class="req">*</span></label>
+              <select id="nDept"></select>
             </div>
             <div class="field full">
-              <label for="nTitle">שם המהלך / האייטם <span class="req">*</span></label>
+              <label>2. קטגוריה <span class="req">*</span> <span class="hint" id="catHint">בחרו קודם מחלקה. קטגוריות שהמחלקה כבר הגישה אליהן לא יופיעו.</span></label>
+              <div class="cat-pick" id="catPick"></div>
+            </div>
+            <div class="field full" id="jointWrap" hidden>
+              <label>מחלקה שותפה <span class="hint">(לא חובה · ההגשה תיספר גם במכסה שלה)</span></label>
+              <div class="multi" id="nJoint"></div>
+            </div>
+            <div class="field full">
+              <label for="nTitle">3. שם המהלך / האייטם <span class="req">*</span></label>
               <input type="text" id="nTitle" maxlength="90" placeholder="לדוגמה: שטראוס — השקת קאו פריי">
             </div>
             <div class="field">
@@ -843,38 +993,35 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
               <input type="text" id="nClient" maxlength="60">
             </div>
             <div class="field">
-              <label for="nDept">מחלקה / צוות מגיש <span class="req">*</span></label>
-              <select id="nDept"></select>
-            </div>
-            <div class="field full" id="jointWrap" hidden>
-              <label>מחלקות שותפות <span class="hint">(לא חובה)</span></label>
-              <div class="multi" id="nJoint"></div>
+              <label for="nBy">שם המגיש/ה <span class="req">*</span></label>
+              <input type="text" id="nBy" maxlength="50">
             </div>
             <div class="field full" id="teamWrap" hidden>
               <label for="nTeam">שם הצוות (צל״ש) <span class="req">*</span></label>
               <input type="text" id="nTeam" maxlength="60" placeholder="לדוגמה: צוות הלקוחות הפיננסיים">
             </div>
             <div class="field full">
-              <label for="nDesc">למה זה מגיע לבמה? <span class="req">*</span></label>
-              <textarea id="nDesc" maxlength="600" placeholder="הרעיון, הביצוע והתוצאה. קצר וחד."></textarea>
-              <div class="counter"><span id="nDescCount">0</span>/600</div>
+              <label for="nDesc">4. ההסבר על המהלך <span class="req">*</span> <span class="hint">(עד 250 מילים)</span></label>
+              <textarea id="nDesc" maxlength="1250" placeholder="הרעיון, הביצוע והתוצאה. עד 250 מילים."></textarea>
+              <div class="counter" id="nDescCount">0/250 מילים · 0/1,250 תווים</div>
             </div>
             <div class="field full">
-              <label>תמונות מהמהלך <span class="hint">(עד 6 תמונות · נשמרות בשרת)</span></label>
-              <label class="drop" id="nDrop" for="nImgs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><span>גררו לכאן תמונות או <u>בחרו מהמחשב</u></span></label>
+              <label>5. הוויזואליה <span class="hint">(עד 5 תמונות וסרטון אחד עד 20MB)</span></label>
+              <div class="drops">
+                <label class="drop" id="nDrop" for="nImgs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg><span>תמונות: גררו לכאן או <u>בחרו</u></span></label>
+                <label class="drop" id="nVDrop" for="nVid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="M17 10l5-3v10l-5-3z"/></svg><span>סרטון: גררו לכאן או <u>בחרו</u></span></label>
+              </div>
               <input type="file" id="nImgs" accept="image/*" multiple hidden>
+              <input type="file" id="nVid" accept="video/mp4,video/quicktime,video/webm" hidden>
               <div class="thumbs" id="nThumbs"></div>
             </div>
-            <div class="field">
-              <label for="nLink">קישור לתוצר</label>
+            <div class="field full">
+              <label for="nLink">קישור לתוצר <span class="hint">(לא חובה)</span></label>
               <input type="url" id="nLink" placeholder="https://" dir="ltr">
-            </div>
-            <div class="field">
-              <label for="nBy">שם המגיש/ה <span class="req">*</span></label>
-              <input type="text" id="nBy" maxlength="50">
             </div>
           </div>
           <div class="submit-row">
+            <a href="#rules" class="rules-link">כללי התחרות</a>
             <div class="err" id="nomErr"></div>
             <button class="btn solid" type="submit">שליחת המועמדות <span class="arrow">←</span></button>
           </div>
@@ -884,6 +1031,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
         <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg></div>
         <h2>המועמדות על הבמה.</h2>
         <p id="nomDoneText">ההגשה התקבלה ותעבור לאישור לפני ההצבעה.</p>
+        <div class="preview-wrap"><span class="eyebrow">Ballot Preview</span><p class="pv-lbl">כך המועמדות תיראה למצביעים בקלפי:</p><div id="nomPreview"></div></div>
         <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
           <button class="btn solid" id="nomAgain" type="button">הגשה נוספת</button>
           <a class="btn ghost" href="#categories">לקטגוריות</a>
@@ -899,7 +1047,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
     <div class="wrap rise">
       <span class="eyebrow">The People's Choice</span>
       <h1><span class="line-mask"><span>הבחירה שלכם.</span></span><span class="line-mask"><span class="gold-text">הבמה של כולנו.</span></span></h1>
-      <p class="rv">בחירה אחת בכל קטגוריה. ההצבעה חשאית, ואי אפשר להצביע למחלקה שלכם.</p>
+      <p class="rv">קטגוריה אחרי קטגוריה, בחירה אחת בכל אחת. הבחירות נשמרות תוך כדי, ההצבעה חשאית, ואי אפשר להצביע למחלקה שלכם.</p>
     </div>
     <div class="ghost-word" aria-hidden="true">Vote</div>
   </header>
@@ -921,20 +1069,49 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
         <div class="ballot-top">
           <div class="voter-badge"><div class="avatar" id="vAvatar">ד</div><div><b id="vName"></b><div style="color:var(--muted);font-size:.9rem" id="vDept"></div></div></div>
           <div class="progress"><small id="vProg">0 מתוך 9 קטגוריות</small><div class="bar"><i id="vBar"></i></div></div>
+          <span class="saved" id="vSaved" aria-live="polite"></span>
           <button class="btn small ghost" id="vLogout" type="button">יציאה</button>
         </div>
-        <div id="ballotCats"></div>
-        <div class="sticky-bar"><span id="vSaved">הבחירות נשמרות בסיום</span><button class="btn solid" id="vSubmit" type="button">שליחת הפתק <span class="arrow">←</span></button></div>
+        <div class="stepper" id="stepper"></div>
+        <div id="wizard"></div>
       </div>
       <div id="voteDone" class="panel success" hidden>
         <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg></div>
-        <h2>הפתק בקלפי.</h2>
-        <p>תודה! אפשר לחזור ולעדכן את הבחירות כל עוד הקלפי פתוחה.</p>
+        <h2>תודה על הצבעתך</h2>
+        <p>ההצבעה נקלטה ואושרה. נתראה בטקס ב־30.12.</p>
+        <div class="sum-list" id="doneList"></div>
         <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
-          <button class="btn solid" id="vEdit" type="button">עריכת הבחירות</button>
-          <a class="btn ghost" href="#home">לדף הבית</a>
+          <a class="btn solid" href="#home">לדף הבית</a>
+          <button class="btn ghost" id="vLogout2" type="button">יציאה</button>
         </div>
       </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= RULES ================= -->
+<div class="view" id="v-rules">
+  <header class="page-head">
+    <div class="wrap rise">
+      <span class="eyebrow">The Rules</span>
+      <h1><span class="line-mask"><span>כללי</span></span><span class="line-mask"><span class="gold-text">התחרות.</span></span></h1>
+      <p class="rv">כל מה שצריך לדעת לפני שמגישים.</p>
+    </div>
+    <div class="ghost-word" aria-hidden="true">Rules</div>
+  </header>
+  <section class="sec" style="padding-top:10px">
+    <div class="wrap rules-page">
+      <article class="rcard rv"><span class="rnum">I</span><h2>הגשת מועמדויות</h2>
+        <ul><li>כל מחלקה מגישה מועמדות אחת בלבד לכל פרס.</li><li>ההגשה נעשית על שני עמודים בלבד: ההסבר על המהלך והוויזואליה (אייטם, פוסט או שלט חוצות).</li><li><b>27.11</b> מועד סיום ההגשה. נא לשלוח למייל של נטע.</li></ul></article>
+      <article class="rcard rv"><span class="rnum">II</span><h2>פרסים משותפים</h2>
+        <p>בקטגוריות <span class="lat">CollaBHA</span>, <span class="lat">SWAG Award</span> ו־<span class="lat">smART</span> אפשר להגיש מועמדות משותפת לשתי מחלקות, בהתאם לאופי השירותים (צפויה חזרה של המחלקות עם השירותים המשלימים).</p>
+        <p class="ex">לדוגמה: מהלך וידאו של מחלקת הווידאו והמחלקה העסקית, או שיתוף פעולה בין מחלקת המשפיענים למחלקת האימפקט.</p></article>
+      <article class="rcard rv"><span class="rnum">III</span><h2>זכאות להגשה</h2>
+        <p>כל מחלקה או צוות עצמאי יכולים להגיש מועמדות לכל קטגוריה, כל עוד הם עומדים בקריטריונים שלה.</p>
+        <p class="ex">לדוגמה: יועץ תקשורת יכול להגיש מועמדות לקטגוריית ״פוסט סושיאל חזק״ עבור פוסט שהוביל להישג משמעותי (למשל, לחנוך דאום, שם קוד).</p></article>
+      <article class="rcard rv"><span class="rnum">IV</span><h2>ועדת השיפוט</h2>
+        <p>ההחלטה מתקבלת לפי שקלול של:</p>
+        <div class="judge"><div><b class="gold-text">50%</b><span>הצבעת המנכ״לים</span></div><div><b>50%</b><span>הצבעת כלל העובדים במשרד</span></div></div></article>
     </div>
   </section>
 </div>
@@ -1035,7 +1212,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
               <button class="btn small solid" type="submit">הוספה</button>
             </form>
             <div id="newCred"></div>
-            <div class="tbl-wrap"><table><thead><tr><th>שם</th><th>שם משתמש</th><th>סיסמה</th><th>מחלקה</th><th>תפקיד</th><th>הצביע/ה</th><th></th></tr></thead><tbody id="voterRows"></tbody></table></div>
+            <div class="tbl-wrap"><table><thead><tr><th>שם</th><th>שם משתמש</th><th>מחלקה</th><th>תפקיד</th><th>סטטוס הצבעה</th><th>זמן הצבעה</th><th></th></tr></thead><tbody id="voterRows"></tbody></table></div>
           </div>
           <div class="apane" id="p-results">
             <h2>הצבעות ותוצאות</h2><p class="sub">ניקוד משוקלל: 50% מנתח קולות העובדים + 50% מנתח קולות המנכ״לים בכל קטגוריה.</p>
@@ -1083,7 +1260,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
   <div class="wrap">
     <div class="foot-grid">
       <div><div class="foot-mm gold-text">ממב״א 2026</div><p style="color:var(--muted);margin-top:12px">הבמה של האנשים שמאחורי המהלכים.</p></div>
-      <div class="foot-links"><a href="#categories">קטגוריות</a><a href="#nominate">הגשה</a><a href="#vote">הצבעה</a><a href="#hall">היכל התהילה</a><a href="#admin">אזור ניהול</a></div>
+      <div class="foot-links"><a href="#categories">קטגוריות</a><a href="#nominate">הגשה</a><a href="#vote">הצבעה</a><a href="#rules">כללי התחרות</a><a href="#hall">היכל התהילה</a><a href="#admin">אזור ניהול</a></div>
     </div>
     <div class="foot-bottom"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYkAAABxCAYAAAAga199AAA+i0lEQVR4Xu2dC9h/3Vjn7zclk5JBlEzUtGNsU1NOhRnKMS/KKWVHDhWToVJOOYRiYqZXzlyNGOyKkkrK4Y2ccoqIjWnLKTGGCi9m1Iu5Pr9Z32fuZ/3X3nut/fs9x//6XtdzPf/D77f32mvvfR+/932fc8HH/8YqKioqVuAiZvYFM/taM/tnM7vl2HbXCsd5SzP0g5m9w8y+aLb32YoThnOqkqioqNgCKIpzxra7u5k9LTrOJ83s8c3Qv9DM3r7FOSqOEF92hOeuqKg4Hbi0mf184lIuaWa/OLbdk83shuH/USoVJwhVSVRUVOwC3zpzkOuObff8se1uG8JTVVGcIFQlUVFRsQ3ISeTgUmb2u0FRVJwgVCVRUVGxLf6Pmf1p5kH+m5ldLfOzFccAVUlUVFSshcJGnzWzF2ce5JJj2z0mMKJq2OkEoCqJioqKtVCo6cJm6F9fcJCbjm13bshPVBxzfPkxX1/F9uAeXzRxmM8tHPqrov//SjP7x4nvTJ0jxj+Z2YUL551C6hxLx4uvIRdLx90Gpdex9hpSWLrna4FH8G4ze7CZPSrzIHcOIaqP1RqK442qJE4/iP/eJrrMt4TwwJTARjDdy8wu57731WZ2z8R28QxhFV49YytRMh81sw+a2XtmlE4K1zQz2DESdKzxuWb2tonz8v+3MrOrZqwrxgVm9rcr17mEkuvgGu5hZv9y6aAZYO+f7vZv1/hUM/QvHtvux83smzMOfu2Qm0BJpJLfRDn+rZldxmwTzuK5+bstjIyKlahK4vTjsoHD/i/cpd4/I4Z8EzO7UbQ9KSUBvs3MHlqwle83sz8zs982s5dlfu+KZvZz0WeXvnuNxHdK8GEze6OZPcfM/qDkizMovY7vM7Nb7ODc55vZsw5ISUjIUzB3P1hMGeslN3G5Zujjj+KVfGlsuweamRQORXnch7c1Q//yKEmOMqkV3QeIqiTODvxPs40n8Hkzu0LBJX88fIdQ09dlfI/Pz4HzA9byw2Z2VzP7kaAscoHgBrnX8b/N7O/dwbmWJWidfPbmwYP5CbMNM2dXyL0OrWVpb2Poe4BiNxhIB45m6F8wtt0jKKLLONnXhM+ovQf4wth2eE8+bEVR3k35GdvuASihZugp3sMjPces5lYPElVJVGwL8h2ErejR4wVTDAQuBVefCZ/js/zbb5nZPxR4FNsCwTIHrRPrGAtW63y0mX3oENcpfDpjb1P4+m03aiUu0gz9w8e2IzwUt+nYh2bo2d8YKIw7LZz7dmPb3c7MbtcMPR4e96oypQ4IVUlUbAtyBAj6V5ptrPYpEO4i/EOo6xucAOY7eBVvLsxRlAJrlBAXwh6lNAWKvtqQC7iKWyeeC7md1x5QyCYFEujQRdm7ub2NwTUQmsP6Tgnig8Qm9NQM/a9z7rHt7m1m102ckJAjeSnvRQC8zMtnLpDivK4ZesKWqbxGxQ5QlUTFLkA4i58lkGTGGn9B8CKw0vEsbl+Yn1gDhBHny0mYQ+ekgymJXixyvke45zoh/zKVLN818ND+x4qDkujGAzlK65o8wfOaoX/D2HY3C/dY/Zve2wz9zwQPKcanzOx9mclvQFKD77ykKoqDQVUSFYcNks0PM7PzzDZxeQQw+Y5vOqSF5OQkAIriCWaGRax1wraBCHASgBdy1EBJfTB4FVj7eHMA7wbjAEWSwotcQ8BFjG33R83Qc2yURcWOUYvpKo4ChKbIYUhgE0rBSt8F1XOXwJtAQXjF8h1m1biagDwXfvs/k1xGgJMP4oc/K48QezvkNH6/9CaObferie+k1oPMY/4FP17+ac3+d0V92CuOCISm/iLkIvAkEBjQaHOt/MMCuQvCUygGgdoRJesr9kN5AZ8fmAt5TeURUCS5DCnh1mb2S0EJxXkOcJmx7a4Xai/ILxHK+8tm6DEC3hnqYrxnI2UxtcazBjXcVHEUIF4uCijAk6B+4OJHsZgZYPHyQ+IYZcY6SQqjzA6qevkkY1PjEASxku0fCHuYEtyTaIb+qWPbfXdIvufgUmPbXaMZerHXtBZ+oyB+1sygz+7D2Hb8/XVmdn4z9M90SobrwAM661GVRMVRAAFLVbMK/ErrNw4TKDSPSxzmyU8Yvnpsu7uY2cND/oHcAyG7pzRD/5uZ16Iw1CcClZbKbOUyliBPVMfYeAZj290hpSAcYF8x84Li0cdR6xH+b84LOmtQcxIVxwknwWg5biGx44CNMA1N+37NCXWEOwK4H9sOxhKeAfDCNyWIFeJ5QzP0NwiW/iKaoVfi2nsttDaZG4gUKwtotSg5chYlmMp/+PzMiURVEhXHCb51SMXJArLkSjNL/uax7ejtRP+tEkXx9mbo+Q505Dm8NNSweCCgv2KiweUcGLl6twVKrWSnlIPPx+jPhKv484nOa5wEy63iaIDAzmnFsUuUFIxVHC/QYmOJxqzpdFRKE9LJzVN8rBn6+5rZi8a2o5cVSWrfRPDp5DAiCqyEN95FTg1PDCjarzDb9KNKQfkKiv+uN7bdPs+jGXoaF7435DhONKqSqJgCzeB8Uzv12amoiCFLObe6mwaAxP+pgM8FeasXN0NPxTv1K1TtAwwLJceBFM+eAmqG/jUhQV2Ese0e0gw9hZ5CfOwbjm33oFRNx9h2ysf4hLhfXy58OE77HHsvXtnGirfkszE2361KoiIFEsu7bGZXcfqBxY71nAWaADZDD7UINlKORyEBKcbZVA+uFA2X0aqPDEWcJcBrgXWnNQLCTJwDBUFn3SkoH0NCnGaH922G/jdCEeEUvED3f1ZoS7/xYmBfxbmdqbCWVy5K6k8pHA/OUZVERUXFbsB0umBB57CREJ63aYYer+DA0Qz9I8a2u2NBElvgWrxCgjH1ZWPbeQ8jB+eNbXedZuhpf061OYiFui8wRBF8I+sd247EO56TvPkPN0P/14FG7inGU8cUdD5CZFwXP4SV6RIMYBwqPPcJrbF6EhUVFbvCm0IPJRo25oDmf7+XEbfX8Cv6Z0218pjDxlNphv5GY9s9o6DlBwITIRyDXN1ckn4KdK+lgI8mkylWl0Bdxw+Gbrip5oiq7yCkRX+s3wkNNuPQkiBPjX28xth2DL7Ci5tifUECeDZDpFBoVUlUVFTsCl9shv7xY9vlKgmSz0xOpLAyFRK5WqDV0jOLli0I7HeF9uA+TLUUrpKFjgV+97Ht7kP4J+OiH+KS4X59zObAkqfLbinozovwJSGeWje1JszSuHvGgfEE7hHmb9yzGXqGY5G7iRUQaz83FBSqyeIcNLtjEyKrFNiKiopdAeH0hjDrOgtj29GOxVc2SxijIOi2i8BE6SC4GEaEEvpAGGykwVNSAnPQcWk4+HPN0P+7MEFvqm08DKznRQeUUMfDoEhwDagMpxU9OCOHMLbdj2UqiBhPG9vu+90/bvIJGuJEE8QCD0qAenylqiQqKip2gT3rtRn6J2eOMAUI+rhnEsKSUNQcHja2HY0iKdBTMjkHWif1F7dvhv6qzdB/DwOMCMEQkmqGniaDqrpOgf+nqy0/2yC2+AEt1NfixmEeB2BPmfKHoJ8d/jQDciefrEqioqJiF/BW8WfCeFHi/0sgbOOh4+SEWyjQ+5MwqyIHKmzzwpkELZXdLwitQ6DlTs3M9h7Lp5qh/xWzzfCkEnyyGXp6RaUUBPhIycEmoHUi3713UYoXki+qSqKiomJX8PRTwjp0ZaWb6ySaoSc2vyYZLVxybDss+lTLDyGmisbg/yULUxRaDykaPo83QmFfjjIUYDfNjdCdo9Uu4S8Dc0rXy76ubUT5mOAtXaQqiYqK048p/vxBA0XxyGbobzFhccOwgRHlIQFHwV02xrajgSBVzzH/H/jrl5CPIe8hF+RRpCjIcXCN1GNM4XcJa4VZGZOJ9mboHxsqtUtB1TlzOGIltyZ3Qg3LgzX3o7KbKiqOL2hORxHYGrolCWHx8alKvnKYsgcQpk+KKuoPAghRhCmV0jB6KEwT7ZIZDhTfITC90NyESpqhJxFLniAXhJ7u1gz94xKsIdaBEoACSkL820MuhLqAdzRDT/sMWndkFwMGYcxxWTv7rGvkHLC2rji23YXN0MOE4lpT3oOSyx6fa4YemiqV3Ge0Nk8AGuzjUcZhr6VkN7+boX/62HYXM9s0XpwDIbA/boaecbBijm32rSqJiorjDYQ7VmppXysEF3RIwG/okjcPf6eAqiREshZxZbAm04EpTr8EMIIVyzyHsilcKyiCWNijIBDa5BDOoOeGlh1Y+rSioe1H7hhUNfATuCbOzQ95Dr9vKe9hKsxGvuM/mxntRFD2MLv4jfJRuw9ow68M4ToYZVNA4T7RzN44th0Jep4nP0aWGeofaoaeIWCxItusryqJiorjDxTE32+5TBSFlIaoo4cBKYpYIM6FwDbCFq9gbLsSJfGvzOzrzTbJ6H3HH9vuoSkF4UChG56LmgVONfbzmKqYlqKb++wSUFR4JyTmKTj0VewoCjwUFRdOhq/cmFiUFsoELxLPAnCMz4YpfTH2rq0qiYqjhhdYc63CaSUAcj8P+A7H1HdKZwQAqms5js5/2HO4OZ+/hl1B13OQ8PmBOUGWElB8HgFJ0RsdWXNw+bBXsfBm/GwOWwpQU3CTkJDOURSTwnVHQMl6D8wjDtVNwbOy8DBjT2n23lQlUXFU+C9mm59c0HCwpOkgrI57hp+1IE59y7Vf3gG4BuYynyQgcNQ+G+FMX6C/DlbsGNg2c6EmCSzlJvAmUO40yVsCdNqPJnISlzHbFM3RqjwH5Dde0Qz9tyRGr7I+jTZljaztSqG/EpXh4KPN0L/bbBPKIe+hOe4lihLoXPqzV37+WLnH9cqCfBezNuRVCHgX+5RIVRIVFRW7wkZYpZKuIe5/XjP0z3YtKZRQ9oiZSMTUHz62HQoAOu3clLkNrz8czAtOEtOloDKathRSTkrC+9nX3z223U/P5DkATKGXmBkx/wszO956Jcp51btKIPTIsXLhKcBXYBZ4mEN+FTO7OjPAzewfzYzpga9thv7NwYvb5FzOueDjf5N7ooqTiZuEikusO82Svj+zfAsftIrdgMTpb4V+RYBQGInJl+3m8EcKhJHaaUzh/c3Qw9yh5UWOBazP6NjUQ/x8pCyI0d9LDekm2l2QkE42y5sBhW8IUnVEFVBkKAjCYTkdb1nfA5uhhywwJ9y90vyO0L4DBUFCnrAjghwr/0N4KWG2xl631onr0P59beipRV1HTs8pekExDfAi1ZOoqKjYFfAiVNQ2BUI5FL/hIVDbMBd6AgqRYMFTvPaO0A4DWjChnn8KNRhK4oqWuk9owvAZ265USaAAYBR5Qcx6Ebh0ac1REIDPQem9vPNMUtjUXgTvhLYkfvreGRjbjmpvBiOxj1NgH2B2UaSXO+sbQL/FA/pwLaarqKjYJYh156APfYWmLGAPPiN2FL/xFqDIvjo0FIRy6v8/dUw8F2oJSgGzzCfg+TNCnwaBpXgY3VhdbQjwdQ0oWdZJon5WQQTwGfaRxodACtIfEwVB99wSBQFoD0J+Yq8UveJ0g1ATLJ3DpD5WzIN7cRrvR0lBGkQEkts5ikJMHp/YzsVGaDZDj/DNZUoBCswQsBK6qeK3IoxtR7iH693r0qqwWxD2JQWEAlY/hYqq29jzvsa2+49FC/z/eH6o9/hS9SROP/4XA0TM7FfDD3HGvz39l31sAcuGe+DvB/foVKAZ+pI2EPRdunNmvZbaaaTabuQAQU/jQbwJWG+LCKEhcgC+lQfH4f154+IB0lD1fFw3giy+wcpjkq9Q6MuH76gbWcOOe2kz9P9dyrHmJE4/cMtxc4WvDAnsEnZExe5AAhX2iArbuB/QJE8LSmsLqIMQ4wmI9uk7sZIkvlnYIOilsJXUJykn+Q1kXVPNTAL5JWH40F0S1Ng/DRXPdIT1x9eaGK70e2Pb+fcqF5p0F69bo0nXAMXMcT3FFRAuUmuWXFBMCKNLNNiauD4LgDLwCmFtV8iK3YD99/fg1N0Pmt2FITdZGNvu+qG9RMz9Z0obSmSfMA50WsD8B3pCIdDmlIW8D/3mfdgMHzKz+5ltLG5mSJN/oDZmjjGkY6AMCQ0VNSIMnXGltDy4Buoq1gCmYrwH7AehP2jBOWwmQmuPa4aez2/meGsmRQ03VVRU7BIIJ7ylEuF5q2gBCpngPcxZ6yRtSfTCqMrJawgcX7KPOD59kGhZgeBHQZAv4MfXF5yBMIOCvloI2CW8joFGjvrssclPNEP/VLPNfOkSUMtB91e/1j3acKCxosxglPnZF9ByWTehT5TtuWHQkqYE7oXDap1ERUXFLiELlBAR1Mwcls57m6FvIm8AmuljwsjSJVDPgCCca9XtIQXh24PHoZq9hPLEyb3nAoMIei3KDqvdU2NRlueHgjo/y9vD5xE4Fn2mltqIPCNY/dRqxI0G42NzDdRb0NeKwjmqrCnIozqd/IoUgr+mvZqNqiQqKioOCudmhp3owHr7KB+BkmCEaG6DP4r0YA7hDUzVXsSeQSoJjlWfEpo5QBAjgH2XVd+ILxfUf9AunJbmUGZpDwJUEU39Al5BCZNMSIXlpBCSIbuqJCoqygGbBJYSliGAyio3vWI/8CjIG0z2TQoDexB8EtAIK/IRuZ6E8Lxm6KkZSDWwUzsN6OD0WmpD+20lwmmbobg+8P2ZchArIFASAgN7YSJ3Qh0DklFuW48UUorT/9tkTsezmyiCuYQ7OgmcioqKacBMqpgGgocW1d8VmETXTrTGIDGNEomFLIwvxnGW4A5m9pxQKRz3gAK0unhISDjvwSXC6bNE4ha2UKmA9x4IUEhrLqE+JcxTx5J3w7pSPa/moDWoTbgPOwG8HRhjPvS0B+9JMHtVNLNPm9lP1t4+FRVJVE8iD3GMmy6pVxnbbqMQmqEnXPLKxIxrKYxrFvRHEkjkkoyNWWOXC+GrpdYc6gNFMZlYgXOCvkQJ5H429iRSnoWQc0ycgeuMbUczP3ImKbYTiXUGHSnHATaKUkqCg6BBNQGL/vW0ka1c+oqKM1GVxMEBoSdLmrzEGRTYBRByojNrHK+/Q+gZlQuUTWoUako4E1Jj6psq6PGCCGORH4E1FYeR5pLhAp9BLn9joOcCKLooMY0X9R1p42PK2yARTtV1zihUCAQwsPZNqFO46aJBQdAkiyIfesBXVFRUHBTmLGDx9KmQ/o0wnW7JA/AgfLLv+GPb3bjwQs4b246xniTPPV3WC2MEMIV5yeR6CGP5wryYQRWDvBaGOce9q5lRjU6IyOdzyIUx64KKfYoyvaLw4FglDDNAfyfqRZJKQrkIFARxVhJysRdBzoKiEw/aCdC+NgfMVvUgSTSV90B50YvE50xYT6qvOZ+B1rVm6lgKSwUtU2uDTpYqjMLqvGzGBnF9jBLkHuTuKbHFXV23MHdP//VCC4Wpe8Szw8N3UBX+qXuWszd6xtl3+PHbeM5Le7ME4sH++Ukdb+nZTCH13sbnOkz40ElKUXjqKcKZordubDvCUjl0WtplYMnHbS9y51Z7MBSLhHaKukpL9FdkDDK6YVBytN7+9YVcx8XHtrvbQn8pFIZGrXLMqfbjrC+3lblAzQmsqX33RS+tNv+fg8tEbCoGiuQ1oVGc8BMF08LeEx2QuOFUDxUUBCXxvgEaN+uaiXVRzv7wTD51DpZYKggSClMY3CEwcev7J5TYbc2Mh2MJuJJvDe4p+8zDPkce4N79lJnBqd4l5mYbvHzhRcXqSjUoQ0E8zcxwZXcN9i3uPMre3MnMHptxMlpPM9CG/dbvUtIGQmTNYBsPrDhvBPGsM3fCY83cCfY+fveuY2avz9ibNfChFaxcDEtRQmkd4SuD+eyUogAS9CiKW4dhRiSnpwANFsEdKwjO8edhFGoJkIvcF4V3wCZxPLbdj2QoCA9ahX8ieCYee0nl0OaD8FoueKdUBOjx5aEnVm4rc4CH8jup+eBSEuoBTx4CxA8nwMJlIDcUM14KBHjJvF++o75BfHeppwgvqj7PxRKLm4KOJUriWuR25WQtGk7PGucatOWujePQERO3mnYBzzSzJ5jZ2zIuZtvrBpx/6Z5QgEM32dS9IEQJ4SEFHkCsV+3ZrsBzgQeXgryCpb3B40AQoMxZ3x+HamEMgRIsnWcKPHOEDuLr4PwMjCLswLG5VqqP/2rBeJiC3r+le7wtFI6BwsqAJWoXvi20nmYNr2yGnmsrtezfGeitLxzbDuM0DvEQ1uG9Ue8or3y+0Az9+Y7FVAKiFMDTc7lnaxrn4ZlgSMW4yNh2GFAlCmIDqLzN0NOfzYfBLm5meCQluHdgdm1mWvgCPSkJBBMvCBfPQlOWFC4c1rx6l/N5XGJNTMqBmpodFEo0J5hTPEsopcgtrU1JKa0J4QAb5EczerosHduD88T3AQWhyXVz0OeE3P3j2UFRxECxQJIogfJmgGtZwtLexIoLax2FgQVO4nIOS8dOIbVnTKVLhSp/IYzGZN/5Hu8p3uOaxnLgoN8/hZJoUY2CwNIVFK0ggfyAZugR9DkV0p7Lj2IhMf2iYKxcLRwc5aP52SDlnfDd4l5Lro+Tbzi45r4D9oDwsFeQyBH+TfOxi9AM/ZSyzV5jqFOBhgykIPYgJQF/mcUSj/rDiVVimTE2T+DzKAni7bkx9IMADz7uNJY3U6pK8H0rhFQpEI45a2Mv8SQA18SDT0gLVsJ/mhAi3I+cY3voPBIYPEyE9v4ufGjOK0KYYSiwzyI75Agenh3YJl4hENqk22TpswNNG0G+pKCwzJf2hmvAM2KAjLxVeYnMHUC5MfMgBteMRRiPtVwC58MC1T5wTiaGTc0QxlhjAhq9eQAK8mfN7C1m9gdLJzsCKJ/AnnoFEYPpdFw3PYOIg88ZXDqmz2Ww/4SA9iVYA8SO8hDlFi+EEPfc2jzweF6VqOEgbIbMKUmmT0HXhUdbCkKc9MmK9++zzdD/8AKbC1n/7MDg8kWEwt4xURLqRY4lSa/11MYLCBCEBDkDLDCE2mQl5SEBC4wXOfUyL4G+Kv/hgC0sBGvO/GIeEuKcjC2UVY+iwKNIhZ0QvGuu+weC0FF4hHM9MXONzBYWeHaYXpUL1ustf6wqCp9K4/88r1j6c0pCeaOckBH5DJgv5DA4LvuCECIsQ/ybhGksxHnm1gyHQUGTC5BiZe/5+9w7hxD4ryH3xNr4DjVNSzmrowLCJVfg0aAPS9YrirkchafHTmFK4WxYQIS6yA2Y2a8sTGujboDPeDKDBDpClaTwUn+lGCSZY8uf9a4pHPyHZuhReKnwIWtWfpD8E9XlvK9cNwqO3E2cy5hU1HyRQd88eCTweCDnGB680DzQfIeXlPBUDnOnYhnsLcIaIYgw9hY6D0PWoJQMpMI7pSEfUNr/Hss+fqCJnZai9LxLQOBjlWMZ4vaTn+PZ5oc4MQnkKUu/FN8bPBcpaH4vvXOsjwEweL3E9skLUc+EUiPGfdLRh55ECK0ciFgyR6FNQcls5kkgQP8izKhgH71HIAubujFi/TE24Zhm6P8k1HDkTrqjBoH3O1735u80ABzbjvBbTq8qhDzGpAoRU3txYbhOPDaFnqAGF8+YEJ0T4CEsMR6kibzrx4OrviIV2wEFzUuD9yAgSMgD7UpJHBUIu8WhKQyMXQngbQG99ElBMXgvhWlhhGB3MfeB8BohI0CegSQrXPclsEesDUIJzwM/MLdgm+UQGw4bRd7h2HbPcV1gY3gBiFEqgVcy3Mg38lP4CsYUrEO8TY6pcCNCFEWM5xFb1/o7iuJzzdA/fmw7DAvu6xzwSu4VNR8U1Gbjw4Hqy/s/pyjOC9P1MLhQmF4Wp/YOzyU2zuL9mAXCHS8COupSkg4gxDydjvAB4RrCHjmxZbGVwC5eutMIhBXeGsrXC1Vc+KKX75gBQcf6CVXquvjzkmFymCCEg5WpnAcCHQUNxXrb55W8B0JOXgRxe8KQOe8NQJihsMQuZG30NsIb23ZtuwRCC0GbaxWDbx3b7rYJeqhAcVmqTgJGE72YYHzxTEkBxL2PvEAGEpJ4FwhRfuZCfjHkleBR8Gw8c2w7wrhUXftasvc0Q49i9wn6VFhHx/tYqHimxxQhIp4RwvkfCdP41IRwCVKsvuYEIO+9905ekGdn1ivjS6VxbZKlaFqAhuLBzW105oXeaRrZuGvA9cYF9rTKk64kVCjoERdnHjVQYn7wvZ7XNWGxGClPkJxMCUi4il3I2jDSsFBzw068p3wnhxW2DbjXcO5zQieCim1jgUVRGKGfVCGdCtUYuUltlwR9XCdxkGC9eAHkDfH2EOy0C8cbLaX5iln09tDSI4a8hqVQm1dE/BljjH3E8ISkJFov5+E+4c1OHnPNZDrxtOUV4IksJaqIs8eKhMKlijQ8i0w46bkfQpWxcCKRe9yQ6tG/7d6THKfmQaEmQhtYhbmeIe8Xyer7RIYDRhp9ebBgc4GVf1AG2h4FNgzZyZnYJhCRIHSzz9Ie244c0VKl9T3GtiMaApEmZakfBCRUfVgK5cTzg7IqVRCA72sinlcIgq4t5xr5Pk0N2RsIAn8UKrkhY6C8+blvaOM+Wx+2pk0CDzZaEu0kQNWci40qOe49iVRSqOL/IaUkjppFti0IVfLikCQXe0g89+MEwj85L2EJYE/5OhT+TAFdDrCwsVCVXEUxsIeqd0GAUnNAGDgVuooVMQWPUwWIu4BCHHjBTymgibInWOBeuKI0vjNzUTcNTCk8ranQkbeWCWEht7CqqYSGTuoL8aZCVrHAXsoLaD/i7wln1CVEz5/PH8SIw0n++m4wtt0jMvYfucJ7OFkMukZJADaTh1YuL9z1OQoqLSsEWVEH+aCeRvASnXS8y9FXVRx2ErAto4rnX0pCHnXOLGM8CIS/r+5HSWAVUnyFoSaaNG0nUu8gLBh5cIRC6JpwUDmMfZZuoJsS4lhK7AIq8n1jvrmE7BRQFLehKeDE4CHWR9O7X45DYa4am35IqghfCuv4Qr843u/7Ryk57QvyBDUzBAqToRwZjEQnAO4zz98FzdATFsIDxVvx5963TvI7hTPGZw32tUqC3kKUwAMeWhY1BRJ20PeUYVeivORBXfPAVBw/pDyk0w48ASw1Pf8I6l/KDPk8OmwOOUCUCxYyISeS/VQ0e7YTTB0EiDx63m1qOaDLeisxh6CyK3yRxO7Ydgi5pZYTFHTGRV0IWvIbJaAanZyeZz8prE5CeIkoQY+lG4QaiSUGFcKfkaUUBxLqgi4tY+6NzdATUueeqOgyFd6XgOc3yuF6Y9vdJVWHI0VGoZyZUXWOkY7HI7Ae1kH9Vy64LyqkTWKtkvCaRyGkVGIVVxf2wXeFZDdtGODtYgktgc/yQgnZZeYVxxaKyXuUJuTjZn7HHYRLYhLCUm0EYF/UtwnwLtCiRUIOQYASUAEg3gIJ7B8KdUxUdiMw/YhV4vZrOsmuhWoA7mdmbwoWPNZxDGZcY73HxiCWNdXlJbgkFniU+N1Y6GPb4VXlgGrlazdDT12LD115gb4RyGFWg8gEHrQf4e8wm54a+iLJk0jhMuFYi15XqKS+XTP0VOLvO2ZoPJgL9h3P0iuaM5DSbDlIcdt9colENYk2ioBuHhSEGsjxIC8l7LgxxHF5oPSD9qw42UjFipeSkjF82I3Y/JoE4WEBhea7BS+14fCANSjw7lDkhYUskOPxg2TwNkjyMlENZUA8GsXBd0lM0qIEuuZhwlNNEUg3ClYwCo7rQYDSmoO2M9xHPh+HrEh+89kSfJObASFgpZdUSOMdUOkuxAoMBfHkjO7TJIi5XoXcU/kuOsDeMTMsJ+C1xGQgvJrcxoMU9xF24530+34G1noSAG+ADeDhxEKEAsYJYSnIA+DfcbN5SLnR9J3JaVExNZeg4mQjpSRKayVINCrGzou71MPpKAHFFytTHhQKji6zOQWEKBefS4D+GndD4Djq7YTHwF6o/5eEEXtOo8BnbTkvYxfY9Ftqhh6hmRKWKfD5ewd2Ti4IZXsa7NpwNZ4aMk51DrK4aWBIC53s3k2svxl6vMOYPcc+INhzK7cFOnbzw7WJEZWLB4dwWhZVeK0nAbBq1M6BkBMvO14D4KXgAUdZoCSwYm5zTJuSVRweUuyb0loJnjPF93n+luLGRwlCTT5hTafSIXNBsE68IJ2irVJ1DVNKNEaFf/EmCE9dPyS059rtHAbExPHUTv68JMD5fzqU4hllYaLGYBXtNySPAeuXUCWZnGuxe8SD1wCzH8jZloIwnLxoUWcpxqP1RwoYEM+g42sz9OS65kJf+7CNJxH3WuHhRCnw4vISYzHhKqqRVEmiuuL0gmdDNTZqN5+LVL0NicFdIsVkWiNgeLcIo3iFRkU3+YgcaFrkEnivnhuUgarZeQ/59xyv/bCAQRpTNjWHeQ6b79CtdGw7hCI5zjk6OMrx3dEBdV4UzWLMfwaeRURFdBHGtvu6ZqDrxj7QGbh0uiShu7jNuoQ+rdQ/M7YdRoN6fX2gGfr3hX3R87jE3NrDNkoijhPy4t8/9LnRKM5tR0JWnD5gNBA7VxsFBr3ngnobXHZfbxNPXdsWKKLYuk3NwlgCAtsnrPEoXn1A9FMYTQhHGE7q7cTEQijHOZ1wDxISRrLCY0WRA75DYz6ora8f2458Zyq/QF8jelql8lQ00aNVeJGSaIbeM8Pk2WGV4xFmh5tAM/SwiGLhzLMMtTU7X9IMPQ1AFbby3qb+/OJm6JHtKCCg1huCFHYWtlESXBxMJXXNxINAORwme6Li5IHwEN1VNbehZLohLr4P3/ACTxVOrQGJ5lR19Zrk+I8lFlDahqME1EjQP0h5QvYGiizU0iWiyEFBypbahE2upBl67juGwmTx1gywgt8c6gWgEXNcyAAqhhPr0tcQCPwbz17J4CFyJ7QEB57ZxDOHJV+iJOThxLkYdYAl6rJ0PDwIvNOlOSasFVnMj0J6vqgvKxchbKskoOPphWcxWIW1I+zZgZhZgZGQM/Qptvw5Tg4NFjo1rS3W1BvkAvf86u4c0LAhaOQMVvLgHaBXk2/DgUF10MKaymuKVBXOY6/wLhghetg5CeSBRpjuDflxRWtY/c/OyCmlBD5AyRBaSd3bVJ5DYSsaON4izMueE8o0D8Ri9zPvlcMl/PUUaLKhGeQSEO70lvLzvT3UARbOLHldrQuFSh7v+c3QU5uGwsoR8N5bg+jB+3WF0LH2883QE6LNNq62URK4MJ7DzMKuFMrcD/plqDh68OCpxYaQ40XGBXXEY/mZe2Z4TrHMMUg0qxkBzEuzK+HHOaBdwyqSlcv1MWuiNCdBIhKPR40w+TOtNbZBTtU3ewjrRkV2CBmotBRnHTa7CXlAJ4apKXD0Dbp1M/QPChRRMYcQyqkQCvDCD4HtW1pMfcfDh2PeSXW2mV0rNL2Dis1+vYRCtRDzx2LfR8l1IEn8gLHtaAh5+5k8yX1DLQJCeSoPwDlgcTHkiCS9SAhUoLOGEnKGzoFSQNncKgzP2kNoX0KRc9Zxt1ESgEl1ounxmzhsjlVYcfKBQI0ttpzBMd6CwUJHEPPczCkYisKgT8syJzELoyfrIc8EhVZUM/t5D+TdsLpKFREeTwzyEYcBZl8Q2lBLcd5LKLC+GvswAPefYrQ5UItAzoRaid8MH0x5AbGg997F0udT4DsIZWj7WNr0jPLzJHgGltg/KCi6qFKr8qyx7WiyqA6rKA7CYrwPfvb2Eu0XBUnIjB991jPApr4fF/mdGwoHaXmfBI0TJ1hgZ2BbJUFC762Bm40WxgrbtmNmKbgGbnRpO2fK/VOsAt8Qjc+c7V4ROQPPJuH+UhhENbBCPyqUzBHacXyf78ZsFQ3DomCI9i8wSTgXSkVV+xQ6zTHmMFaWngmsc5LhxHnpCqBzABQRhZ+lQ300Q1x7g1WIQiv1RtaCPcF6Z2ylkvz8VjV27vyKbYHgJbKQAz+dbkmQZrNyZuDrCpQAjiurl84jJcLz/IagEBSO4revYvbHmjsu1y7G11SYbQp8nvoNDJ3HL216lJCfxbZKAk8CrccLJvBCU0NRan2tBS86laSp0vgl8CL7YizCDHSDFEiOYcWereD5IFSRKvTRLGiEPAKVMEcOzRlBj4WuBDR/h7VCiCQFrDr1LkLgEtsn3r8UnmI9uQVKOgfQ9SDYqagtBYoNN1+hJkAc/LDeB4BigwvPvrK/rIVQ3YPDaNxjB6qbm6GnxYgP8QgIQKzsawRmE+E8wkMkll/TDP2rAtsIwTwVtvJQXD/lhXirfE6gg5ippfyF2ofHHV5T5/Pw51NXXJStHzuaUqIb5TK2HTmpRQUR3j+o2EvXt8G2SgKrhKpPFdXh2lIwguA+LIsFIOzVKXNb+F43h2X9HWdoD1JsFC9Q6WqaS1qAPkisXAlhKQEQJ4kJA6CEOD9Km1YvORXLWjcKicrUJehaUBhQuVEQOUrPA3bUVd37wNpREKVtJQQ/f6O0ZxUC1E+yY//wyljPUpO7XQDBRtglFyhW1vu86AsbQTa2HYZgTF+FqXS7kAwn9k/IKjUPJIWUgJQQ9zUdS/CsIS/Ap5LnMeR9oLj4vqbSQaAgfEWrDUAinel8DAlKJa/JrZDTWEQz9CiTbMbetkoC0OJXrjW/cXNj5sthAEU1OzxjBaaShZwLTa8+QtlMgULs+no8co+tPUh9HiHGA4fgyTUKUALwxf3+zeEdZhvqKJXFeK25FrnWndsbCkFOmIZkOLz13PN4UD1O7gRovyigWxOylNJaC9YvD9vfO/IVsJ1yFO02QAgxXjUbY9t9ZxhW5AUYghOa/VJ9w3lj2125GXo+l6ModNxLj213sWboUWo8X3qXc6xseQpSDvwdg4Zj5QphJerJ4dCf7k4TVFhGvBItuWQz9NxDD75L8jynCSpeOLTonOvbYBdKgk2FdscCEQCUrC+xVXYJzgk9jAdjzYs9h6kWCjBFEIzCmpbGc2BPsZq94M1t57AEjo2lrL3iGZhScnyG8/rPA64XlhLClD+X7Ds0WTpPTiWqOR7GBvkuBBm/S88BUuuOwXHxHKDlEjpdcx4PjIdHRvtB54E1gFWlhn7cozWTHFFOJC+pUfD3m7zJQSuJTXuMse0I5+YILwDjhs9KwMqLQADmgClsnJdkMs/QVH4Da53KbTyRDYI3wrP2smboCdkskTCkIMgDECYjT0cYjBwe7+1HAnUVz3dOYbBGJshhXPiGjVPAkIHW7FlghKTulrFBzMp4Rvjc1N6cgXMu+PjWzwqbQudJHkQENlYL8eCjrvSsqKg4YkyEiabw/mbo8XL2ESDGtoOWOsnUSQBhSHGhDwUJN8tsFkj4CmWhPIPPP8gKR9kQ1ku1P99D6HyrMFpswZNLYIJfdk410SgQTwL22tQ6Xhc8rLiVRxa2afAnoDUJOSkvAXyb44qKirMUzdA/NSKDzAHrO9XVNzeUKWCRKxTsLWZqB34t81YQviKUGlvcfoDRC5cUBBjbjkK6uDuvQC4hW0GE/JafTAdgYT4wsXfkCVGYeDqrFATYRbgJ0FCLm8INxn2nSIXYV0VFxdkJWcwUnZFczqESw1zD4IyRU6TpQR5KYSvPVtJsmlzAECPsRK5CiWiSxl8VWoXn5ruoB6EugRDovtBsyCVkIxQfxriwGXpyaRjnKEJyLOT9yLN5tlhOQ8UzsAtPAnj3UN1gS9kYFRUVpwc+1EPRGfkG+hNN4ZMhaR0zd2iBQbipFGeEXlzb71xcCuHuhvLompowAbAEtI1P1e3Iw8gB+YSpvUDuIodfEibWodzwOLRmlFyKFbWIXSmJVPvjNf3WKyoqTg98qOadzdAzkIxkMWEQog76gd6JEkGwxTKJY/DvJXObgZrg+bYaS43xUqCfF1DlM8cj71rSmBLgDUGMiKmxUFpzwKAgKMxKgsdhMP/3OBfD372yKMKuwk3ik3uqHUriOPWzr6ioODpshFQzbBrsEcuHBUkeExo1NGes3JTRugkX0WxvbLtvyOiUCgiznFGj0Qz9e12DwVykWoX7QsksNEMPO+2MVh/M9h7bbor2qmt5SDP09HTyrC8wVVgHCP8TchOzDKZbDjX4DOxKSQDqI3xdQS1Eq6ioEDyrB2HpQ9SyrmES+XYWEoQoDzqloihox7LUUvt+rnYL6NwoDkI2JbMb/iqqKeBY5GDJn+xRaBdAXYMqnOPrY05GF5oNnhu6EJOof5OZvTK0+2CvUsV5PsfgGVeEyAhvXc3MLh+8HjrmQiLIaZ2zD7ugwFZUVFTkIu5JlF3UFQDtlGaMU4IeNk9cRwBU13DNse1I8ubUbjDu8yejmgStlyZ6tJFfAm3CaTk+1wVW66MQz7fhwNCeyiP4hDweBTRYOiX/0IwSZW/iQrxFVCVRUVFxGPDKwQs4kAqbTEHfveLYdrQiJ2dA4dxHQsJ2KqTiq6MZVrTkkZAn8bUZWqO/Do5DK5AUy4nCvF9m7Kq7kFhBplCyN957IIQ3y7aK6jWyUZVERUXFYYFODFjKgNYVc1XRS5jzQOL/k3Am1CPLnCrnO4Z5ErRTISxDnQY5iD8kV+ByCFM9mVQtTf6VHAvh9guaoSccRbId7yFu3bFr4Fnl0It/uxn6n1mTl6hKoqKi4iDhwzPQPWldAcvoPUGYQunUxDaw5FXoeHFL7ZzvCl6J0EBPA7RIopO32NcWZGFz5pSVP9/S+vx1XWtsO6Z80r/ra8LcBxQPShVFp5YceFN4RIu5kWbo6QK8qqCuKomKioqDAEJvY7kvzDh4aTP0zLooEWBxElfJ4FV1AMcEtOegJQk9oKiQ9jkTqMKPbIae1u9qpkpnXCq1pyb/7aEZ+luE+oolhZfEruokKioqjgdgLMLh3yVzcQ0QSFi8eA9zMw5uOrbd+aFJnmoR5uAVhCxqlMNRK4ictU+B0Bf9m6gFISEfJ9X5O7NR/o0r7CN0B4NpDvTCYmIe9Fmwao1H/SBVVFTsFgw9+nMz+8Ewn/tIMbbd9TMXgIDE4pVAmwL8f+Lw1GQRKqLtx/tcT6Nc5ISJSuDHoAIVCs51gAUoCCbz3TDjZExlzAF1Is9uhv6ZIceSyslk46QqidzhNhXl0DOR0/673ofjBz9zfgqHdd/wJphfnoWx7R7UDL1mOqSosldL0V9DgRxKhuQs9QtLghlsaKPBOpfwpUiOsQc5MyU8y4q6jVuFTrXyAphwCUNKtQkxa2mzhtAiPEdBABXxcSzqK5itzfnuEDaYkN1rm6FndAJdYbchBuyhJCeBC8v4Q3VXjMGi4uEzfIf4GrOvBRbOZ1OtxH/AbPMDz1nTs3igNxOozOzOYVoY/wZXmuQO3Q8RaCSfGLJC+bunnf14dP4UWA9UNlWOM12PTpLMPkgBnjUWjxek9KqCLeGvNQYzC1hbTldL9oH4ZArs4XMT85e1Vzcxs8e4mQ38O1OruD7cWj8Eh3YIPxpYD8SGAddPB0w+r+8J/n4wG1rHYmDKVPffeH8FfYf5EnF1PjMP4H0DjZDVuqaewdRxpjC1XvaW+RK0mvbguil2ip9PwCwAnsVHuXtLQpEma/DS2UfeBZ5rhBk/PDs8MwgX7RvPR3x/CBdwL6aeRcDMAr0v3E+G/cDh5/zbPINbY2w7xsDet+BAXTP0jB7Qu6XcxsXGtuM6l5K0tK9gqmBKUcT01Z82M2i0EuxY/zThe0Ez9DxLMJ3iOL4/Bh4N55or7qNNN3USzF6JabTUbOROCaQYjvXG7UaUeAe8i2KNeazKRfgXPhdk2qnk04b4oTvfHtrdIiAfFAlBBs2TYKE7LKBgBPBixJ1iv8XM7hq5yTwsUNRQNgglXjj+jXXAY0ZJABpccR5cLI9vis4fg/VcNCg4KQnaBbAOwLpfHZgGnINzch4efK+MQHytHpyHBmcIgRzwebUQRsjKusH6gamA9UD8MhaujM9k7U9wJ2G/EEa8DCg4ryS41p8Ka5OSQNGyFw8N/Wb074Bj0R6B++GHpPBvdP8FrF0WnZ4NXkaEnVeQCEtmWyNgGWzih5sglFGS8Vo5R0pJcE72KRc8U+wv90Rrgp5JDJ1j8SxPPZ+xgQP9EaWD1ahjYdDw3PjiJfbsXdECtQ48AF5mKnP9NUOr5H7q/RF4FrGAuX/c0xgoC8ZfAoSfJjfyfuQYKbvC1ECrKTA8BwNMTJ6NgBvbjvDZkoIAjxrb7tLN0FN17fMUeyGXQH0lxBOD9wO5cl08lmbov3diINfGQxrb5dqEcKy7BCaXWFy6ptxhSiSfmc6IghC7SdfDv/naEM+S0iyMrVCSuObBhQ/MxDQg657fFLTwMvDS0cRL4GFEi7LYy4YfujMiQPgs1mIKfrYvkFWBtyB8OtE/XZl/D6xQf36tg99wo0FspcE7RuixTsZPco23DL+xCIn5oSSwbAWEanytOhfnmeuAmQKWLK1OANaY9vvGQRkRk0Uw5TYaQ7Ah/FLuP24sFki8b6OZ3cdsY80uAYXJ9WKB0YsHAatng71CQPpnQ/eV5BuxaLyGOPwZz7vmvmBI+HvIn/GEQOr+L4Hzcm/5YW85HgYQXkPOdQP19+G7wtRafLsanhkUMM8ng7pQfpeKFowRkHp+US54KzHYIz7P/2ufeD9lNHjj4cDRDP2rCk9C6CVVDQ3zJxc8bwj4GAhn5jdg/S+B9t68/xhlggQz1c0YULmtwrmmK7njSO6musKmwLsU52rUtA8oIe1DWkrqb+VFgBIlAXiJ1QI8fqFFxeIljv/PA2tRLhZJNo+p7xEnBP4l3AWmZlgDHg4/SElAYT0xdIKMX+gp4Kmsmfut9cWWM5Y+ioqXP3dP3hIWh/LLBQIUZUT3yVxlhPLHomcQisAAdxQHjcxiINQwPHjp4ucBxIoihdR9ykXqmcNq47pz4+kIftYw9zwtQRZ3yf3JBcYYIUiQU3i1S9ArqNRAEnxDvNznb4Ox7eQFejYUNFMUf05LDsBcabx2IFmJ0IVlhNGTCyx9P0xJHk7sVabgW2lwbr4bd3yVwtC/ewWyNUqVxBzkInMzEYpzYD4yyH0h5FkQOioF3gdzh3OtwhzApgDbCIVt8dbgCeUKSBKCgPuTO+sDZS4v4C7h+whVCVavCIA8PQp/fFtmhChCMPYkADkj3Ru8UR2b67pEdJzDArkBMJX7iKHwTa7RkILenzkDay1QEgg7ZpUfNuj8ymS2Esir9QykM7q6LoCiPT3nUhR40niIJZDh4kNXhPlyFQ3g3UNJ+OthX5hjjrGXAj2fvmdNr6VdY5dKIsfii5H7QvDSEpNdoyTwCLBS2x1u3pRgJqmJQvJhsYMC4bavmPB2UpClSs4C4ZsLcgaEX+Bpc128fI8N/xb351cMnOliMTtKw6g8UA4iKRBzJravJDWhH/5OsvK4Ib7/pUZPCtpLEpH+vSCkyTMlT6AUCEp9l1DgYUJCkfkRuclrGDoYFbE1TOK3BChsb8TJylZbkBJsKyfJTZGPiEM/dLblHWBvYEPx84igHMg5cs3sIeePCwgPDdte/GEBTwJN7OdVIOi8NiecM7eRqRixQkD8X4mSo3lXCv8+KKTcWOM2KBH0AKGNsMea93FWwL7CiEkBC5ecCBYPYT9aLWPxk4SOFQHXT3w+TlbGHodAOIvjogiwqhR2QsnQzZJz5LI/Dhpc67PCTOOXRyeT5+FDIihwj6Vwo/YS4QbnXiDktY2Rg7dOuJCEtcK2hwUJRcZr8swsKorQEE8Ekj2smE7HO+qT/cgGPBR51LngO3GhHsfIDaGd1ww9zMkYUoLUeTyuGfom/MDQpO+TwkqpENOh4iQpCTSxmFGAuDHUQ0H9V6YEeApeWM5RDHNxxsN9zMCDzR76sIji7imGjICgJg8DSHwS700xZCicQkFIaC4BYYiClhIh+U3uAqOAhHlMQ90lYgWXA66ZnFp8nxUq8mE82DU8o3qu5F1y3rlzc39SRsba+SwKl6CEj/L5/DxtJUInUjyLGBgLXWB3xUDAQ+eN2WZzeFIkaBG21BaQH8tGUE6x8ckznsNSfExgWZ1onBQlgdDBk/CWGg89QkQvnNgMFJLkQmXtJJbWCI2TBjjgQIoBV/cXAouL2oA5YAnyIhNS86wuASHIcRGYsSeRC4QwiW9mCEN/zc2dHDUI/QFyGAoVwSbjGdVzJQaW7kEMPdvs4y5zXY8OinftPdkVNkLabMP3v0foJ4TQ54faiFuHzqup+ga++6Xw/4Q9FxH6HEm4+5DNnxWMQn1EsOqBVxTkE34/KLUUCBtxTeRiYi/kxCE3JyDwwB+kNTIlqBUKmnLZoYISt8UCXSrr90KNugtc0jh8AHhYYyruYWPOepRgKoHqEKhRITdBGAPvgn1IeQYe3HcouYQsCAORO/DPAnRArGASjKl8xBTi5DBei8JO1AzkjMCV51Jyv+Yqy0uOA7QPEDb4ia+f55OQDwVuqXnwKAZyM4QDYc3kkhGWwHG5L4QLGZ95XIDC+mAz9DJSRdecCxejKD7TDP0jx7bjvfjFqYsJcX4/dhSIKUV4hwl31JFAx58CA4eQKan2Hazlc0FpvW5sO2pqqPXh3EyUg7jBGndSp3DUKFESPGRYeEsosf6mLKb4JeElRGjD0CCZ4/MHKu5D2MHLn1I0AmwaXkiAgiCs4WmBWHQ+ZAVXOobWF69z6tpRbksxaQ+sdSyVOZCT8DmaObAuX+wmmirCnjh7as/g4CPYPNgvBCj/HlfNU0MDVNAGo4ZBKOwn30k9O+wJSiIOr+DK4+UQluBFlnLj3+hLNAWS7NyTkpcTi9/TEwHJ4zWgOApassD1qQIfBaGOAYK/zygIOhqgJHJpzVPPm9puUCQJ8K4P0rhbi9jKjhO7MaQoiNu/cGw7jB2eO55frvn8CW/EU0MBCurKocUH9wxSC2tBxryxGXq6GdDCXMprCnyHYx21l3agKFESCFYv1FPWIhZLTtUrbBCsRXH3BVxxjpHadG5aileMS48CwxvIeRF0bixnEkRxYhQFxBp0rJSFjeXKZ+LYu0JdcaKWYxKfZs9yEuQcV0WLQOwZD+1HnINhT1mbvBCsSYr8EOwoUu07jIs574H76NcQA0/E9wAi2cznPQuFa54LnXDvWEe8X4Ss8FS4N4QRpSS4Vmicc8fMNVLg789dH0o6te9TmFoXLSamnk+ec9bAfSCch1KJnys9a6m16B7F74veTY5LspiC0NMErPu3hzkLdJglt+hnQKSs/xjnNEPPdzGSKHTDuMBL5jmW8soNx++jtoYTLSm8E4OS3k2H1RRs1yB+TryditZUv6jTDpQERWwIKjVPW/K2cjAXrtklEPo5yv+04qS+d4cBH56K+yLNCWkvyHcl4HMU04lEiSexC8FylMgtjDptwCqnDcGuBe1hPQ+7XvdJw2Ht80lEShHMKQchrlhO/Xspcs57IpHrTp1k4IYSCphilZwNONsFbUVFxUr8XyfKUdZTEEtlAAAAAElFTkSuQmCC" alt="בן חורין אלכסנדרוביץ׳"><span>אתר פנימי · 30.12.2026</span></div>
   </div>
@@ -1138,7 +1315,7 @@ const CATS=[
  {k:'social',en:'Social Move',he:'המהלך שהשאיר חותם ברשת',d:'הקפיץ צפיות, יצר אינטראקציות, העלה עוקבים.',joint:false},
  {k:'smart',en:'smART',he:'עיצוב שנשאר בזיכרון',d:'מודעה, פוסט או פרויקט רחב, שהעיצוב שלו בלט ונשאר.',joint:true},
  {k:'collab',en:'CollaBHA',he:'הכוח של לעשות יחד',d:'כנס, מתחם תוכן או שיתוף עם גוף תקשורת מוביל שיצר באז ללקוח.',joint:true},
- {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'עד שלושה צוותים מכל מחלקה. כאן מותר להצביע גם בתוך המחלקה.',joint:false,heb:true}
+ {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'הצוותים שהובילו את השנה. כאן מותר להצביע גם בתוך המחלקה.',joint:false,heb:true}
 ];
 const CAT=Object.fromEntries(CATS.map(c=>[c.k,c]));
 const DEPTS=['מחלקת צרכנות ומשפיענים','מחלקה ציבורית','מחלקת אסטרטגיה ודיגיטל','מחלקת סושיאל ווידאו','מחלקת אימפקט','מחלקה עסקית','צוות אייל','צוות נוי'];
@@ -1176,6 +1353,9 @@ function errMsg(e){
   if(c==='dup') return 'שם המשתמש הזה כבר קיים.';
   if(c==='weak_pass') return 'הסיסמה קצרה מדי (לפחות 4 תווים).';
   if(c==='missing') return 'חסרים שדות חובה.';
+  if(c==='too_long') return 'ההסבר ארוך מ־250 מילים.';
+  if(c==='locked') return 'ההצבעה כבר אושרה ולא ניתן לשנות אותה.';
+  if(c==='local_video') return 'שמירת סרטונים זמינה רק כשהאתר מחובר לשרת.';
   return 'השמירה נכשלה. בדקו את החיבור ונסו שוב.';
 }
 
@@ -1225,7 +1405,7 @@ async function putDoc(name,data){DB[name]=data;if(B.server)await B.db.doc('site/
 async function safe(fn,ok){try{await fn();if(ok)toast(ok);return true}catch(e){console.error(e);toast(errMsg(e));return false}}
 
 function seedLocal(){
-  const hof=[[2025,'Diamond Kapa','מחלקת צרכנות ומשפיענים','סיקס סנסס — גל גדות במסוק דו־מנועי'],[2025,'Lord of Creativity','מחלקה ציבורית','עמותת אנוש — קמפיין R U OK?'],[2025,'Golden MMBA','מחלקת אסטרטגיה ודיגיטל','אות זיכרון'],[2025,'smART','מחלקת סושיאל ווידאו','כשרות צהר — מתיחת פנים לשפה הגרפית'],[2025,'Social Move','מחלקת אימפקט','איגוד נפגעות תקיפה מינית — זמר מפורסם פגע בך?'],[2025,'SWAG Award','מחלקה עסקית','שטראוס — המהלך שהחזיר לקהילת הצליאק את הביטחון לאכול'],[2025,'Strategic','מחלקה עסקית','שטראוס — השקת קאו פריי'],[2025,'CollaBHA','מחלקה עסקית','מזרחי טפחות × כלכליסט — כנס מדד הצמיחה']].map(([year,cat,dept,title],i)=>({id:'h'+i,year,cat,dept,title,order:i,imgs:[]}));
+  const hof=[[2025,'Diamond Kapa','מחלקת צרכנות ומשפיענים','סיקס סנסס — גל גדות במסוק דו־מנועי'],[2025,'Lord of Creativity','מחלקה ציבורית','עמותת אנוש — קמפיין R U OK?'],[2025,'Golden MMBA','מחלקת אסטרטגיה ודיגיטל','אות זיכרון'],[2025,'smART','מחלקת סושיאל ווידאו','כשרות צהר — מתיחת פנים לשפה הגרפית'],[2025,'Social Move','מחלקת אימפקט','איגוד נפגעות תקיפה מינית — זמר מפורסם פגע בך?'],[2025,'SWAG Award','מחלקה עסקית','שטראוס — המהלך שהחזיר לקהילת הצליאק את הביטחון לאכול'],[2025,'Strategic','מחלקה עסקית','שטראוס — השקת קאו פריי'],[2025,'CollaBHA','מחלקה עסקית','מזרחי טפחות × כלכליסט — כנס מדד הצמיחה'],[2024,'Diamond Item','צוות אייל','JFNA'],[2024,'Lord of Creativity','מחלקה עסקית','לובי המיליון'],[2024,'Golden MMBA','צוות נועה','מרכזי סיוע לנפגעות תקיפה מינית'],[2024,'Strategic','מחלקת אסטרטגיה ודיגיטל','מטה המילואימניקים'],[2024,'Iron Swords','מחלקה ציבורית','קול החטופות מול התקשורת העולמית'],[2024,'Social Move','מחלקת סושיאל','טוטו']].map(([year,cat,dept,title],i)=>({id:'h'+i,year,cat,dept,title,order:i,imgs:[]}));
   const noms=[['golden','[דוגמה] מהלך השקה ארצי','מחלקה עסקית','approved'],['golden','[דוגמה] קמפיין מודעות לאומי','מחלקה ציבורית','approved'],['creative','[דוגמה] פיצוח יצירתי בסושיאל','מחלקת סושיאל ווידאו','approved'],['creative','[דוגמה] אייטם וידאו ויראלי','מחלקת אימפקט','approved'],['diamond','[דוגמה] כתבת שער','מחלקת צרכנות ומשפיענים','pending']].map(([cat,title,dept,status],i)=>({id:'n'+i,ts:Date.now()-i*36e5,cat,title,dept,status,client:'לקוח לדוגמה',desc:'מועמדות לדוגמה. אפשר למחוק באזור ההגדרות.',by:'דוגמה',joint:[],team:'',link:'',imgs:[]}));
   return {settings:{subOpen:true,voteOpen:true},content:{texts:{}},noms,voters:[{id:'v0',name:'מצביע לדוגמה',user:'demo',salt:'demo-salt-7f3a',hash:'fe56027c9ead67411a98faf3d4a86f4549d7329d167c6e254cef507962de4c1b',dept:'מחלקת אסטרטגיה ודיגיטל',role:'emp'}],ballots:[],hof,history:[]};
 }
@@ -1300,7 +1480,7 @@ function bindDrop(zone,input,onFiles){
 
 /* ---------- category cards ---------- */
 function catCard(c,i,featured){
-  return `<button type="button" class="cat rv${featured?' featured':''}" data-k="${c.k}" aria-label="${esc(c.en)}: ${esc(c.he)}">
+  return `<button type="button" class="cat rv${featured?' featured':''}${c.k==='golden'?' gold':''}" data-k="${c.k}" aria-label="${esc(c.en)}: ${esc(c.he)}">
     <span class="num">${pad(i+1)} / 09</span>
     <span class="ico">${I[c.k]}</span>
     <span class="en"${c.heb?HEB_STYLE:''}>${esc(c.en)}</span>
@@ -1309,8 +1489,8 @@ function catCard(c,i,featured){
     <span class="foot">${c.joint?'<span class="chip joint">פתוח להגשה משותפת</span>':'<span class="chip">מחלקה או צוות עצמאי</span>'}<span style="color:var(--gold)">להגשה ←</span></span>
   </button>`;
 }
-$('#homeCats').innerHTML=CATS.slice(0,5).map((c,i)=>catCard(c,i,i===0)).join('');
-$('#allCats').innerHTML=CATS.map((c,i)=>catCard(c,i,i===0)).join('');
+$('#homeCats').innerHTML=CATS.map((c,i)=>catCard(c,i,false)).join('');
+$('#allCats').innerHTML=CATS.map((c,i)=>catCard(c,i,false)).join('');
 let pendingCat=null;
 document.addEventListener('click',e=>{
   if(editing)return;
@@ -1408,42 +1588,102 @@ function banners(){
   $('#voteStatus').innerHTML=`<span class="pulse"></span><span>${vo?'הקלפי פתוחה. רק מועמדויות מאושרות מופיעות כאן.':'הקלפי סגורה. הצבעת העובדים: 08.12 10:00 עד 10.12 10:00.'}</span>`;
 }
 
+/* ---------- nomination card (ballot + preview) ---------- */
+const mediaOf=n=>{const a=[];if(n.video)a.push({t:'v',s:src(n.video)});(n.imgs||[]).forEach(i=>a.push({t:'i',s:src(i)}));return a};
+const mediaMain=m=>m.t==='v'?`<video src="${esc(m.s)}" controls preload="metadata" playsinline></video>`:`<img src="${esc(m.s)}" alt="" loading="lazy">`;
+function nomCard(n,o={}){
+  const c=CAT[n.cat]||{en:n.cat,he:''},M=mediaOf(n);
+  return `<article class="ncard${o.sel?' sel':''}${o.own?' own':''}" data-n="${esc(n.id||'')}" data-c="${esc(n.cat)}">
+   <span class="nc-badge">${I.check}</span>
+   <div class="nc-media">${M.length?mediaMain(M[0]):`<div class="noimg">${I[n.cat]||I.star}</div>`}</div>
+   ${M.length>1?`<div class="nc-thumbs">${M.map((m,i)=>`<button type="button" class="nc-thumb${i?'':' on'}" data-t="${m.t}" data-s="${esc(m.s)}" aria-label="מדיה ${i+1}">${m.t==='v'?`<video src="${esc(m.s)}" preload="metadata" muted></video><span class="pl">▶</span>`:`<img src="${esc(m.s)}" alt="" loading="lazy">`}</button>`).join('')}</div>`:''}
+   <div class="nc-body">
+     <span class="nc-cat"${c.heb?HEB_STYLE:''}>${esc(c.en)}</span>
+     <h4>${esc(n.title)}</h4>
+     <div class="nc-meta"><span class="dep">${esc(n.team?n.team+' · ':'')}${esc(n.dept)}${(n.joint||[]).length?' + '+esc(n.joint.join(', ')):''}</span><span>· ${esc(n.client)}</span></div>
+     <p class="nc-desc">${esc(n.desc)}</p>
+     ${(n.desc||'').length>170?'<button type="button" class="nc-more">קראו עוד</button>':''}
+     ${n.link?`<a class="nc-link" href="${esc(n.link)}" target="_blank" rel="noopener">לצפייה בתוצר ↗</a>`:''}
+     ${o.own?'<span class="nc-own">המחלקה שלך. לא ניתן לבחור.</span>':o.pick?`<div class="nc-pick"><button type="button" class="btn small pick-btn">${o.sel?'✓ נבחר':'בחירה במהלך הזה'}</button></div>`:''}
+   </div></article>`;
+}
+document.addEventListener('click',e=>{
+  if(editing)return;
+  const th=e.target.closest('.nc-thumb');
+  if(th){const card=th.closest('.ncard');card.querySelector('.nc-media').innerHTML=mediaMain({t:th.dataset.t,s:th.dataset.s});card.querySelectorAll('.nc-thumb').forEach(x=>x.classList.toggle('on',x===th));return}
+  const mo=e.target.closest('.nc-more');
+  if(mo){const card=mo.closest('.ncard');card.classList.toggle('open');mo.textContent=card.classList.contains('open')?'פחות':'קראו עוד'}
+});
+
 /* ---------- NOMINATE ---------- */
 const deptOpts=sel=>DEPTS.map(d=>`<option${d===sel?' selected':''}>${esc(d)}</option>`).join('');
 $('#nDept').innerHTML='<option value="">בחירה…</option>'+deptOpts();
-$('#catPick').innerHTML=CATS.map(c=>`<input type="radio" name="ncat" id="nc-${c.k}" value="${c.k}"><label for="nc-${c.k}"><span class="ci">${I[c.k]}</span><span><span class="lat"${c.heb?HEB_STYLE:''}>${esc(c.en)}</span><span style="display:block;font-size:.8rem;color:var(--muted)">${esc(c.he)}</span></span></label>`).join('');
-function updJoint(){
-  const k=($('input[name=ncat]:checked')||{}).value;
-  $('#jointWrap').hidden=!(k&&CAT[k].joint);$('#teamWrap').hidden=k!=='commendation';
-  const own=$('#nDept').value,was=$$('#nJoint input:checked').map(i=>i.value);
-  $('#nJoint').innerHTML=DEPTS.filter(d=>d!==own).map((d,i)=>`<input type="checkbox" id="nj${i}" value="${esc(d)}"${was.includes(d)?' checked':''}><label for="nj${i}">${esc(d)}</label>`).join('');
+$('#catPick').innerHTML=CATS.map(c=>`<input type="radio" name="ncat" id="nc-${c.k}" value="${c.k}" disabled><label for="nc-${c.k}"><span class="ci">${I[c.k]}</span><span><span class="lat"${c.heb?HEB_STYLE:''}>${esc(c.en)}</span><span style="display:block;font-size:.8rem;color:var(--muted)">${esc(c.he)}</span></span></label>`).join('');
+let taken=[];
+const isTaken=(cat,dept)=>taken.some(t=>t.cat===cat&&(t.dept===dept||(t.joint||[]).includes(dept)));
+async function loadTaken(){
+  if(B.sb){if(!sbCode)return;try{taken=await rpc('mmba_taken',{p_code:sbCode})||[]}catch(e){console.error(e)}}
+  else taken=DB.noms.map(n=>({cat:n.cat,dept:n.dept,joint:n.joint||[]}));
+  updCats();
 }
-$('#catPick').addEventListener('change',updJoint);$('#nDept').addEventListener('change',updJoint);
-$('#nDesc').addEventListener('input',e=>$('#nDescCount').textContent=e.target.value.length);
-let nomFiles=[];
+function updCats(){
+  const dept=$('#nDept').value;let avail=0;
+  $('#catPick').classList.toggle('locked',!dept);
+  CATS.forEach(c=>{const tk=!!dept&&isTaken(c.k,dept),inp=$('#nc-'+c.k);$(`label[for=nc-${c.k}]`).classList.toggle('taken',tk);inp.disabled=tk||!dept;if(tk&&inp.checked)inp.checked=false;if(!tk)avail++});
+  if(dept&&pendingCat){const r=$('#nc-'+pendingCat);if(r&&!r.disabled)r.checked=true;pendingCat=null}
+  $('#catHint').textContent=!dept?'בחרו קודם מחלקה. קטגוריות שהמחלקה כבר הגישה אליהן לא יופיעו.':(avail?`${avail} קטגוריות פתוחות ל${dept}.`:`${dept} כבר הגישה בכל הקטגוריות.`);
+  updJoint();
+}
+function updJoint(){
+  const k=($('input[name=ncat]:checked')||{}).value,own=$('#nDept').value;
+  $('#jointWrap').hidden=!(k&&CAT[k].joint);$('#teamWrap').hidden=k!=='commendation';
+  const was=($('#nJoint input:checked')||{}).value||'';
+  $('#nJoint').innerHTML=`<input type="radio" name="njoint" id="njnone" value=""${was?'':' checked'}><label for="njnone">בלי שותפה</label>`+DEPTS.filter(d=>d!==own).map((d,i)=>{const tk=!!k&&isTaken(k,d);return `<input type="radio" name="njoint" id="nj${i}" value="${esc(d)}"${was===d&&!tk?' checked':''}${tk?' disabled':''}><label for="nj${i}"${tk?' style="opacity:.35;text-decoration:line-through" title="כבר הגישה בקטגוריה הזו"':''}>${esc(d)}</label>`}).join('');
+}
+$('#nDept').addEventListener('change',updCats);$('#catPick').addEventListener('change',updJoint);
+const words=s=>(s.trim().match(/\S+/g)||[]).length;
+function updCount(){const v=$('#nDesc').value,w=words(v);$('#nDescCount').textContent=`${w}/250 מילים · ${v.length.toLocaleString('he-IL')}/1,250 תווים`;$('#nDescCount').classList.toggle('over',w>250)}
+$('#nDesc').addEventListener('input',updCount);
+let nomFiles=[],nomVideo=null,previewUrls=[];
 function renderNomThumbs(){
-  $('#nThumbs').innerHTML=nomFiles.map((f,i)=>`<div class="thumb"><img src="${f.url}" alt=""><button type="button" data-i="${i}" aria-label="הסרת תמונה">✕</button></div>`).join('');
+  $('#nThumbs').innerHTML=(nomVideo?`<div class="thumb vid"><video src="${nomVideo.url}" muted preload="metadata"></video><span class="tag">סרטון · ${(nomVideo.file.size/1048576).toFixed(1)}MB</span><button type="button" data-v="1" aria-label="הסרת הסרטון">✕</button></div>`:'')+nomFiles.map((f,i)=>`<div class="thumb"><img src="${f.url}" alt=""><button type="button" data-i="${i}" aria-label="הסרת תמונה">✕</button></div>`).join('');
 }
 bindDrop($('#nDrop'),$('#nImgs'),files=>{
-  for(const f of files){if(nomFiles.length>=6){toast('אפשר לצרף עד 6 תמונות');break}if(f.size>25e6){toast('תמונה מעל 25MB דולגה');continue}nomFiles.push({file:f,url:URL.createObjectURL(f)})}
+  for(const f of files){if(!/^image\//.test(f.type))continue;if(nomFiles.length>=5){toast('אפשר לצרף עד 5 תמונות');break}if(f.size>25e6){toast('תמונה מעל 25MB דולגה');continue}nomFiles.push({file:f,url:URL.createObjectURL(f)})}
   renderNomThumbs();
 });
-$('#nThumbs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;URL.revokeObjectURL(nomFiles[+b.dataset.i].url);nomFiles.splice(+b.dataset.i,1);renderNomThumbs()});
+const vInput=$('#nVid'),vZone=$('#nVDrop');
+function takeVideo(f){if(!f)return;if(!/^video\//.test(f.type)){toast('הקובץ אינו סרטון');return}if(f.size>20*1048576){toast(`הסרטון שוקל ${(f.size/1048576).toFixed(1)}MB. המקסימום הוא 20MB.`);return}if(nomVideo)URL.revokeObjectURL(nomVideo.url);nomVideo={file:f,url:URL.createObjectURL(f)};renderNomThumbs()}
+vInput.addEventListener('change',()=>{takeVideo(vInput.files[0]);vInput.value=''});
+['dragenter','dragover'].forEach(t=>vZone.addEventListener(t,e=>{e.preventDefault();vZone.classList.add('over')}));
+['dragleave','drop'].forEach(t=>vZone.addEventListener(t,e=>{e.preventDefault();vZone.classList.remove('over')}));
+vZone.addEventListener('drop',e=>takeVideo([...e.dataTransfer.files].find(f=>/^video\//.test(f.type))));
+$('#nThumbs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.v){URL.revokeObjectURL(nomVideo.url);nomVideo=null}else{URL.revokeObjectURL(nomFiles[+b.dataset.i].url);nomFiles.splice(+b.dataset.i,1)}renderNomThumbs()});
+async function uploadVideo(file){
+  if(file.size>20*1048576)throw {code:'too_large'};
+  if(B.sb){
+    const ext=((file.name.split('.').pop()||'mp4').toLowerCase().replace(/[^a-z0-9]/g,''))||'mp4',path=`${new Date().getFullYear()}/${uid('v')}.${ext}`;
+    const {error}=await B.sb.storage.from(SB_BUCKET).upload(path,file,{contentType:file.type||'video/mp4',upsert:false});
+    if(error)throw {code:'net',message:error.message};
+    return B.sb.storage.from(SB_BUCKET).getPublicUrl(path).data.publicUrl;
+  }
+  if(B.server){if(!B.assets)throw {code:'no_assets'};const r=await B.assets.upload(file,{type:file.type||'video/mp4'});return r.id}
+  throw {code:'local_video'};
+}
 function nomView(){
   banners();
   const ok=ss.get('mmba.nom')==='1'&&DB.settings.subOpen&&(!B.sb||!!sbCode);
   $('#nomGate').hidden=ok;$('#nomFormWrap').hidden=!ok;$('#nomDone').hidden=true;
   if(!DB.settings.subOpen)$('#nomGateErr').textContent='ההגשות סגורות כרגע.';
-  if(pendingCat){const r=$('#nc-'+pendingCat);if(r){r.checked=true;updJoint()}pendingCat=null}
+  if(ok)loadTaken();else updCats();
 }
 $('#nomGateForm').addEventListener('submit',async e=>{
   e.preventDefault();
   if(!DB.settings.subOpen){$('#nomGateErr').textContent='ההגשות סגורות כרגע.';shake($('#nomGate'));return}
-  const code=$('#nomPin').value.trim();
-  let good=false;
+  const code=$('#nomPin').value.trim();let good=false;
   if(B.sb){try{good=await rpc('mmba_check_code',{p_code:code})}catch(err){toast(errMsg(err));return}if(good)sbCode=code}
   else good=await kdf(code,SUB_SALT)===SUB_H;
-  if(good){ss.set('mmba.nom','1');$('#nomPin').value='';$('#nomGateErr').textContent='';swapPanels($('#nomGate'),$('#nomFormWrap'))}
+  if(good){ss.set('mmba.nom','1');$('#nomPin').value='';$('#nomGateErr').textContent='';await loadTaken();swapPanels($('#nomGate'),$('#nomFormWrap'))}
   else{$('#nomGateErr').textContent='הקוד לא נכון. בדקו את המייל הפנימי ונסו שוב.';shake($('#nomGate'))}
 });
 function swapPanels(a,b){
@@ -1453,95 +1693,250 @@ function swapPanels(a,b){
 $('#nomForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const btn=$('#nomForm button[type=submit]');if(btn.disabled)return;
-  const cat=($('input[name=ncat]:checked')||{}).value;
-  const f={cat,title:$('#nTitle').value.trim(),client:$('#nClient').value.trim(),dept:$('#nDept').value,desc:$('#nDesc').value.trim(),link:$('#nLink').value.trim(),by:$('#nBy').value.trim(),team:$('#nTeam').value.trim(),joint:$$('#nJoint input:checked').map(i=>i.value)};
+  const cat=($('input[name=ncat]:checked')||{}).value,partner=($('#nJoint input:checked')||{}).value||'';
+  const f={cat,title:$('#nTitle').value.trim(),client:$('#nClient').value.trim(),dept:$('#nDept').value,desc:$('#nDesc').value.trim(),link:$('#nLink').value.trim(),by:$('#nBy').value.trim(),team:$('#nTeam').value.trim(),joint:cat&&CAT[cat].joint&&partner?[partner]:[]};
   const miss=[];
-  if(!f.cat)miss.push('קטגוריה');if(!f.title)miss.push('שם המהלך');if(!f.client)miss.push('לקוח');if(!f.dept)miss.push('מחלקה');if(!f.desc)miss.push('תיאור');if(!f.by)miss.push('שם המגיש/ה');if(f.cat==='commendation'&&!f.team)miss.push('שם הצוות');
+  if(!f.dept)miss.push('מחלקה');if(!f.cat)miss.push('קטגוריה');if(!f.title)miss.push('שם המהלך');if(!f.client)miss.push('לקוח');if(!f.by)miss.push('שם המגיש/ה');if(!f.desc)miss.push('הסבר');if(f.cat==='commendation'&&!f.team)miss.push('שם הצוות');
   if(miss.length){$('#nomErr').textContent='חסר: '+miss.join(', ');return}
+  if(words(f.desc)>250||f.desc.length>1250){$('#nomErr').textContent='ההסבר ארוך מ־250 מילים. קצרו אותו מעט.';return}
   if(f.link&&!/^https?:\/\//i.test(f.link)){$('#nomErr').textContent='הקישור צריך להתחיל ב־https://';return}
-  const same=DB.noms.filter(n=>n.cat===f.cat&&n.status!=='rejected'&&(n.dept===f.dept||(n.joint||[]).includes(f.dept)));
-  const limit=f.cat==='commendation'?3:1;
-  if(same.length>=limit){$('#nomErr').textContent=`ל${f.dept} כבר יש ${limit===1?'הגשה':'שלוש הגשות'} ב־${CAT[f.cat].en}.`;return}
+  if([f.dept,...f.joint].some(d=>isTaken(f.cat,d))){$('#nomErr').textContent='למחלקה הזו כבר יש הגשה בקטגוריה הזו.';updCats();return}
+  if(nomVideo&&!B.sb&&!B.server){$('#nomErr').textContent='שמירת סרטונים זמינה רק כשהאתר מחובר לשרת.';return}
   $('#nomErr').textContent='';btn.disabled=true;const label=btn.innerHTML;
   const ok=await safe(async()=>{
     const imgs=await uploadMany(nomFiles.map(x=>x.file),(i,n)=>{btn.textContent=`מעלים תמונות ${i}/${n}…`});
+    let video='';if(nomVideo){btn.textContent='מעלים את הסרטון…';video=await uploadVideo(nomVideo.file)}
     btn.textContent='שומרים…';
-    if(B.sb){await rpc('mmba_submit',{p_code:sbCode,p:{...f,imgs}});sbSync()}
-    else await put('noms',{id:uid('n'),ts:Date.now(),status:'pending',...f,imgs});
+    if(B.sb){await rpc('mmba_submit',{p_code:sbCode,p:{...f,imgs,video}});sbSync()}
+    else await put('noms',{id:uid('n'),ts:Date.now(),status:'pending',...f,imgs,video});
   });
   btn.disabled=false;btn.innerHTML=label;
-  if(!ok)return;
+  if(!ok){loadTaken();return}
+  previewUrls.forEach(u=>URL.revokeObjectURL(u));
+  previewUrls=[...nomFiles.map(x=>x.url),...(nomVideo?[nomVideo.url]:[])];
+  $('#nomPreview').innerHTML=nomCard({...f,imgs:nomFiles.map(x=>x.url),video:nomVideo?nomVideo.url:''},{pick:false});
   $('#nomDoneText').textContent=`"${f.title}" נכנס/ה למרוץ על ${CAT[f.cat].en}. אחרי אישור המנכ״לים המועמדות תעלה לקלפי.`;
-  $('#nomForm').reset();$('#nDescCount').textContent='0';nomFiles.forEach(x=>URL.revokeObjectURL(x.url));nomFiles=[];renderNomThumbs();updJoint();
+  const keepDept=f.dept;
+  $('#nomForm').reset();nomFiles=[];nomVideo=null;renderNomThumbs();updCount();$('#nDept').value=keepDept;
   swapPanels($('#nomFormWrap'),$('#nomDone'));confetti();
+  await loadTaken();
 });
-$('#nomAgain').addEventListener('click',()=>swapPanels($('#nomDone'),$('#nomFormWrap')));
+$('#nomAgain').addEventListener('click',()=>{swapPanels($('#nomDone'),$('#nomFormWrap'));updCats()});
 
-/* ---------- VOTE ---------- */
-let voter=null,picks={};
+/* ---------- VOTE (step-by-step wizard) ---------- */
+let voter=null,picks={},step=0,wzMode='step',saveT=null,confirmed=false;
+const myBallot=()=>DB.ballots.find(b=>b.id===voter.id);
+const choosable=c=>DB.noms.filter(n=>n.cat===c.k&&n.status==='approved');
+const isOwn=(c,n)=>c.k!=='commendation'&&(n.dept===voter.dept||(n.joint||[]).includes(voter.dept));
 function voteView(){
   banners();
   if(B.sb){if(!sbCreds)voter=null}
   else{const id=ss.get('mmba.voter');voter=DB.voters.find(v=>v.id===id)||null}
-  $('#voteDone').hidden=true;
-  if(voter&&DB.settings.voteOpen){$('#voteGate').hidden=true;$('#ballot').hidden=false;loadPicks();renderBallot()}
-  else{$('#voteGate').hidden=false;$('#ballot').hidden=true;if(!DB.settings.voteOpen)$('#voteGateErr').textContent='הקלפי סגורה כרגע.'}
+  if(voter&&DB.settings.voteOpen){$('#voteGate').hidden=true;openBallot()}
+  else{$('#voteGate').hidden=false;$('#ballot').hidden=true;$('#voteDone').hidden=true;if(!DB.settings.voteOpen)$('#voteGateErr').textContent='הקלפי סגורה כרגע.'}
 }
-function loadPicks(){picks={...(B.sb?(voter.picks||{}):((DB.ballots.find(b=>b.id===voter.id)||{}).picks||{}))}}
+function openBallot(){
+  if(B.sb){picks={...(voter.picks||{})};confirmed=!!voter.confirmed}
+  else{const b=myBallot();picks={...((b||{}).picks||{})};confirmed=!!(b&&b.confirmed)}
+  $('#vName').textContent=voter.name;$('#vDept').textContent=voter.dept+(voter.role==='ceo'?' · מנכ״ל/ית':'');$('#vAvatar').textContent=voter.name.trim()[0]||'?';
+  if(confirmed){$('#ballot').hidden=true;renderDone();$('#voteDone').hidden=false;return}
+  $('#voteDone').hidden=true;$('#ballot').hidden=false;
+  const first=CATS.findIndex(c=>!picks[c.k]);step=first<0?0:first;wzMode=first<0?'summary':'step';
+  renderWizard();
+}
 $('#voteGateForm').addEventListener('submit',async e=>{
   e.preventDefault();
   if(!DB.settings.voteOpen){$('#voteGateErr').textContent='הקלפי סגורה כרגע.';shake($('#voteGate'));return}
   const u=$('#vUser').value.trim(),p=$('#vPass').value.trim();
   if(B.sb){
     try{voter=await rpc('mmba_login',{p_user:u,p_pass:p})}catch(err){$('#voteGateErr').textContent=errMsg(err);shake($('#voteGate'));return}
-    sbCreds={u,p};$('#voteGateErr').textContent='';$('#vPass').value='';
-    loadPicks();renderBallot();swapPanels($('#voteGate'),$('#ballot'));return;
+    sbCreds={u,p};
+  }else{
+    const v=DB.voters.find(x=>x.user.toLowerCase()===u.toLowerCase()||x.name===u);
+    if(!v||!p||await kdf(p,v.salt)!==v.hash){$('#voteGateErr').textContent='שם המשתמש או הסיסמה לא נכונים.';shake($('#voteGate'));return}
+    voter=v;ss.set('mmba.voter',v.id);
+    if(!myBallot()){const now=Date.now();await safe(()=>put('ballots',{id:v.id,picks:{},ts:now,startedAt:now,confirmed:false,confirmedAt:null}))}
   }
-  const v=DB.voters.find(x=>x.user.toLowerCase()===u.toLowerCase()||x.name===u);
-  if(!v||!p||await kdf(p,v.salt)!==v.hash){$('#voteGateErr').textContent='שם המשתמש או הסיסמה לא נכונים.';shake($('#voteGate'));return}
-  voter=v;ss.set('mmba.voter',v.id);$('#voteGateErr').textContent='';$('#vPass').value='';
-  loadPicks();renderBallot();swapPanels($('#voteGate'),$('#ballot'));
+  $('#voteGateErr').textContent='';$('#vPass').value='';
+  $('#voteGate').style.transition='opacity .35s';$('#voteGate').style.opacity='0';
+  setTimeout(()=>{$('#voteGate').hidden=true;$('#voteGate').style.cssText='';openBallot()},reduce?0:340);
 });
-function renderBallot(){
-  $('#vName').textContent=voter.name;$('#vDept').textContent=voter.dept+(voter.role==='ceo'?' · מנכ״ל/ית':'');$('#vAvatar').textContent=voter.name.trim()[0]||'?';
-  $('#ballotCats').innerHTML=CATS.map(c=>{
-    const ns=DB.noms.filter(n=>n.cat===c.k&&n.status==='approved');
-    const cards=ns.length?ns.map(n=>{
-      const own=c.k!=='commendation'&&(n.dept===voter.dept||(n.joint||[]).includes(voter.dept));
-      const im=(n.imgs||[])[0];
-      return `<button type="button" class="nom${own?' own':''}${picks[c.k]===n.id?' sel':''}" data-c="${c.k}" data-n="${n.id}"${own?' aria-disabled="true"':''}>
-        ${im?`<span class="ph"><img src="${esc(src(im))}" alt="" loading="lazy"></span>`:''}
-        <span class="tick">${I.check}</span>
-        <b>${esc(n.title)}</b><span class="meta">${esc(n.team?n.team+' · ':'')}${esc(n.dept)}${n.joint&&n.joint.length?' + '+n.joint.length:''} · ${esc(n.client)}</span>
-        <span class="d">${esc(n.desc)}</span>${own?'<span class="own-tag">המחלקה שלך. לא ניתן לבחור.</span>':''}
-        ${n.link?`<a class="lnk" href="${esc(n.link)}" target="_blank" rel="noopener">לצפייה בתוצר ↗</a>`:''}
-      </button>`}).join(''):'<div class="empty">אין עדיין מועמדויות מאושרות בקטגוריה הזו.</div>';
-    return `<div class="bcat${picks[c.k]?' voted':''}" id="bc-${c.k}"><div class="bcat-head"><span class="ico">${I[c.k]}</span><div><h3${c.heb?HEB_STYLE:''}>${esc(c.en)}</h3><p>${esc(c.he)}</p></div><span class="done">✓ נבחר</span></div><div class="noms">${cards}</div></div>`;
-  }).join('');
-  prog();
+function progress(){const n=CATS.filter(c=>picks[c.k]).length;$('#vProg').textContent=`${n} מתוך ${CATS.length} קטגוריות נבחרו`;$('#vBar').style.width=(n/CATS.length*100)+'%'}
+function renderStepper(){
+  $('#stepper').innerHTML=CATS.map((c,i)=>`<button type="button" class="stp${wzMode==='step'&&i===step?' on':''}${picks[c.k]?' done':''}" data-s="${i}"><i></i><span${c.heb?HEB_STYLE:''}>${esc(c.en)}</span></button>`).join('')+`<button type="button" class="stp${wzMode==='summary'?' on':''}" data-s="sum"><i></i><span style="font-family:var(--heb);letter-spacing:0">סיכום</span></button>`;
 }
-function prog(){const n=Object.keys(picks).length;$('#vProg').textContent=`${n} מתוך ${CATS.length} קטגוריות`;$('#vBar').style.width=(n/CATS.length*100)+'%'}
-$('#ballotCats').addEventListener('click',e=>{
-  if(e.target.closest('a'))return;
-  const b=e.target.closest('.nom');if(!b||b.classList.contains('own'))return;
-  const c=b.dataset.c,n=b.dataset.n;
-  if(picks[c]===n)delete picks[c];else picks[c]=n;
-  $$(`.nom[data-c="${c}"]`).forEach(x=>x.classList.toggle('sel',x.dataset.n===picks[c]));
-  $('#bc-'+c).classList.toggle('voted',!!picks[c]);prog();
-  if(picks[c]&&!reduce)b.animate([{transform:'scale(.96)'},{transform:'scale(1.02)'},{transform:'scale(1)'}],{duration:450,easing:'cubic-bezier(.2,.8,.15,1)'});
+function summaryRows(editable){
+  return CATS.map((c,i)=>{const n=DB.noms.find(x=>x.id===picks[c.k]);const im=n&&(n.imgs||[])[0];
+    return `<div class="sum-row${n?'':' nopick'}"><span class="st-img">${im?`<img src="${esc(src(im))}" alt="">`:I[c.k]}</span><div><small${c.heb?HEB_STYLE:''}>${esc(c.en)}</small><b>${n?esc(n.title):'לא נבחר מהלך'}</b></div>${editable?`<button type="button" class="linkbtn" data-s="${i}">שינוי</button>`:''}</div>`}).join('');
+}
+function renderWizard(dir){
+  progress();renderStepper();
+  const W=$('#wizard');let h='';
+  if(wzMode==='summary'){
+    h=`<div class="wz${dir==='back'?' back':''}"><div class="sum-head"><span class="eyebrow">Your Ballot</span><h2>סיכום ההצבעה שלך</h2><p>בדקו את הבחירות. אחרי האישור לא ניתן לשנות.</p></div>
+      <div class="sum-list">${summaryRows(true)}</div>
+      <div class="sum-actions"><button type="button" class="btn solid" id="wzConfirm">כן, אני בטוח/ה. אישור ההצבעה <span class="arrow">←</span></button><button type="button" class="btn ghost" id="wzRestart">אני רוצה לשנות</button></div></div>`;
+  }else{
+    const c=CATS[step],ns=choosable(c),any=ns.some(n=>!isOwn(c,n));
+    h=`<div class="wz${dir==='back'?' back':''}"><div class="wz-head"><span class="ico">${I[c.k]}</span><div><small>קטגוריה ${step+1} מתוך ${CATS.length}</small><h3${c.heb?HEB_STYLE:''}>${esc(c.en)}</h3><p>${esc(c.he)}</p></div></div>
+      ${ns.length?`<div class="ncards">${ns.map(n=>nomCard(n,{pick:true,own:isOwn(c,n),sel:picks[c.k]===n.id})).join('')}</div>`:'<div class="empty">אין מועמדויות מאושרות בקטגוריה הזו.</div>'}
+      <div class="wz-nav"><button type="button" class="btn small ghost" id="wzPrev"${step===0?' disabled':''}>→ הקודם</button>
+        <span class="mid">${picks[c.k]?'✓ הבחירה נשמרה':any?'בחרו מהלך אחד, או <button type="button" class="linkbtn" id="wzSkip">דלגו</button>':'אין כאן מהלך שאפשר לבחור'}</span>
+        <button type="button" class="btn small ${picks[c.k]||!any?'solid':'ghost'}" id="wzNext">${step===CATS.length-1?'לסיכום':'הבא'} <span class="arrow">←</span></button></div></div>`;
+  }
+  W.innerHTML=h;observe();
+}
+function go(i,dir){step=Math.max(0,Math.min(CATS.length-1,i));wzMode='step';renderWizard(dir);$('#ballot').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
+function toSummary(){wzMode='summary';renderWizard();$('#ballot').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
+async function saveBallot(confirm){
+  if(B.sb){await rpc('mmba_vote',{p_user:sbCreds.u,p_pass:sbCreds.p,p_picks:{...picks},p_confirm:!!confirm});voter={...voter,picks:{...picks},confirmed:!!confirm}}
+  else{const b=myBallot()||{},now=Date.now();await put('ballots',{id:voter.id,picks:{...picks},ts:now,startedAt:b.startedAt||now,confirmed:!!confirm,confirmedAt:confirm?now:null})}
+}
+function autosave(){
+  clearTimeout(saveT);$('#vSaved').textContent='שומר…';
+  saveT=setTimeout(async()=>{saveT=null;try{await saveBallot(false);$('#vSaved').textContent='✓ נשמר'}catch(e){$('#vSaved').textContent='';toast(errMsg(e))}},450);
+}
+$('#stepper').addEventListener('click',e=>{const b=e.target.closest('.stp');if(!b)return;if(b.dataset.s==='sum')toSummary();else go(+b.dataset.s,+b.dataset.s<step?'back':'')});
+$('#wizard').addEventListener('click',async e=>{
+  const t=e.target;
+  const pb=t.closest('.pick-btn');
+  if(pb){const card=pb.closest('.ncard');if(card.classList.contains('own'))return;const c=card.dataset.c,n=card.dataset.n;
+    if(picks[c]===n)delete picks[c];else picks[c]=n;
+    $$('#wizard .ncard').forEach(x=>{const on=x.dataset.n===picks[c];x.classList.toggle('sel',on);const btn=x.querySelector('.pick-btn');if(btn)btn.textContent=on?'✓ נבחר':'בחירה במהלך הזה'});
+    if(picks[c]&&!reduce)card.animate([{transform:'scale(.97)'},{transform:'scale(1.02)'},{transform:'scale(1)'}],{duration:450,easing:'cubic-bezier(.2,.8,.15,1)'});
+    const mid=$('#wizard .mid');if(mid)mid.innerHTML=picks[c]?'✓ הבחירה נשמרה':'בחרו מהלך אחד, או <button type="button" class="linkbtn" id="wzSkip">דלגו</button>';
+    const nx=$('#wzNext');if(nx){nx.classList.toggle('solid',!!picks[c]);nx.classList.toggle('ghost',!picks[c])}
+    progress();renderStepper();autosave();return}
+  if(t.closest('#wzPrev')){go(step-1,'back');return}
+  if(t.closest('#wzNext')||t.closest('#wzSkip')){if(step===CATS.length-1)toSummary();else go(step+1);return}
+  if(t.closest('#wzRestart')){go(0,'back');return}
+  const ls=t.closest('.linkbtn[data-s]');if(ls){go(+ls.dataset.s,'back');return}
+  const cf=t.closest('#wzConfirm');
+  if(cf){cf.disabled=true;clearTimeout(saveT);
+    const ok=await safe(()=>saveBallot(true));cf.disabled=false;if(!ok)return;
+    confirmed=true;renderDone();swapPanels($('#ballot'),$('#voteDone'));confetti();window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})}
 });
-$('#vSubmit').addEventListener('click',async()=>{
-  if(!Object.keys(picks).length){toast('בחרו לפחות מועמדות אחת');return}
-  const btn=$('#vSubmit');btn.disabled=true;
-  const ok=await safe(async()=>{
-    if(B.sb){await rpc('mmba_vote',{p_user:sbCreds.u,p_pass:sbCreds.p,p_picks:{...picks}});voter=await rpc('mmba_login',{p_user:sbCreds.u,p_pass:sbCreds.p})}
-    else await put('ballots',{id:voter.id,picks:{...picks},ts:Date.now()});
-  });
-  btn.disabled=false;if(!ok)return;
-  swapPanels($('#ballot'),$('#voteDone'));confetti();window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
-});
-$('#vEdit').addEventListener('click',()=>{loadPicks();renderBallot();swapPanels($('#voteDone'),$('#ballot'))});
-$('#vLogout').addEventListener('click',()=>{ss.del('mmba.voter');voter=null;sbCreds=null;swapPanels($('#ballot'),$('#voteGate'))});
+function renderDone(){$('#doneList').innerHTML=summaryRows(false)}
+function logoutVoter(){ss.del('mmba.voter');voter=null;sbCreds=null;picks={};$('#ballot').hidden=true;$('#voteDone').hidden=true;$('#voteGate').hidden=false}
+$('#vLogout').addEventListener('click',logoutVoter);$('#vLogout2').addEventListener('click',logoutVoter);
+
+/* ---------- client chat (WhatsApp style) ---------- */
+const MSGS=`מנהל שיווק|תקשיב, שיחקת אותה! איזה מהלך מבריק!
+מנכ"לית|וואו! כל המשפחה החמיאה לי על הכתבה!
+סמנכ"ל אסטרטגיה|זה היה בחדשות 12?! איך הצלחתם להכניס את זה?
+דוברת|אין לי מילים. פשוט אין לי מילים.
+מנכ"ל|חברים, אתם פשוט אלופים. איזה ביצוע!
+מנהלת סושיאל|אני לא מפסיקה לרענן את הפיד. המספרים מטורפים!
+סמנכ"לית שיווק|זה בדיוק מה שדמיינתי, רק הרבה יותר טוב.
+יו"ר דירקטוריון|קיבלתי כבר חמש שיחות על הכתבה. שאפו ענק!
+מנהל תקשורת|איך לעזאזל הצלחתם להביא את הכתב הזה?!
+מנהלת מותג|אני מאוהבת בקמפיין הזה. באמת.
+מנכ"לית|יש מצב שאתם קוראים לי מחשבות?
+דובר|אתם מבינים שהצלחתם להפוך את כל השיח?!
+סמנכ"ל דיגיטל|המספרים האלה אמיתיים? תבדקו שוב!
+מנהלת משאבי אנוש|אפילו העובדים הכי ציניים אצלנו שיתפו את הסרטון.
+מנהל שיווק|וואלה, הפתעתם אותי. ובגדול.
+מנכ"ל|זה מסוג הדברים שבגללם בחרנו לעבוד איתכם.
+מנהלת תקשורת|התקשורת פשוט עפה על הסיפור הזה!
+סמנכ"לית אסטרטגיה|הברקה. אין מילה אחרת.
+מנהל דיגיטל|רגע, זה אורגני?! בלי שקל מדיה?!
+יו"ר עמותה|הצלחתם לגעת בלב של אנשים. זה לא מובן מאליו.
+מנהלת שיווק|חצי מהחברה שלחה לי את הפוסט שלכם.
+מנכ"לית|בעלי שאל אותי מי הגאון שחשב על זה.
+סמנכ"ל תקשורת|אני 20 שנה בתחום ולא ראיתי דבר כזה.
+מנהלת סושיאל|תעצרו הכול. אנחנו ויראליים!
+מנכ"ל|לא יודע איך עשיתם את זה, אבל תמשיכו.
+מנהלת מותג|זאת הפעם הראשונה שקריאייטיב עובר אצלנו בלי תיקונים.
+סמנכ"ל שיווק|זה לא קמפיין, זו יצירת אמנות.
+דוברת|אתם מבינים שהפכנו ממשבר להזדמנות?
+מנהל קשרי ממשל|אפילו השר התייחס לזה בנאום שלו!
+מנכ"לית|אתם גורמים לי להיראות ממש טוב. תודה!
+מנהל שיווק|אני רוצה שתדעו שהמנכ"ל לא מפסיק לדבר עליכם.
+סמנכ"ל דיגיטל|איזה דיוק. כל מילה, כל פריים, כל שנייה.
+מנהלת תקשורת|שלושה עיתונאים התקשרו אליי מיוזמתם. שלושה!
+מנכ"ל|זה היה שווה כל שקל.
+מנהלת סושיאל|תגידו, איך אתם תמיד יודעים מה יעבוד?
+סמנכ"לית שיווק|הרמתם לנו פה משהו ברמה בינלאומית.
+מנהל מותג|אני מודה, לא האמנתי ברעיון בהתחלה. טעיתי.
+דובר|בחיים לא קיבלתי כל כך הרבה תגובות חיוביות.
+מנכ"לית עמותה|הצלחתם להסביר בדקה משהו שאנחנו מנסים להסביר כבר שנים.
+מנהל דיגיטל|הקמפיין הזה פשוט שבר את האלגוריתם.
+סמנכ"ל אסטרטגיה|זה לא רק חכם. זה חכם בטירוף.
+מנהלת שיווק|מתי הספקתם לעשות את כל זה?!
+מנכ"ל|קחו את המחמאה הכי גדולה: אין לי הערות.
+מנהלת תוכן|הכותרת הזאת גאונית. פשוט גאונית.
+סמנכ"לית תקשורת|הבאתם אותנו לפריים טיים. לא פחות.
+מנהל שיווק|כבר שאלו אותי מי המשרד שעשה את זה.
+מנכ"לית|תמסרו לכל הצוות שאתם מדהימים.
+דוברת|סוף סוף מישהו שהבין בדיוק מה אני צריכה.
+מנהלת משפיענים|איך הצלחתם להביא את כולם לשתף פעולה?
+סמנכ"ל דיגיטל|זה הסרטון הכי טוב שהפקנו אי פעם.
+מנכ"ל|פשוט תענוג לעבוד עם אנשים שיודעים מה הם עושים.
+מנהלת שיווק|אתם לא נורמליים! במובן הכי טוב שיש.
+מנהל תקשורת|הכותרת הראשית?! אתם רציניים?!
+סמנכ"לית אסטרטגיה|לקחתם רעיון בינוני והפכתם אותו למהלך ענק.
+מנהלת סושיאל|תקשיבו, התגובות לא מפסיקות להגיע.
+מנכ"לית|הבוקר בישיבת ההנהלה כולם דיברו על הסרטון.
+מנהל מותג|זאת בדיוק השפה שחיפשנו כבר שנתיים.
+דובר|הייתי בטוח שזה אבוד. הצלתם אותנו.
+סמנכ"ל שיווק|אין. אתם פשוט יודעים להביא תוצאות.
+מנהלת דיגיטל|העלינו לפני עשר דקות וכבר יש אלפי צפיות!
+מנכ"ל|פעם ראשונה שאני נהנה לקרוא מצגת אסטרטגיה.
+מנהלת תקשורת|אפילו המתחרים שלנו מפרגנים. זה אומר הכול.
+מנהל שיווק|איך לא חשבנו על זה קודם?!
+סמנכ"לית תוכן|זה חד, מדויק, מצחיק ובדיוק במידה.
+יו"ר|התקשרו אליי מהדירקטוריון במיוחד כדי להחמיא.
+מנהלת משפיענים|לא מאמינה שהוא הסכים להשתתף בקמפיין!
+מנכ"לית|אני כבר רוצה להראות את זה לכולם.
+מנהל דיגיטל|הנתונים האלה הולכים ישר למצגת של הדירקטוריון.
+דוברת|הצלחתם להכניס את המסר שלנו בלי שזה ירגיש כמו פרסומת.
+סמנכ"ל שיווק|אם הייתי יכול, הייתי נותן לכם עוד תקציב רק על הרעיון.
+מנהלת מותג|לא הפסקתי לחייך לאורך כל הסרטון.
+מנכ"ל|אתם יודעים מה הכי יפה? שזה פשוט עובד.
+מנהלת תקשורת|קיבלנו סיקור שבחיים לא היינו מקבלים לבד.
+סמנכ"לית אסטרטגיה|סוף סוף מישהו שמבין גם את התמונה הגדולה וגם את הפרטים.
+מנהל שיווק|זה הרבה מעבר למה שביקשנו.
+מנהלת סושיאל|אני בשוק מכמות השיתופים. בשוק.
+מנכ"לית|אמא שלי ראתה אותי בטלוויזיה והתקשרה לבכות מהתרגשות.
+דובר|הצלחתם לגרום לעיתונאי הכי סקפטי להתעניין בסיפור.
+מנהל קריאייטיב|הלוואי שאני הייתי חושב על זה.
+סמנכ"ל דיגיטל|זה הקמפיין עם הביצועים הכי טובים שלנו השנה.
+מנכ"ל|יש לכם כישרון לקחת כאוס ולעשות ממנו סדר.
+מנהלת שיווק|תגידו לצוות הקריאייטיב שאני רוצה לחבק אותם.
+מנהל תקשורת|רגע, גם בגלובס וגם בכלכליסט באותו יום?!
+סמנכ"לית שיווק|איזה מהלך אלגנטי. בדיוק ככה עושים את זה.
+מנהלת משפיענים|הבחירה במשפיענית הזאת הייתה בול בפוני.
+מנכ"לית|הפעם הצלחתם להפתיע אפילו אותי.
+מנהל מותג|כל מי שראה את הסרטון שאל איפה עשינו אותו.
+דוברת|תודה שהייתם זמינים גם בשעה הלא הגיונית הזאת.
+סמנכ"ל אסטרטגיה|בשקף אחד הסברתם מה שאנחנו לא מצליחים להסביר ב-40.
+מנהלת דיגיטל|אני רוצה את אותו צוות גם בקמפיין הבא. אין דיון.
+מנכ"ל|זה ההבדל בין ספק לבין שותף אמיתי.
+מנהלת תקשורת|ידעתם בדיוק מתי להוציא את ההודעה. תזמון מושלם.
+מנהל שיווק|תקשיבו, זה הולך להיות קייס סטאדי.
+סמנכ"לית משאבי אנוש|בחיים לא ראיתי את העובדים ככה גאים במקום העבודה.
+מנהל סושיאל|יש לנו יותר תגובות מאשר לעמוד של המתחרה בכל החודש!
+מנכ"לית|אני חושבת שזה המהלך הכי טוב שעשינו השנה.
+מנהלת מותג|זה מרגיש כמו קמפיין של מותג ענק. איזה כיף!
+דובר|תוך שעה שיניתם לגמרי את הכותרות. לא ייאמן.
+סמנכ"ל שיווק|איך אתם מצליחים להמציא את עצמכם מחדש בכל פעם?
+מנכ"לית|אני אומרת את זה מכל הלב: איזה מזל שאתם איתנו.`.split('\n').map(l=>l.split('|'));
+(function chat(){
+  const body=$('#chatBody');let order=[],k=0;
+  const shuffle=()=>{order=MSGS.map((_,i)=>i);for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}};
+  const clock=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
+  const next=()=>{if(k%order.length===0)shuffle();return MSGS[order[(k++)%order.length]]};
+  const bubble=m=>{const el=document.createElement('div');el.className='bub';el.innerHTML=`<b>${esc(m[0])}</b><p>${esc(m[1])}</p><time>${clock()}</time>`;return el};
+  const trim=()=>{const bs=[...body.querySelectorAll('.bub:not(.out)')];while(bs.length>4){const b=bs.shift();b.classList.add('out');setTimeout(()=>b.remove(),560)}};
+  shuffle();for(let i=0;i<4;i++){const b=bubble(next());b.style.animation='none';body.appendChild(b)}
+  function tick(){
+    if(document.hidden||(cur!=='home'&&cur!=='edit-home')){setTimeout(tick,1500);return}
+    if(reduce){body.appendChild(bubble(next()));trim();setTimeout(tick,4000);return}
+    const ty=document.createElement('div');ty.className='bub typing';ty.innerHTML='<i></i><i></i><i></i>';body.appendChild(ty);trim();$('#chatStatus').textContent='מקליד/ה…';
+    setTimeout(()=>{ty.replaceWith(bubble(next()));$('#chatStatus').textContent='מחוברים עכשיו';trim();setTimeout(tick,2100+Math.random()*900)},1150);
+  }
+  setTimeout(tick,1600);
+})();
 
 /* ---------- HALL ---------- */
 let hallYear=null;
@@ -1593,9 +1988,9 @@ function renderAdmin(){
   $('#cNoms').textContent=DB.noms.length;$('#cVoters').textContent=DB.voters.length;$('#cHof').textContent=DB.hof.length;
   const badge=(B.server||B.sb)?'<span class="badge-store srv">מחובר לשרת מאובטח · הנתונים משותפים לכל המשתמשים</span>':'<span class="badge-store loc">מצב תצוגה מקדימה · הנתונים נשמרים בדפדפן זה בלבד</span>';
   $('#storeBadge').innerHTML=badge;
-  const voted=DB.ballots.filter(b=>DB.voters.some(v=>v.id===b.id)).length;
+  const voted=DB.ballots.filter(b=>b.confirmed&&DB.voters.some(v=>v.id===b.id)).length;
   const pend=DB.noms.filter(n=>n.status==='pending').length;
-  $('#kpis').innerHTML=[['מועמדויות',DB.noms.length],['ממתינות לאישור',pend],['מצביעים רשומים',DB.voters.length],['הצביעו',voted+(DB.voters.length?` <small style="font-size:.9rem;color:var(--muted)">(${Math.round(voted/DB.voters.length*100)}%)</small>`:'')]].map(([l,v])=>`<div class="kpi"><small>${l}</small><b>${v}</b></div>`).join('');
+  $('#kpis').innerHTML=[['מועמדויות',DB.noms.length],['ממתינות לאישור',pend],['מצביעים רשומים',DB.voters.length],['אישרו הצבעה',voted+(DB.voters.length?` <small style="font-size:.9rem;color:var(--muted)">(${Math.round(voted/DB.voters.length*100)}%)</small>`:'')]].map(([l,v])=>`<div class="kpi"><small>${l}</small><b>${v}</b></div>`).join('');
   const max=Math.max(1,...CATS.map(c=>DB.noms.filter(n=>n.cat===c.k).length));
   $('#ovCats').innerHTML=CATS.map(c=>{const t=DB.noms.filter(n=>n.cat===c.k),a=t.filter(n=>n.status==='approved').length;return `<div class="res-row" style="grid-template-columns:minmax(0,1fr) minmax(0,2fr) 60px"><div class="nm"><b class="lat" style="font-weight:400">${esc(c.en)}</b></div><div class="bars"><div class="e"><span>סה״כ</span><i style="width:${t.length/max*100}%"></i></div><div class="c"><span>מאושרות</span><i style="width:${a/max*100}%"></i></div></div><div class="score" style="font-size:1.1rem">${a}/${t.length}</div></div>`}).join('');
   const fl=[['all','הכל'],['pending','ממתינות'],['approved','מאושרות'],['rejected','נדחו']];
@@ -1604,7 +1999,13 @@ function renderAdmin(){
   const rows=DB.noms.filter(n=>nomFilt==='all'||n.status===nomFilt);
   $('#nomRows').innerHTML=rows.length?rows.map(n=>`<tr><td><span class="lat">${esc((CAT[n.cat]||{}).en||n.cat)}</span></td><td style="min-width:240px"><b>${esc(n.title)}</b><div style="font-size:.82rem;color:var(--dim)">${esc(n.client)}${n.team?' · '+esc(n.team):''}${n.link?` · <a href="${esc(n.link)}" target="_blank" rel="noopener" style="color:var(--gold)">קישור</a>`:''}</div><div style="font-size:.82rem;color:var(--muted);margin:4px 0 6px;max-width:46ch">${esc(n.desc)}</div>${thumbsHTML(n.imgs)}</td><td>${esc(n.dept)}${n.joint&&n.joint.length?`<div style="font-size:.78rem;color:var(--dim)">+ ${n.joint.map(esc).join(', ')}</div>`:''}</td><td>${esc(n.by)}</td><td><span class="st ${n.status}">${SL[n.status]}</span></td><td><div class="row-actions">${n.status!=='approved'?`<button class="icon-btn ok" data-a="approve" data-id="${n.id}">אישור</button>`:''}${n.status!=='rejected'?`<button class="icon-btn bad" data-a="reject" data-id="${n.id}">דחייה</button>`:''}<button class="icon-btn bad" data-a="delnom" data-id="${n.id}">מחיקה</button></div></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty" style="border:0">אין מועמדויות בסינון הזה.</div></td></tr>';
   if(!$('#vfDept').options.length){$('#vfDept').innerHTML=deptOpts();$('#hfDept').innerHTML=deptOpts()}
-  $('#voterRows').innerHTML=DB.voters.length?DB.voters.map(v=>`<tr><td><b>${esc(v.name)}</b></td><td><span class="cred">${esc(v.user)}</span></td><td><span class="cred" title="נשמרת מוצפנת">••••••</span></td><td>${esc(v.dept)}</td><td><span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span></td><td>${DB.ballots.some(b=>b.id===v.id)?'<span class="st approved">כן</span>':'<span class="st pending">עדיין לא</span>'}</td><td><div class="row-actions"><button class="icon-btn" data-a="newpass" data-id="${v.id}">סיסמה חדשה</button><button class="icon-btn bad" data-a="delvoter" data-id="${v.id}">הסרה</button></div></td></tr>`).join(''):'<tr><td colspan="7"><div class="empty" style="border:0">אין מצביעים עדיין. הוסיפו את הראשון בטופס למעלה.</div></td></tr>';
+  const bmap=Object.fromEntries(DB.ballots.map(b=>[b.id,b])),nmap=Object.fromEntries(DB.noms.map(n=>[n.id,n]));
+  const dur=ms=>{const m=Math.round(ms/60000);return m<1?'פחות מדקה':m<60?`${m} דק׳`:`${Math.floor(m/60)} ש׳ ${m%60} דק׳`};
+  $('#voterRows').innerHTML=DB.voters.length?DB.voters.map(v=>{const b=bmap[v.id],np=b?Object.keys(b.picks||{}).length:0;
+    const st=!b?'<span class="st rejected">לא הצביע/ה</span>':b.confirmed?'<span class="st approved">אישר/ה הצבעה</span>':`<span class="st pending">בתהליך · ${np}/${CATS.length}</span>`;
+    const fin=b&&b.confirmed?`<details><summary>הבחירות הסופיות</summary><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nmap[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')||'<li>לא נבחרו מהלכים</li>'}</ul></details>`:'';
+    const time=b&&b.confirmed&&b.startedAt&&b.confirmedAt?dur(b.confirmedAt-b.startedAt):'—';
+    return `<tr><td><b>${esc(v.name)}</b></td><td><span class="cred">${esc(v.user)}</span></td><td>${esc(v.dept)}</td><td><span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span></td><td><div class="vstat">${st}${fin}</div></td><td style="font-variant-numeric:tabular-nums">${time}</td><td><div class="row-actions">${b&&b.confirmed?`<button class="icon-btn" data-a="reopen" data-id="${v.id}">פתיחה מחדש</button>`:''}<button class="icon-btn" data-a="newpass" data-id="${v.id}">סיסמה חדשה</button><button class="icon-btn bad" data-a="delvoter" data-id="${v.id}">הסרה</button></div></td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty" style="border:0">אין מצביעים עדיין. הוסיפו את הראשון בטופס למעלה.</div></td></tr>';
   renderResults();
   $('#catNames').innerHTML=CATS.map(c=>`<option value="${esc(c.en)}">`).join('')+'<option value="Diamond Item"><option value="Iron Swords">';
   $('#hofRows').innerHTML=DB.hof.length?DB.hof.map(h=>`<tr><td class="lat">${esc(h.year)}</td><td><span class="lat">${esc(h.cat)}</span></td><td style="min-width:220px"><b>${esc(h.title)}</b></td><td>${esc(h.dept)}</td><td>${thumbsHTML(h.imgs,h.id,'hof')}</td><td><div class="row-actions"><button class="icon-btn" data-a="addimg" data-id="${h.id}">+ תמונה</button><button class="icon-btn bad" data-a="delhof" data-id="${h.id}">מחיקה</button></div></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty" style="border:0">אין זוכים עדיין.</div></td></tr>';
@@ -1616,14 +2017,14 @@ function renderResults(){
   $('#resScore').innerHTML=CATS.map(c=>{
     const ns=DB.noms.filter(n=>n.cat===c.k&&n.status==='approved');
     let eT=0,cT=0;const e={},k={};
-    for(const b of DB.ballots){const v=vmap[b.id];if(!v)continue;const p=(b.picks||{})[c.k];if(!p)continue;if(v.role==='ceo'){k[p]=(k[p]||0)+1;cT++}else{e[p]=(e[p]||0)+1;eT++}}
+    for(const b of DB.ballots){const v=vmap[b.id];if(!v||!b.confirmed)continue;const p=(b.picks||{})[c.k];if(!p)continue;if(v.role==='ceo'){k[p]=(k[p]||0)+1;cT++}else{e[p]=(e[p]||0)+1;eT++}}
     const rows=ns.map(n=>{const es=eT?(e[n.id]||0)/eT:0,cs=cT?(k[n.id]||0)/cT:0;return {n,ev:e[n.id]||0,cv:k[n.id]||0,es,cs,score:(es+cs)/(((eT?1:0)+(cT?1:0))||1)}}).sort((a,b)=>b.score-a.score);
     const lead=rows.length&&rows[0].score>0?rows[0].n.id:null;
     return `<div class="res-cat"><h3${c.heb?HEB_STYLE:''}>${esc(c.en)}</h3><div class="rc-sub">${eT} קולות עובדים · ${cT} קולות מנכ״לים</div>${rows.length?rows.map(r=>`<div class="res-row${r.n.id===lead?' lead':''}"><div class="nm"><b title="${esc(r.n.title)}">${esc(r.n.title)}</b><small>${esc(r.n.dept)}</small></div><div class="bars"><div class="e"><span>עובדים ${r.ev}</span><i style="width:${r.es*100}%"></i></div><div class="c"><span>מנכ״לים ${r.cv}</span><i style="width:${r.cs*100}%"></i></div></div><div class="score">${(r.score*100).toFixed(0)}%</div></div>`).join(''):'<div class="empty">אין מועמדויות מאושרות.</div>'}</div>`;
-  }).join('')+'<p class="note">כשאין עדיין קולות מנכ״לים, הניקוד מבוסס על קולות העובדים בלבד (ולהפך).</p>';
+  }).join('')+'<p class="note">נספרות רק הצבעות שאושרו. כשאין עדיין קולות מנכ״לים, הניקוד מבוסס על קולות העובדים בלבד (ולהפך).</p>';
   const nm=Object.fromEntries(DB.noms.map(n=>[n.id,n]));
-  const bl=DB.ballots.filter(b=>vmap[b.id]).sort((a,b)=>b.ts-a.ts);
-  $('#resBallots').innerHTML=bl.length?bl.map(b=>{const v=vmap[b.id];return `<div class="bl"><div class="bl-h"><div><b>${esc(v.name)}</b> <span style="color:var(--dim);font-size:.85rem">· ${esc(v.dept)}</span></div><div style="display:flex;gap:8px;align-items:center"><span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span><span style="color:var(--dim);font-size:.8rem">${new Date(b.ts).toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'})}</span></div></div><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nm[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')}</ul></div>`}).join(''):'<div class="empty">עוד לא נשלחו פתקים.</div>';
+  const bl=DB.ballots.filter(b=>vmap[b.id]&&Object.keys(b.picks||{}).length).sort((a,b)=>b.ts-a.ts);
+  $('#resBallots').innerHTML=bl.length?bl.map(b=>{const v=vmap[b.id];return `<div class="bl"><div class="bl-h"><div><b>${esc(v.name)}</b> <span style="color:var(--dim);font-size:.85rem">· ${esc(v.dept)}</span></div><div style="display:flex;gap:8px;align-items:center">${b.confirmed?'<span class="st approved">אישר/ה</span>':'<span class="st pending">טיוטה</span>'}<span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span><span style="color:var(--dim);font-size:.8rem">${new Date(b.ts).toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'})}</span></div></div><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nm[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')}</ul></div>`}).join(''):'<div class="empty">עוד לא נשלחו פתקים.</div>';
 }
 $('#resTabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;$$('#resTabs .tab').forEach(x=>x.classList.toggle('on',x===b));$('#resScore').hidden=b.dataset.t!=='score';$('#resBallots').hidden=b.dataset.t!=='ballots'});
 $('#nomFilter').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;nomFilt=b.dataset.f;renderAdmin()});
@@ -1670,6 +2071,7 @@ $('#admin').addEventListener('click',async e=>{
   if(a==='reject')await safe(()=>setStatus('rejected'),'נדחתה');
   if(a==='newpass'){const pass=randStr(6);let nv;
     if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_set_pass',A({p_id:id,p_pass:pass}));nv=v}else{const salt=randStr(16);nv={...v,salt,hash:await kdf(pass,salt)};await put('voters',nv)}}))showCred(nv,pass)}
+  if(a==='reopen'){const bb=DB.ballots.find(x=>x.id===id);await safe(async()=>{if(B.sb){await rpc('mmba_admin_reopen_ballot',A({p_id:id}));await after()}else await put('ballots',{...bb,confirmed:false,confirmedAt:null})},'ההצבעה נפתחה מחדש לעריכה')}
   if(a==='addimg'){addImgTarget=id;$('#hofAdd').click();return}
   if(a==='delimg'){
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='?';setTimeout(()=>{if(b.isConnected){b.dataset.sure='';b.textContent='✕'}},2500);return}
@@ -1764,8 +2166,8 @@ document.addEventListener('click',async e=>{
 },true);
 
 /* ---------- router ---------- */
-const ROUTES=['home','categories','nominate','vote','hall','about','admin','edit-home'];
-const TITLES={home:'ממב״א 2026',categories:'הקטגוריות · ממב״א 2026',nominate:'הגשת מועמדות · ממב״א 2026',vote:'הצבעה · ממב״א 2026',hall:'היכל התהילה · ממב״א 2026',about:'אודות · ממב״א 2026',admin:'הגדרות · ממב״א 2026','edit-home':'עריכת דף הבית · ממב״א 2026'};
+const ROUTES=['home','categories','nominate','vote','rules','hall','about','admin','edit-home'];
+const TITLES={home:'ממב״א 2026',categories:'הקטגוריות · ממב״א 2026',nominate:'הגשת מועמדות · ממב״א 2026',vote:'הצבעה · ממב״א 2026',hall:'היכל התהילה · ממב״א 2026',rules:'כללי התחרות · ממב״א 2026',about:'אודות · ממב״א 2026',admin:'הגדרות · ממב״א 2026','edit-home':'עריכת דף הבית · ממב״א 2026'};
 let cur=null;
 function route(first){
   let r=(location.hash||'#home').slice(1);if(!ROUTES.includes(r))r='home';
