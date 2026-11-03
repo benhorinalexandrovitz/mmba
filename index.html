@@ -587,6 +587,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
 .thumb.vid video{width:100%;height:100%;object-fit:cover;display:block}
 .thumb .tag{position:absolute;bottom:4px;right:4px;font-size:.65rem;background:rgba(0,0,0,.7);color:var(--gold-hi);border-radius:4px;padding:1px 5px}
 .cat-pick label.taken{display:none}
+.cat-pick label .left{display:block;font-size:.75rem;color:var(--gold);margin-top:2px}
 .cat-pick.locked label{opacity:.35;pointer-events:none}
 .counter.over{color:var(--bad)}
 .rules-link{color:var(--gold);font-size:.92rem}
@@ -899,7 +900,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
       </div>
       <div class="tl" id="tl">
         <div class="rail"><i></i></div>
-        <div class="tl-item rv" data-d="2026-11-15"><div class="tl-date"><span data-e="t1.d">15.11</span><small data-e="t1.day">יום ראשון</small></div><div class="tl-body"><h3 data-e="t1.h">ההגשות נפתחות</h3><p data-e="t1.p">הגשה אחת לכל מחלקה בכל קטגוריה.</p></div></div>
+        <div class="tl-item rv" data-d="2026-11-15"><div class="tl-date"><span data-e="t1.d">15.11</span><small data-e="t1.day">יום ראשון</small></div><div class="tl-body"><h3 data-e="t1.h">ההגשות נפתחות</h3><p data-e="t1.p">הגשה אחת לכל מחלקה בכל קטגוריה. בצל״ש: עד שלושה מהלכים.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-03"><div class="tl-date"><span data-e="t2.d">03.12</span><small data-e="t2.day">יום חמישי</small></div><div class="tl-body"><h3 data-e="t2.h">ההגשות נסגרות</h3><p data-e="t2.p">אחרי התאריך הזה המועמדויות עוברות לאישור.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-08"><div class="tl-date"><span data-e="t3.d">08–10.12</span><small data-e="t3.day">שלישי 10:00 עד חמישי 10:00</small></div><div class="tl-body"><h3 data-e="t3.h">הקלפי פתוחה</h3><p data-e="t3.p">48 שעות של הצבעת עובדים, בחירה אחת בכל קטגוריה.</p></div></div>
         <div class="tl-item rv" data-d="2026-12-10"><div class="tl-date"><span data-e="t4.d">10.12</span><small data-e="t4.day">יום חמישי</small></div><div class="tl-body"><h3 data-e="t4.h">שקלול התוצאות</h3><p data-e="t4.p">50% עובדים, 50% מנכ״לים. התוצאות נשארות חסויות.</p></div></div>
@@ -937,7 +938,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
     <div class="wrap">
       <div class="cats" id="allCats"></div>
       <div class="rules">
-        <div class="rule rv"><b>אחת לכל קטגוריה</b><p>מחלקה או צוות עצמאי מגישים מועמדות אחת בלבד בכל קטגוריה.</p></div>
+        <div class="rule rv"><b>אחת לכל קטגוריה</b><p>מחלקה או צוות עצמאי מגישים מועמדות אחת בכל קטגוריה. בצל״ש: עד שלושה מהלכים.</p></div>
         <div class="rule rv"><b>עד 250 מילים</b><p>הסבר על המהלך, ולצדו הוויזואליה: תמונות, סרטון וקישור.</p></div>
         <div class="rule rv"><b>הגשה משותפת</b><p>ב־SWAG, smART ו־CollaBHA. נספרת במכסה של כל השותפות.</p></div>
         <div class="rule rv"><b>אישור לפני הצבעה</b><p>רק מועמדויות מאושרות עולות לקלפי.</p></div>
@@ -1102,7 +1103,7 @@ body.editing .hero-ctas a,body.editing .hall-teaser,body.editing .cat{cursor:def
   <section class="sec" style="padding-top:10px">
     <div class="wrap rules-page">
       <article class="rcard rv"><span class="rnum">I</span><h2>הגשת מועמדויות</h2>
-        <ul><li>כל מחלקה מגישה מועמדות אחת בלבד לכל פרס.</li><li>ההגשה נעשית על שני עמודים בלבד: ההסבר על המהלך והוויזואליה (אייטם, פוסט או שלט חוצות).</li><li><b>27.11</b> מועד סיום ההגשה. נא לשלוח למייל של נטע.</li></ul></article>
+        <ul><li>כל מחלקה מגישה מועמדות אחת בלבד לכל פרס. בצל״ש מחלקתי: עד שלושה מהלכים לכל מחלקה.</li><li>ההגשה כוללת שני חלקים: ההסבר על המהלך (עד 250 מילים) והוויזואליה (אייטם, פוסט או שלט חוצות).</li><li>ההגשות פתוחות מ־<b>15.11</b> עד <b>03.12</b>, כאן באתר, בעמוד <a href="#nominate" style="color:var(--gold-hi)">הגשת מועמדות</a>.</li></ul></article>
       <article class="rcard rv"><span class="rnum">II</span><h2>פרסים משותפים</h2>
         <p>בקטגוריות <span class="lat">CollaBHA</span>, <span class="lat">SWAG Award</span> ו־<span class="lat">smART</span> אפשר להגיש מועמדות משותפת לשתי מחלקות, בהתאם לאופי השירותים (צפויה חזרה של המחלקות עם השירותים המשלימים).</p>
         <p class="ex">לדוגמה: מהלך וידאו של מחלקת הווידאו והמחלקה העסקית, או שיתוף פעולה בין מחלקת המשפיענים למחלקת האימפקט.</p></article>
@@ -1315,7 +1316,7 @@ const CATS=[
  {k:'social',en:'Social Move',he:'המהלך שהשאיר חותם ברשת',d:'הקפיץ צפיות, יצר אינטראקציות, העלה עוקבים.',joint:false},
  {k:'smart',en:'smART',he:'עיצוב שנשאר בזיכרון',d:'מודעה, פוסט או פרויקט רחב, שהעיצוב שלו בלט ונשאר.',joint:true},
  {k:'collab',en:'CollaBHA',he:'הכוח של לעשות יחד',d:'כנס, מתחם תוכן או שיתוף עם גוף תקשורת מוביל שיצר באז ללקוח.',joint:true},
- {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'הצוותים שהובילו את השנה. כאן מותר להצביע גם בתוך המחלקה.',joint:false,heb:true}
+ {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'כל מחלקה יכולה להגיש עד שלושה מהלכים. כאן מותר להצביע גם בתוך המחלקה.',joint:false,heb:true}
 ];
 const CAT=Object.fromEntries(CATS.map(c=>[c.k,c]));
 const DEPTS=['מחלקת צרכנות ומשפיענים','מחלקה ציבורית','מחלקת אסטרטגיה ודיגיטל','מחלקת סושיאל ווידאו','מחלקת אימפקט','מחלקה עסקית','צוות אייל','צוות נוי'];
@@ -1345,7 +1346,7 @@ function errMsg(e){
   if(c==='bad_image') return 'אחד הקבצים אינו תמונה שהדפדפן יודע לקרוא (נסו JPG או PNG).';
   if(c==='rate_limited') return 'יותר מדי פעולות ברצף. נסו שוב בעוד רגע.';
   if(c==='quota_exceeded'||c==='quota_or_state'||c==='resource_exhausted') return 'נגמר המקום בשרת.';
-  if(c==='quota') return 'למחלקה הזו כבר יש הגשה בקטגוריה הזו.';
+  if(c==='quota') return 'המחלקה הזו כבר מיצתה את מכסת ההגשות בקטגוריה הזו.';
   if(c==='closed') return 'השלב הזה סגור כרגע.';
   if(c==='bad_admin') return 'סיסמת הניהול לא תקפה. היכנסו מחדש.';
   if(c==='bad_login') return 'שם המשתמש או הסיסמה לא נכונים.';
@@ -1620,7 +1621,9 @@ const deptOpts=sel=>DEPTS.map(d=>`<option${d===sel?' selected':''}>${esc(d)}</op
 $('#nDept').innerHTML='<option value="">בחירה…</option>'+deptOpts();
 $('#catPick').innerHTML=CATS.map(c=>`<input type="radio" name="ncat" id="nc-${c.k}" value="${c.k}" disabled><label for="nc-${c.k}"><span class="ci">${I[c.k]}</span><span><span class="lat"${c.heb?HEB_STYLE:''}>${esc(c.en)}</span><span style="display:block;font-size:.8rem;color:var(--muted)">${esc(c.he)}</span></span></label>`).join('');
 let taken=[];
-const isTaken=(cat,dept)=>taken.some(t=>t.cat===cat&&(t.dept===dept||(t.joint||[]).includes(dept)));
+const LIMIT=cat=>cat==='commendation'?3:1;
+const usedBy=(cat,dept)=>taken.filter(t=>t.cat===cat&&(t.dept===dept||(t.joint||[]).includes(dept))).length;
+const isTaken=(cat,dept)=>usedBy(cat,dept)>=LIMIT(cat);
 async function loadTaken(){
   if(B.sb){if(!sbCode)return;try{taken=await rpc('mmba_taken',{p_code:sbCode})||[]}catch(e){console.error(e)}}
   else taken=DB.noms.map(n=>({cat:n.cat,dept:n.dept,joint:n.joint||[]}));
@@ -1630,6 +1633,7 @@ function updCats(){
   const dept=$('#nDept').value;let avail=0;
   $('#catPick').classList.toggle('locked',!dept);
   CATS.forEach(c=>{const tk=!!dept&&isTaken(c.k,dept),inp=$('#nc-'+c.k);$(`label[for=nc-${c.k}]`).classList.toggle('taken',tk);inp.disabled=tk||!dept;if(tk&&inp.checked)inp.checked=false;if(!tk)avail++});
+  {const lab=$('label[for=nc-commendation]'),old=lab.querySelector('.left');if(old)old.remove();if(dept&&!isTaken('commendation',dept)){const sp=document.createElement('span');sp.className='left';sp.textContent=`נותרו ${3-usedBy('commendation',dept)} מתוך 3`;lab.querySelector('span:last-child').appendChild(sp)}}
   if(dept&&pendingCat){const r=$('#nc-'+pendingCat);if(r&&!r.disabled)r.checked=true;pendingCat=null}
   $('#catHint').textContent=!dept?'בחרו קודם מחלקה. קטגוריות שהמחלקה כבר הגישה אליהן לא יופיעו.':(avail?`${avail} קטגוריות פתוחות ל${dept}.`:`${dept} כבר הגישה בכל הקטגוריות.`);
   updJoint();
@@ -1700,7 +1704,7 @@ $('#nomForm').addEventListener('submit',async e=>{
   if(miss.length){$('#nomErr').textContent='חסר: '+miss.join(', ');return}
   if(words(f.desc)>250||f.desc.length>1250){$('#nomErr').textContent='ההסבר ארוך מ־250 מילים. קצרו אותו מעט.';return}
   if(f.link&&!/^https?:\/\//i.test(f.link)){$('#nomErr').textContent='הקישור צריך להתחיל ב־https://';return}
-  if([f.dept,...f.joint].some(d=>isTaken(f.cat,d))){$('#nomErr').textContent='למחלקה הזו כבר יש הגשה בקטגוריה הזו.';updCats();return}
+  if([f.dept,...f.joint].some(d=>isTaken(f.cat,d))){$('#nomErr').textContent='המחלקה הזו כבר מיצתה את מכסת ההגשות בקטגוריה הזו.';updCats();return}
   if(nomVideo&&!B.sb&&!B.server){$('#nomErr').textContent='שמירת סרטונים זמינה רק כשהאתר מחובר לשרת.';return}
   $('#nomErr').textContent='';btn.disabled=true;const label=btn.innerHTML;
   const ok=await safe(async()=>{
