@@ -710,6 +710,54 @@ input[type=date]{width:100%;background:rgba(11,10,8,.7);border:1px solid var(--l
 .nc-rise{font-size:.86rem;color:var(--gold-hi)}
 @media (max-width:680px){.rise-grid{grid-template-columns:1fr}}
 
+
+/* ---------- admin additions ---------- */
+.pane-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.tab-del{border-style:dashed}
+tr.row-del td{opacity:.72}
+.user-edit{display:inline-flex;gap:6px;align-items:center}
+.user-edit input{width:150px;padding:6px 10px;font-size:.88rem}
+.mini-btn{padding:3px 8px;font-size:.72rem;margin-right:4px}
+.log-state{font-size:.75rem;border-radius:99px;padding:2px 10px;border:1px solid var(--line);color:var(--muted);margin-right:6px}
+.log-state.on{color:var(--ok);border-color:rgba(127,191,138,.45)}
+.log-fields{display:grid;grid-template-columns:2fr 1fr auto auto;gap:8px;margin-top:12px}
+.log-fields input{padding:10px 12px;font-size:.88rem}
+#voterForm{grid-template-columns:1.3fr 1.1fr 1.2fr 1fr 1fr auto}
+#printArea{display:none}
+@media (max-width:1020px){#voterForm{grid-template-columns:1fr 1fr}.log-fields{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){#voterForm,.log-fields{grid-template-columns:1fr}}
+/* ---------- print: nominations report ---------- */
+@media print{
+  @page{size:A4;margin:12mm}
+  :root{color-scheme:light!important}
+  html,body{background:#fff!important;color:#111!important}
+  body::before{display:none!important}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important;font-family:var(--heb);direction:rtl;color:#111;font-size:9.5pt;line-height:1.4;padding:0 3mm}
+  #printArea .ph{display:flex;align-items:center;gap:14px;background:#0b0a08;color:#f3ebdc;padding:10px 14px;border-radius:6px;margin-bottom:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printArea .ph img{height:34px}
+  #printArea .ph b{display:block;font-size:13pt;color:#e8cf8f}
+  #printArea .ph span{font-size:8.5pt;color:#d9cfbd}
+  #printArea .pd{font-size:13pt;margin:16px 0 6px;padding-top:8px;border-top:2px solid #b3123a;color:#b3123a;break-before:page}
+  #printArea .pc h2{font-family:var(--lat);font-size:12pt;font-weight:600;color:#8a6d34;margin:12px 0 4px;padding-bottom:3px;border-bottom:1px solid #c9a35a;break-after:avoid}
+  #printArea .pc h2 .heb{font-family:var(--heb)}
+  #printArea .pc h2 small{font-family:var(--heb);font-size:8.5pt;color:#666;font-weight:400;margin-right:6px}
+  #printArea .pn{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #e5e0d6;break-inside:avoid}
+  #printArea .pn-txt{flex:1;min-width:0}
+  #printArea .pn-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  #printArea .pn-top b{font-size:10.5pt}
+  #printArea .pn-st{font-size:7.5pt;border:1px solid #bbb;border-radius:8px;padding:0 6px;white-space:nowrap}
+  #printArea .pn-st.approved{border-color:#3d8b4f;color:#2d6b3b}
+  #printArea .pn-st.pending{border-color:#c08a2a;color:#8a6118}
+  #printArea .pn-st.rejected,#printArea .pn-st.del{border-color:#b3123a;color:#b3123a}
+  #printArea .pn-meta{font-size:8pt;color:#555}
+  #printArea p{margin:3px 0 0;white-space:pre-line}
+  #printArea .pn-links{font-size:7.5pt;color:#555;word-break:break-all}
+  #printArea .pn-links a{color:#8a6d34}
+  #printArea .pn-imgs{display:grid;grid-template-columns:repeat(2,62px);gap:4px;flex:none;align-content:start}
+  #printArea .pn-imgs img{width:62px;height:46px;object-fit:cover;border-radius:3px;border:1px solid #ddd}
+}
+
 /* ---------- responsive ---------- */
 @media (max-width:1020px){
   .links{display:none}
@@ -771,6 +819,7 @@ input[type=date]{width:100%;background:rgba(11,10,8,.7);border:1px solid var(--l
 <div class="curtain" id="curtain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
 <div class="edit-top" id="editTop" hidden></div>
 <div class="edit-bar" id="editBar" hidden>
   <span id="ebStatus">מצב עריכה · לחצו על טקסט כדי לשנות</span>
@@ -1230,14 +1279,16 @@ input[type=date]{width:100%;background:rgba(11,10,8,.7);border:1px solid var(--l
             <div class="res-cat"><h3 style="font-family:var(--heb);font-style:normal;direction:rtl">מועמדויות לפי קטגוריה</h3><div id="ovCats" style="margin-top:14px"></div></div>
           </div>
           <div class="apane" id="p-noms">
-            <h2>מועמדויות</h2><p class="sub">אשרו מועמדויות כדי שיופיעו בקלפי.</p>
+            <div class="pane-head"><div><h2>מועמדויות</h2><p class="sub">אשרו מועמדויות כדי שיופיעו בקלפי. מחיקה מעבירה לארכיון "נמחקו", ומשם אפשר לשחזר.</p></div><button class="btn small solid pdf-btn" type="button">ייצוא המועמדויות ל־PDF</button></div>
             <div class="hall-ctrl" style="margin-bottom:16px"><div class="tabs" id="nomFilter"></div></div>
+            <p class="note" id="delNote" hidden style="margin:-6px 0 14px">מועמדויות שנמחקו לא מופיעות בקלפי ולא נספרות במכסה של המחלקה. התמונות והפרטים שלהן נשמרים כאן.</p>
             <div class="tbl-wrap"><table><thead><tr><th>קטגוריה</th><th>מהלך</th><th>מחלקה</th><th>מגיש/ה</th><th>סטטוס</th><th></th></tr></thead><tbody id="nomRows"></tbody></table></div>
           </div>
           <div class="apane" id="p-voters">
             <h2>מצביעים</h2><p class="sub">כל מצביע מקבל שם משתמש וסיסמה אישית. מנכ״לים נספרים ב־50% מהמשקל.</p>
             <form class="inline-form" id="voterForm" autocomplete="off">
               <div class="field"><label for="vfName">שם מלא</label><input type="text" id="vfName" required></div>
+              <div class="field"><label for="vfUser">שם משתמש <span class="hint">(נוצר אוטומטית)</span></label><input type="text" id="vfUser" dir="ltr" maxlength="40" placeholder="noamf652"></div>
               <div class="field"><label for="vfDept">מחלקה</label><select id="vfDept"></select></div>
               <div class="field"><label for="vfRole">תפקיד בהצבעה</label><select id="vfRole"><option value="emp">עובד/ת</option><option value="ceo">מנכ״ל/ית</option></select></div>
               <div class="field"><label for="vfPass">סיסמה</label><input type="text" id="vfPass" dir="ltr" placeholder="אוטומטית"></div>
@@ -1276,6 +1327,9 @@ input[type=date]{width:100%;background:rgba(11,10,8,.7);border:1px solid var(--l
             <div class="switch-row"><div><b>הגשת מועמדויות פתוחה</b><small>כניסה עם קוד ההגשה הכללי</small></div><label class="switch"><input type="checkbox" id="sSub" aria-label="הגשות פתוחות"><i></i></label></div>
             <div class="switch-row"><div><b>הקלפי פתוחה</b><small>עובדים יכולים להיכנס ולהצביע</small></div><label class="switch"><input type="checkbox" id="sVote" aria-label="הצבעה פתוחה"><i></i></label></div>
             <div class="switch-row"><div><b>אבטחה</b><small>סיסמאות המצביעים נשמרות מגובבות (PBKDF2) ולא כטקסט. התקשורת עם השרת מוצפנת (HTTPS).</small></div></div>
+            <div class="switch-row"><div><b>ייצוא המועמדויות ל־PDF</b><small>כל המועמדויות לפי קטגוריה, עם פרטים ותמונות, וכולל אלה שנמחקו. בחלון ההדפסה בוחרים "שמירה כ־PDF".</small></div><button class="btn small solid pdf-btn" type="button">ייצוא ל־PDF</button></div>
+            <div class="switch-row log-row"><div style="flex:1;min-width:0"><b>לוג פעולות ל־Google Sheets</b> <span class="log-state" id="logState">לא מחובר</span><small style="display:block">כל הגשה, הצבעה ופעולת ניהול נרשמת כשורה בגיליון. ההוראות להקמה נמצאות בקובץ שקיבלתם.</small>
+              <div class="log-fields"><input type="url" id="logUrl" dir="ltr" placeholder="https://script.google.com/macros/s/…/exec" aria-label="כתובת ה־Web App"><input type="text" id="logToken" dir="ltr" placeholder="קוד סודי (TOKEN)" aria-label="קוד סודי"><button class="btn small solid" id="logSave" type="button">שמירה</button><button class="btn small ghost" id="logTest" type="button">שליחת שורת בדיקה</button></div></div></div>
             <div class="switch-row"><div><b>ייצוא נתונים</b><small>כל הנתונים כ־JSON, להעתקה וגיבוי</small></div><button class="btn small ghost" id="sExport" type="button">העתקה</button></div>
             <div class="switch-row"><div><b>איפוס נתוני הדגמה</b><small>מוחק מועמדויות, מצביעים ופתקים. זוכי העבר נשמרים.</small></div><span id="resetWrap"><button class="btn small red" id="sReset" type="button">איפוס</button></span></div>
             <textarea id="exportBox" hidden readonly style="margin-top:12px;min-height:180px;direction:ltr;font-family:ui-monospace,monospace;font-size:.8rem"></textarea>

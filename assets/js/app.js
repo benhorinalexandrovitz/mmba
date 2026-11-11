@@ -41,7 +41,7 @@ const CATS=[
  {k:'collab',en:'CollaBHA',he:'שת״פ ממומן',d:'שיתוף פעולה ממומן עם גוף תקשורת מוביל, כמו כנס, מתחם תוכן או פרויקט מיוחד, שיצר באז והשפעה ללקוח.',joint:true},
  {k:'probono',en:'Heart of Gold',he:'פרו בונו. המהלך שנעשה מהלב',d:'מהלך עבור לקוח בהתנדבות. מגישים מהלך שלם, לא אייטם בודד.',joint:false},
  {k:'surprise',en:'Rising Star',he:'ההפתעה של השנה',d:'פרגון לצעירים: פעולה שעשה יועץ או יועצת בחצי השנה הראשונה שלהם במשרד.',joint:false},
- {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'כל מחלקה יכולה להגיש עד שלושה מהלכים (צוות אייל וצוות נוי: עד שניים כל אחד). כאן מותר להצביע גם בתוך המחלקה.',joint:false,heb:true}
+ {k:'commendation',en:'צל״ש מחלקתי',he:'הצוותים שעושים את ההבדל',d:'כל מחלקה יכולה להגיש עד שלושה מהלכים (צוות אייל וצוות נוי: עד שניים כל אחד). בהצבעה מוצגים רק הצוותים של המחלקות האחרות.',joint:false,heb:true}
 ];
 const CAT=Object.fromEntries(CATS.map(c=>[c.k,c]));
 const DEPTS=['מחלקת צרכנות ומשפיענים','מחלקה ציבורית','מחלקת אסטרטגיה ודיגיטל','מחלקת סושיאל ווידאו','מחלקת אימפקט','מחלקה עסקית','צוות אייל','צוות נוי'];
@@ -82,6 +82,8 @@ function errMsg(e){
   if(c==='weak_pass') return 'הסיסמה קצרה מדי (לפחות 4 תווים).';
   if(c==='missing') return 'חסרים שדות חובה.';
   if(c==='not_rising') return 'ב־Rising Star המהלך צריך להיות מחצי השנה הראשונה של היועץ/ת במשרד.';
+  if(c==='bad_user') return 'שם משתמש: 3–40 תווים, אותיות באנגלית, ספרות, נקודה, מקף או קו תחתון.';
+  if(c==='bad_url') return 'כתובת הלוג צריכה להתחיל ב־https://script.google.com/';
   if(c==='too_long') return 'ההסבר ארוך מ־250 מילים.';
   if(c==='locked') return 'ההצבעה כבר אושרה ולא ניתן לשנות אותה.';
   if(c==='local_video') return 'שמירת סרטונים זמינה רק כשהאתר מחובר לשרת.';
@@ -94,7 +96,7 @@ const B={server:false,db:null,assets:null,sb:null,ready:false};
 let sbAdminPass=null,sbCode=null,sbCreds=null;
 function sbErr(e){const m=String((e&&e.message)||'');for(const c of ['bad_code','bad_login','bad_admin','quota','closed','missing','weak_pass'])if(m.includes(c))return {code:c,message:m};if(e&&e.code==='23505')return {code:'dup',message:m};return {code:'net',message:m}}
 async function rpc(fn,args){const {data,error}=await B.sb.rpc(fn,args);if(error)throw sbErr(error);return data}
-const mapNom=n=>({extra:n.extra||{},id:n.id,ts:+n.ts,cat:n.cat,title:n.title,client:n.client,dept:n.dept,joint:n.joint||[],team:n.team||'',desc:n.descr,link:n.link||'',by:n.by_name,status:n.status,imgs:n.imgs||[]});
+const mapNom=n=>({deletedAt:n.deleted_at?+n.deleted_at:null,extra:n.extra||{},id:n.id,ts:+n.ts,cat:n.cat,title:n.title,client:n.client,dept:n.dept,joint:n.joint||[],team:n.team||'',desc:n.descr,link:n.link||'',by:n.by_name,status:n.status,imgs:n.imgs||[]});
 async function sbLoadPublic(){
   const [s,c,h,n]=await Promise.all([
     B.sb.from('mmba_settings').select('*').eq('id',1).maybeSingle(),
@@ -102,7 +104,7 @@ async function sbLoadPublic(){
     B.sb.from('mmba_hof').select('*').order('year',{ascending:false}).order('ord',{ascending:true}),
     B.sb.from('mmba_noms').select('*').order('ts',{ascending:false})]);
   for(const r of [s,c,h,n])if(r.error)throw sbErr(r.error);
-  DB.settings={subOpen:s.data?s.data.sub_open:true,voteOpen:s.data?s.data.vote_open:true};
+  DB.settings={subOpen:s.data?s.data.sub_open:true,voteOpen:s.data?s.data.vote_open:true,logUrl:s.data?s.data.log_url||'':'',logToken:s.data?s.data.log_token||'':''};
   DB.content={texts:(c.data&&c.data.texts)||{},ts:c.data?+c.data.ts:0};
   DB.hof=(h.data||[]).map(x=>({id:x.id,year:x.year,cat:x.cat,dept:x.dept,title:x.title,imgs:x.imgs||[],order:+x.ord}));
   if(!sbAdminPass)DB.noms=(n.data||[]).map(mapNom);
@@ -206,6 +208,54 @@ function bindDrop(zone,input,onFiles){
   ['dragleave','drop'].forEach(t=>zone.addEventListener(t,e=>{e.preventDefault();zone.classList.remove('over')}));
   zone.addEventListener('drop',e=>onFiles([...e.dataTransfer.files].filter(f=>/^image\//.test(f.type))));
 }
+
+/* ---------- username: English first name + last-name initial + gematria of the full name ---------- */
+const GEM={'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,'י':10,'כ':20,'ך':20,'ל':30,'מ':40,'ם':40,'נ':50,'ן':50,'ס':60,'ע':70,'פ':80,'ף':80,'צ':90,'ץ':90,'ק':100,'ר':200,'ש':300,'ת':400};
+const gematria=s=>[...s].reduce((t,c)=>t+(GEM[c]||0),0);
+const NAMES=Object.fromEntries(`אביב:aviv,אביגיל:avigail,אביה:aviya,אבי:avi,אביטל:avital,אבישג:avishag,אברהם:avraham,אדם:adam,אדר:adar,אהרון:aharon,אהוד:ehud,אודי:udi,אודיה:odaya,אופיר:ofir,אופק:ofek,אור:or,אורי:ori,אוריה:oriya,אורית:orit,אורן:oren,אורנה:orna,אושרת:osherat,אושר:osher,איה:aya,איל:eyal,אייל:eyal,איילת:ayelet,אילה:ayala,אילן:ilan,אילנה:ilana,אילת:eilat,איתי:itay,איתן:eitan,איתמר:itamar,אלה:ela,אלון:alon,אלונה:alona,אלי:eli,אליאור:elior,אליה:eliya,אליהו:eliyahu,אלירן:eliran,אלכס:alex,אלמוג:almog,אלעד:elad,אלקנה:elkana,אמיר:amir,אמית:amit,אנה:anna,אסף:asaf,אפרת:efrat,אריאל:ariel,אריאלה:ariela,אריה:arye,ארז:erez,אתי:eti,בועז:boaz,בן:ben,בני:beni,בר:bar,ברק:barak,בת:bat,בתיה:batya,גאיה:gaya,גאיל:gail,גבי:gabi,גבריאל:gavriel,גדי:gadi,גיא:guy,גיל:gil,גילה:gila,גילי:gili,גלי:gali,גל:gal,גליה:galya,גלית:galit,גפן:gefen,דביר:dvir,דבורה:dvora,דוד:david,דור:dor,דורית:dorit,דורון:doron,דין:din,דינה:dina,דן:dan,דנה:dana,דני:dani,דניאל:daniel,דניאלה:daniela,דפנה:dafna,דקל:dekel,הדס:hadas,הדר:hadar,הילה:hila,הלל:hillel,ורד:vered,זהבה:zehava,זיו:ziv,חגית:hagit,חובב:hovav,חיים:haim,חן:chen,חנה:hana,חני:hani,טל:tal,טלי:tali,טליה:talya,טובה:tova,יאיר:yair,יהודה:yehuda,יהונתן:yehonatan,יואב:yoav,יובל:yuval,יוגב:yogev,יוסי:yossi,יוסף:yosef,יונתן:yonatan,יעל:yael,יעקב:yaakov,יערה:yaara,יפעת:yifat,יצחק:yitzhak,ירדן:yarden,ירון:yaron,ישי:yishai,כנרת:kineret,כרמל:carmel,כרמית:karmit,לאה:lea,ליאור:lior,ליאת:liat,ליה:lia,לילך:lilach,לימור:limor,לי:li,ליבי:libi,לירון:liron,ליטל:lital,לינוי:linoy,לירז:liraz,מאיה:maya,מאיר:meir,מוטי:moti,מור:mor,מורן:moran,מורית:morit,מיה:mia,מיכאל:michael,מיכל:michal,מירב:merav,מירית:mirit,מלכה:malka,מנחם:menahem,מעיין:maayan,מרים:miriam,משה:moshe,מתן:matan,נגה:noga,נדב:nadav,נוי:noy,נויה:noya,נועה:noa,נועם:noam,נוה:nave,נטע:neta,ניר:nir,נירית:nirit,נעמה:naama,נעמי:naomi,נתן:natan,נתנאל:netanel,סהר:sahar,סיון:sivan,סתיו:stav,ספיר:sapir,עדי:adi,עדן:eden,עדינה:adina,עדית:adit,עומר:omer,עופר:ofer,עוז:oz,עזרא:ezra,עידו:ido,עידן:idan,עינב:inbar,ענבר:inbar,ענבל:inbal,עמית:amit,עמרי:omri,ערן:eran,פזית:pazit,פנינה:pnina,צביקה:tzvika,צחי:tzachi,ציפי:tzipi,קרן:keren,רביד:ravid,רועי:roy,רוני:roni,רונית:ronit,רון:ron,רונן:ronen,רות:ruth,רז:raz,רחל:rachel,רינה:rina,רמי:rami,רן:ran,רעות:reut,רפאל:refael,שגיא:sagi,שגית:sagit,שחר:shahar,שי:shai,שירה:shira,שירן:shiran,שיר:shir,שלומי:shlomi,שלום:shalom,שמואל:shmuel,שמעון:shimon,שני:shani,שקד:shaked,שרה:sara,שרון:sharon,שרית:sarit,תום:tom,תומר:tomer,תמר:tamar,תמי:tami,תהילה:tehila,תחיה:tchiya,גלעד:gilad,אורטל:ortal,עינת:einat,ענת:anat,אסנת:osnat,אפי:efi,יגאל:yigal,יגל:yagel,ליהי:lihi,ליאל:liel,מאי:may,נאוה:nava,נטלי:natali,סיגל:sigal,סיגלית:sigalit,עמוס:amos,עוזי:uzi,צליל:tzlil,קובי:kobi,רותם:rotem,רעיה:raya,שלי:shelly,שמרית:shimrit,תאיר:tair,תמרה:tamara,יוליה:yulia,אלינור:elinor,אלין:elin,הלן:helen,אוהד:ohad,אורי:ori,אסתר:ester,בתאל:batel,גיתית:gitit,דנית:danit,הגר:hagar,זוהר:zohar,חגי:hagai,חנן:hanan,טליה:talya,יעלי:yaeli,כפיר:kfir,ליעד:liad,לירון:liron,מאור:maor,מיטל:meital,מיקה:mika,נגב:negev,נווה:nave,ניצן:nitzan,נעה:noa,סער:saar,עדיאל:adiel,עלמה:alma,עמנואל:emanuel,פלג:peleg,צור:tzur,קורל:koral,רוית:ravit,רוני:roni,רז:raz,רנן:renan,שגב:segev,שון:shon,שחף:shahaf,שלמה:shlomo,שמרית:shimrit,תהל:tahel,תמיר:tamir`.split(',').map(p=>p.split(':')));
+function translit(w){
+  w=w.replace(/[^א-ת]/g,'');if(!w)return'';
+  if(NAMES[w])return NAMES[w];
+  const C={'ב':'v','ג':'g','ד':'d','ה':'h','ז':'z','ח':'h','ט':'t','כ':'ch','ך':'ch','ל':'l','מ':'m','ם':'m','נ':'n','ן':'n','ס':'s','פ':'f','ף':'f','צ':'tz','ץ':'tz','ק':'k','ר':'r','ש':'sh','ת':'t'};
+  const F={'ב':'b','כ':'k','פ':'p'};
+  const L=[...w];let out='',prevCons=false;
+  L.forEach((c,i)=>{
+    const first=i===0,last=i===L.length-1,nx=L[i+1];
+    if(c==='א'&&first&&(nx==='ו'||nx==='י')){prevCons=false;return}
+    if(c==='א'||c==='ע'){out+=first||!prevCons?'a':(last?'a':'');prevCons=false;return}
+    if(c==='ו'){if(nx==='ו'){out+='v';prevCons=true;return}if(L[i-1]==='ו')return;out+=first?'v':'o';prevCons=first;return}
+    if(c==='י'){if(nx==='י'){out+='y';prevCons=true;return}if(L[i-1]==='י')return;out+=first?'y':'i';prevCons=first;return}
+    if(c==='ה'&&last){out+='a';prevCons=false;return}
+    if(prevCons)out+='a';
+    out+=first&&F[c]?F[c]:(C[c]||'');prevCons=true;
+  });
+  return out;
+}
+function initialOf(w){
+  if(/^[a-z]/i.test(w))return w[0].toLowerCase();
+  w=w.replace(/[^א-ת]/g,'');if(!w)return'';
+  const c=w[0],n=w[1];
+  if(c==='פ')return(n==='ו'||n==='י')?'f':'p';
+  return({'א':'a','ב':'b','ג':'g','ד':'d','ה':'h','ו':'v','ז':'z','ח':'h','ט':'t','י':'y','כ':'k','ל':'l','מ':'m','נ':'n','ס':'s','ע':'a','צ':'t','ק':'k','ר':'r','ש':'s','ת':'t'})[c]||'';
+}
+function genUser(full,taken=[]){
+  const parts=full.trim().split(/\s+/).filter(Boolean);if(!parts.length)return'';
+  const first=/^[a-z]/i.test(parts[0])?parts[0].toLowerCase().replace(/[^a-z]/g,''):translit(parts[0]);
+  const ini=parts.length>1?initialOf(parts[1]):'';
+  const g=gematria(full);
+  let base=(first+ini+(g||'')).toLowerCase().replace(/[^a-z0-9]/g,'')||'user';
+  let u=base,k=0;while(taken.includes(u))u=base+String.fromCharCode(98+(k++));
+  return u;
+}
+
+/* ---------- activity log → Google Sheets (Apps Script web app) ---------- */
+function logEvent(action,o={}){
+  const st=DB.settings||{},url=st.logUrl;
+  if(!url||!/^https:\/\/script\.google\.com\//.test(url))return;
+  const body=JSON.stringify({token:st.logToken||'',action,who:o.who||'',dept:o.dept||'',cat:o.cat?((CAT[o.cat]||{}).en||o.cat):'',details:o.details||'',ref:o.ref||'',page:location.hash||'#home'});
+  try{fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body}).catch(()=>{})}catch(e){}
+}
+const live=()=>DB.noms.filter(n=>!n.deletedAt);
 
 /* ---------- category cards ---------- */
 function catCard(c,i,featured){
@@ -368,7 +418,7 @@ const usedBy=(cat,dept)=>taken.filter(t=>t.cat===cat&&t.dept===dept).length;
 const isTaken=(cat,dept)=>usedBy(cat,dept)>=LIMIT(cat,dept);
 async function loadTaken(){
   if(B.sb){if(!sbCode)return;try{taken=await rpc('mmba_taken',{p_code:sbCode})||[]}catch(e){console.error(e)}}
-  else taken=DB.noms.map(n=>({cat:n.cat,dept:n.dept,joint:n.joint||[]}));
+  else taken=live().map(n=>({cat:n.cat,dept:n.dept,joint:n.joint||[]}));
   updCats();
 }
 function updCats(){
@@ -430,6 +480,7 @@ $('#nomGateForm').addEventListener('submit',async e=>{
   const code=$('#nomPin').value.trim();let good=false;
   if(B.sb){try{good=await rpc('mmba_check_code',{p_code:code})}catch(err){toast(errMsg(err));return}if(good)sbCode=code}
   else good=await kdf(code,SUB_SALT)===SUB_H;
+  if(!good)logEvent('קוד הגשה שגוי');
   if(good){ss.set('mmba.nom','1');$('#nomPin').value='';$('#nomGateErr').textContent='';await loadTaken();swapPanels($('#nomGate'),$('#nomFormWrap'))}
   else{$('#nomGateErr').textContent='הקוד לא נכון. בדקו את המייל הפנימי ונסו שוב.';shake($('#nomGate'))}
 });
@@ -461,6 +512,7 @@ $('#nomForm').addEventListener('submit',async e=>{
   });
   btn.disabled=false;btn.innerHTML=label;
   if(!ok){loadTaken();return}
+  logEvent('הגשת מועמדות',{who:f.by,dept:f.dept,cat:f.cat,details:`${f.title} · לקוח: ${f.client}${f.joint.length?' · שותפה: '+f.joint.join(', '):''}${f.team?' · צוות: '+f.team:''}${f.extra&&f.extra.consultant?' · יועץ/ת: '+f.extra.consultant:''} · ${nomFiles.length} תמונות${nomVideo?' + סרטון':''}`});
   previewUrls.forEach(u=>URL.revokeObjectURL(u));
   previewUrls=[...nomFiles.map(x=>x.url),...(nomVideo?[nomVideo.url]:[])];
   $('#nomPreview').innerHTML=nomCard({...f,imgs:nomFiles.map(x=>x.url),video:nomVideo?nomVideo.url:''},{pick:false});
@@ -475,8 +527,9 @@ $('#nomAgain').addEventListener('click',()=>{swapPanels($('#nomDone'),$('#nomFor
 /* ---------- VOTE (step-by-step wizard) ---------- */
 let voter=null,picks={},step=0,wzMode='step',saveT=null,confirmed=false;
 const myBallot=()=>DB.ballots.find(b=>b.id===voter.id);
-const choosable=c=>DB.noms.filter(n=>n.cat===c.k&&n.status==='approved');
-const isOwn=(c,n)=>c.k!=='commendation'&&(n.dept===voter.dept||(n.joint||[]).includes(voter.dept));
+// own department: greyed out everywhere; in צל״ש it is hidden altogether
+const isOwn=(c,n)=>n.dept===voter.dept||(n.joint||[]).includes(voter.dept);
+const choosable=c=>live().filter(n=>n.cat===c.k&&n.status==='approved'&&!(c.k==='commendation'&&isOwn(c,n)));
 function voteView(){
   banners();
   if(B.sb){if(!sbCreds)voter=null}
@@ -507,6 +560,7 @@ $('#voteGateForm').addEventListener('submit',async e=>{
     if(!myBallot()){const now=Date.now();await safe(()=>put('ballots',{id:v.id,picks:{},ts:now,startedAt:now,confirmed:false,confirmedAt:null}))}
   }
   $('#voteGateErr').textContent='';$('#vPass').value='';
+  logEvent('כניסה לקלפי',{who:voter.name+' ('+u+')',dept:voter.dept});
   $('#voteGate').style.transition='opacity .35s';$('#voteGate').style.opacity='0';
   setTimeout(()=>{$('#voteGate').hidden=true;$('#voteGate').style.cssText='';openBallot()},reduce?0:340);
 });
@@ -551,6 +605,7 @@ $('#wizard').addEventListener('click',async e=>{
   const pb=t.closest('.pick-btn');
   if(pb){const card=pb.closest('.ncard');if(card.classList.contains('own'))return;const c=card.dataset.c,n=card.dataset.n;
     if(picks[c]===n)delete picks[c];else picks[c]=n;
+    {const nn=DB.noms.find(x=>x.id===n);logEvent(picks[c]?'בחירה בקלפי':'ביטול בחירה',{who:voter.name,dept:voter.dept,cat:c,details:nn?nn.title:'',ref:n})}
     $$('#wizard .ncard').forEach(x=>{const on=x.dataset.n===picks[c];x.classList.toggle('sel',on);const btn=x.querySelector('.pick-btn');if(btn)btn.textContent=on?'✓ נבחר':'בחירה במהלך הזה'});
     if(picks[c]&&!reduce)card.animate([{transform:'scale(.97)'},{transform:'scale(1.02)'},{transform:'scale(1)'}],{duration:450,easing:'cubic-bezier(.2,.8,.15,1)'});
     const mid=$('#wizard .mid');if(mid)mid.innerHTML=picks[c]?'✓ הבחירה נשמרה':'בחרו מהלך אחד, או <button type="button" class="linkbtn" id="wzSkip">דלגו</button>';
@@ -563,7 +618,7 @@ $('#wizard').addEventListener('click',async e=>{
   const cf=t.closest('#wzConfirm');
   if(cf){cf.disabled=true;clearTimeout(saveT);
     const ok=await safe(()=>saveBallot(true));cf.disabled=false;if(!ok)return;
-    confirmed=true;renderDone();swapPanels($('#ballot'),$('#voteDone'));confetti();window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})}
+    confirmed=true;logEvent('אישור הצבעה',{who:voter.name,dept:voter.dept,details:CATS.map(c=>{const nn=DB.noms.find(x=>x.id===picks[c.k]);return nn?c.en+': '+nn.title:null}).filter(Boolean).join(' | ')||'ללא בחירות'});renderDone();swapPanels($('#ballot'),$('#voteDone'));confetti();window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})}
 });
 function renderDone(){$('#doneList').innerHTML=summaryRows(false)}
 function logoutVoter(){ss.del('mmba.voter');voter=null;sbCreds=null;picks={};$('#ballot').hidden=true;$('#voteDone').hidden=true;$('#voteGate').hidden=false}
@@ -718,6 +773,7 @@ $('#admGateForm').addEventListener('submit',async e=>{
   if(B.sb){try{await rpc('mmba_admin_dump',{p_admin:pw});good=true}catch(err){if(err.code!=='bad_admin'){toast(errMsg(err));return}}
     if(good){sbAdminPass=pw;ss.set('mmba.admp',pw);await sbSync()}}
   else good=await kdf(pw,ADM_SALT)===ADM_H;
+  logEvent(good?'כניסת מנהל':'ניסיון כניסה שגוי לאזור הניהול',{who:'מנהל'});
   if(good){ss.set('mmba.adm','1');$('#admPin').value='';$('#admErr').textContent='';renderAdmin();swapPanels($('#admGate'),$('#admin'))}
   else{$('#admErr').textContent='סיסמה שגויה.';shake($('#admGate'))}
 });
@@ -730,41 +786,50 @@ $('#admNav').addEventListener('click',e=>{
   $$('.apane').forEach(p=>p.classList.toggle('on',p.id==='p-'+pane));
   renderAdmin();
 });
-let nomFilt='all';
+let nomFilt='all',editUserId=null;
 const thumbsHTML=(imgs,owner,col)=>`<div class="mini">${(imgs||[]).map((r,i)=>`<div class="thumb"><img src="${esc(src(r))}" alt="" loading="lazy">${owner?`<button type="button" data-a="delimg" data-col="${col}" data-id="${owner}" data-i="${i}" aria-label="הסרת תמונה">✕</button>`:''}</div>`).join('')}</div>`;
+const fmtTs=ts=>ts?new Date(ts).toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'}):'';
+const SL={pending:'ממתינה',approved:'מאושרת',rejected:'נדחתה'};
 function renderAdmin(){
   if(!isAdmin())return;
-  $('#cNoms').textContent=DB.noms.length;$('#cVoters').textContent=DB.voters.length;$('#cHof').textContent=DB.hof.length;
-  const badge=(B.server||B.sb)?'<span class="badge-store srv">מחובר לשרת מאובטח · הנתונים משותפים לכל המשתמשים</span>':'<span class="badge-store loc">מצב תצוגה מקדימה · הנתונים נשמרים בדפדפן זה בלבד</span>';
-  $('#storeBadge').innerHTML=badge;
+  const L=live(),D=DB.noms.filter(n=>n.deletedAt);
+  $('#cNoms').textContent=L.length;$('#cVoters').textContent=DB.voters.length;$('#cHof').textContent=DB.hof.length;
+  $('#storeBadge').innerHTML=(B.server||B.sb)?'<span class="badge-store srv">מחובר לשרת מאובטח · הנתונים משותפים לכל המשתמשים</span>':'<span class="badge-store loc">מצב תצוגה מקדימה · הנתונים נשמרים בדפדפן זה בלבד</span>';
   const voted=DB.ballots.filter(b=>b.confirmed&&DB.voters.some(v=>v.id===b.id)).length;
-  const pend=DB.noms.filter(n=>n.status==='pending').length;
-  $('#kpis').innerHTML=[['מועמדויות',DB.noms.length],['ממתינות לאישור',pend],['מצביעים רשומים',DB.voters.length],['אישרו הצבעה',voted+(DB.voters.length?` <small style="font-size:.9rem;color:var(--muted)">(${Math.round(voted/DB.voters.length*100)}%)</small>`:'')]].map(([l,v])=>`<div class="kpi"><small>${l}</small><b>${v}</b></div>`).join('');
-  const max=Math.max(1,...CATS.map(c=>DB.noms.filter(n=>n.cat===c.k).length));
-  $('#ovCats').innerHTML=CATS.map(c=>{const t=DB.noms.filter(n=>n.cat===c.k),a=t.filter(n=>n.status==='approved').length;return `<div class="res-row" style="grid-template-columns:minmax(0,1fr) minmax(0,2fr) 60px"><div class="nm"><b class="lat" style="font-weight:400">${esc(c.en)}</b></div><div class="bars"><div class="e"><span>סה״כ</span><i style="width:${t.length/max*100}%"></i></div><div class="c"><span>מאושרות</span><i style="width:${a/max*100}%"></i></div></div><div class="score" style="font-size:1.1rem">${a}/${t.length}</div></div>`}).join('');
-  const fl=[['all','הכל'],['pending','ממתינות'],['approved','מאושרות'],['rejected','נדחו']];
-  $('#nomFilter').innerHTML=fl.map(([k,l])=>`<button class="tab${nomFilt===k?' on':''}" data-f="${k}">${l} · ${k==='all'?DB.noms.length:DB.noms.filter(n=>n.status===k).length}</button>`).join('');
-  const SL={pending:'ממתינה',approved:'מאושרת',rejected:'נדחתה'};
-  const rows=DB.noms.filter(n=>nomFilt==='all'||n.status===nomFilt);
-  $('#nomRows').innerHTML=rows.length?rows.map(n=>`<tr><td><span class="lat">${esc((CAT[n.cat]||{}).en||n.cat)}</span></td><td style="min-width:240px"><b>${esc(n.title)}</b><div style="font-size:.82rem;color:var(--dim)">${esc(n.client)}${n.team?' · '+esc(n.team):''}${n.extra&&n.extra.consultant?` · ★ ${esc(n.extra.consultant)} (במשרד מ־${esc(fmtD(n.extra.startDate))}, מהלך ${esc(fmtD(n.extra.actionDate))})`:''}${n.link?` · <a href="${esc(n.link)}" target="_blank" rel="noopener" style="color:var(--gold)">קישור</a>`:''}</div><div style="font-size:.82rem;color:var(--muted);margin:4px 0 6px;max-width:46ch">${esc(n.desc)}</div>${thumbsHTML(n.imgs)}</td><td>${esc(n.dept)}${n.joint&&n.joint.length?`<div style="font-size:.78rem;color:var(--dim)">+ ${n.joint.map(esc).join(', ')}</div>`:''}</td><td>${esc(n.by)}</td><td><span class="st ${n.status}">${SL[n.status]}</span></td><td><div class="row-actions">${n.status!=='approved'?`<button class="icon-btn ok" data-a="approve" data-id="${n.id}">אישור</button>`:''}${n.status!=='rejected'?`<button class="icon-btn bad" data-a="reject" data-id="${n.id}">דחייה</button>`:''}<button class="icon-btn bad" data-a="delnom" data-id="${n.id}">מחיקה</button></div></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty" style="border:0">אין מועמדויות בסינון הזה.</div></td></tr>';
+  $('#kpis').innerHTML=[['מועמדויות',L.length],['ממתינות לאישור',L.filter(n=>n.status==='pending').length],['מצביעים רשומים',DB.voters.length],['אישרו הצבעה',voted+(DB.voters.length?` <small style="font-size:.9rem;color:var(--muted)">(${Math.round(voted/DB.voters.length*100)}%)</small>`:'')]].map(([l,v])=>`<div class="kpi"><small>${l}</small><b>${v}</b></div>`).join('');
+  const max=Math.max(1,...CATS.map(c=>L.filter(n=>n.cat===c.k).length));
+  $('#ovCats').innerHTML=CATS.map(c=>{const t=L.filter(n=>n.cat===c.k),a=t.filter(n=>n.status==='approved').length;return `<div class="res-row" style="grid-template-columns:minmax(0,1fr) minmax(0,2fr) 60px"><div class="nm"><b class="lat" style="font-weight:400">${esc(c.en)}</b></div><div class="bars"><div class="e"><span>סה״כ</span><i style="width:${t.length/max*100}%"></i></div><div class="c"><span>מאושרות</span><i style="width:${a/max*100}%"></i></div></div><div class="score" style="font-size:1.1rem">${a}/${t.length}</div></div>`}).join('');
+  // nominations + deleted archive
+  const fl=[['all','הכל',L.length],['pending','ממתינות',L.filter(n=>n.status==='pending').length],['approved','מאושרות',L.filter(n=>n.status==='approved').length],['rejected','נדחו',L.filter(n=>n.status==='rejected').length],['deleted','נמחקו',D.length]];
+  $('#nomFilter').innerHTML=fl.map(([k,l,c])=>`<button class="tab${nomFilt===k?' on':''}${k==='deleted'?' tab-del':''}" data-f="${k}">${l} · ${c}</button>`).join('');
+  const rows=nomFilt==='deleted'?D:L.filter(n=>nomFilt==='all'||n.status===nomFilt);
+  $('#nomRows').innerHTML=rows.length?rows.map(n=>`<tr${n.deletedAt?' class="row-del"':''}><td><span class="lat">${esc((CAT[n.cat]||{}).en||n.cat)}</span></td><td style="min-width:240px"><b>${esc(n.title)}</b><div style="font-size:.82rem;color:var(--dim)">${esc(n.client)}${n.team?' · '+esc(n.team):''}${n.extra&&n.extra.consultant?` · ★ ${esc(n.extra.consultant)} (במשרד מ־${esc(fmtD(n.extra.startDate))}, מהלך ${esc(fmtD(n.extra.actionDate))})`:''}${n.link?` · <a href="${esc(n.link)}" target="_blank" rel="noopener" style="color:var(--gold)">קישור</a>`:''}${n.video?` · <a href="${esc(src(n.video))}" target="_blank" rel="noopener" style="color:var(--gold)">סרטון</a>`:''}</div><div style="font-size:.82rem;color:var(--muted);margin:4px 0 6px;max-width:46ch">${esc(n.desc)}</div>${thumbsHTML(n.imgs)}</td><td>${esc(n.dept)}${n.joint&&n.joint.length?`<div style="font-size:.78rem;color:var(--dim)">+ ${n.joint.map(esc).join(', ')}</div>`:''}</td><td>${esc(n.by)}<div style="font-size:.75rem;color:var(--dim)">${fmtTs(n.ts)}</div></td><td>${n.deletedAt?`<span class="st rejected">נמחקה</span><div style="font-size:.75rem;color:var(--dim);margin-top:4px">${fmtTs(n.deletedAt)}<br>(הייתה ${SL[n.status]})</div>`:`<span class="st ${n.status}">${SL[n.status]}</span>`}</td><td><div class="row-actions">${n.deletedAt?`<button class="icon-btn ok" data-a="restorenom" data-id="${n.id}">שחזור</button>`:`${n.status!=='approved'?`<button class="icon-btn ok" data-a="approve" data-id="${n.id}">אישור</button>`:''}${n.status!=='rejected'?`<button class="icon-btn bad" data-a="reject" data-id="${n.id}">דחייה</button>`:''}<button class="icon-btn bad" data-a="delnom" data-id="${n.id}">מחיקה</button>`}</div></td></tr>`).join(''):`<tr><td colspan="6"><div class="empty" style="border:0">${nomFilt==='deleted'?'לא נמחקו מועמדויות.':'אין מועמדויות בסינון הזה.'}</div></td></tr>`;
+  $('#delNote').hidden=nomFilt!=='deleted';
   if(!$('#vfDept').options.length){$('#vfDept').innerHTML=deptOpts();$('#hfDept').innerHTML=deptOpts()}
+  // voters
   const bmap=Object.fromEntries(DB.ballots.map(b=>[b.id,b])),nmap=Object.fromEntries(DB.noms.map(n=>[n.id,n]));
   const dur=ms=>{const m=Math.round(ms/60000);return m<1?'פחות מדקה':m<60?`${m} דק׳`:`${Math.floor(m/60)} ש׳ ${m%60} דק׳`};
   $('#voterRows').innerHTML=DB.voters.length?DB.voters.map(v=>{const b=bmap[v.id],np=b?Object.keys(b.picks||{}).length:0;
     const st=!b?'<span class="st rejected">לא הצביע/ה</span>':b.confirmed?'<span class="st approved">אישר/ה הצבעה</span>':`<span class="st pending">בתהליך · ${np}/${CATS.length}</span>`;
     const fin=b&&b.confirmed?`<details><summary>הבחירות הסופיות</summary><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nmap[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')||'<li>לא נבחרו מהלכים</li>'}</ul></details>`:'';
     const time=b&&b.confirmed&&b.startedAt&&b.confirmedAt?dur(b.confirmedAt-b.startedAt):'—';
-    return `<tr><td><b>${esc(v.name)}</b></td><td><span class="cred">${esc(v.user)}</span></td><td>${esc(v.dept)}</td><td><span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span></td><td><div class="vstat">${st}${fin}</div></td><td style="font-variant-numeric:tabular-nums">${time}</td><td><div class="row-actions">${b&&b.confirmed?`<button class="icon-btn" data-a="reopen" data-id="${v.id}">פתיחה מחדש</button>`:''}<button class="icon-btn" data-a="newpass" data-id="${v.id}">סיסמה חדשה</button><button class="icon-btn bad" data-a="delvoter" data-id="${v.id}">הסרה</button></div></td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty" style="border:0">אין מצביעים עדיין. הוסיפו את הראשון בטופס למעלה.</div></td></tr>';
+    const ucell=editUserId===v.id?`<span class="user-edit"><input type="text" id="ueInput" value="${esc(v.user)}" dir="ltr" maxlength="40" aria-label="שם משתמש חדש"><button class="icon-btn ok" data-a="saveuser" data-id="${v.id}">שמירה</button><button class="icon-btn" data-a="canceluser" data-id="${v.id}">ביטול</button></span>`:`<span class="cred">${esc(v.user)}</span> <button class="icon-btn mini-btn" data-a="edituser" data-id="${v.id}" aria-label="עריכת שם המשתמש">עריכה</button>`;
+    return `<tr><td><b>${esc(v.name)}</b></td><td>${ucell}</td><td>${esc(v.dept)}</td><td><span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span></td><td><div class="vstat">${st}${fin}</div></td><td style="font-variant-numeric:tabular-nums">${time}</td><td><div class="row-actions">${b&&b.confirmed?`<button class="icon-btn" data-a="reopen" data-id="${v.id}">פתיחה מחדש</button>`:''}<button class="icon-btn" data-a="newpass" data-id="${v.id}">סיסמה חדשה</button><button class="icon-btn bad" data-a="delvoter" data-id="${v.id}">הסרה</button></div></td></tr>`}).join(''):'<tr><td colspan="7"><div class="empty" style="border:0">אין מצביעים עדיין. הוסיפו את הראשון בטופס למעלה.</div></td></tr>';
+  if(editUserId){const i=$('#ueInput');if(i&&document.activeElement!==i){i.focus();i.select()}}
   renderResults();
   $('#catNames').innerHTML=CATS.map(c=>`<option value="${esc(c.en)}">`).join('')+'<option value="Diamond Item"><option value="Iron Swords">';
   $('#hofRows').innerHTML=DB.hof.length?DB.hof.map(h=>`<tr><td class="lat">${esc(h.year)}</td><td><span class="lat">${esc(h.cat)}</span></td><td style="min-width:220px"><b>${esc(h.title)}</b></td><td>${esc(h.dept)}</td><td>${thumbsHTML(h.imgs,h.id,'hof')}</td><td><div class="row-actions"><button class="icon-btn" data-a="addimg" data-id="${h.id}">+ תמונה</button><button class="icon-btn bad" data-a="delhof" data-id="${h.id}">מחיקה</button></div></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty" style="border:0">אין זוכים עדיין.</div></td></tr>';
   $('#sSub').checked=!!DB.settings.subOpen;$('#sVote').checked=!!DB.settings.voteOpen;
+  if(document.activeElement!==$('#logUrl'))$('#logUrl').value=DB.settings.logUrl||'';
+  if(document.activeElement!==$('#logToken'))$('#logToken').value=DB.settings.logToken||'';
+  $('#logState').textContent=DB.settings.logUrl?'מחובר: כל פעולה באתר נרשמת בגיליון':'לא מחובר';
+  $('#logState').className='log-state'+(DB.settings.logUrl?' on':'');
   renderHistory();
 }
 function renderResults(){
   const vmap=Object.fromEntries(DB.voters.map(v=>[v.id,v]));
   $('#resScore').innerHTML=CATS.map(c=>{
-    const ns=DB.noms.filter(n=>n.cat===c.k&&n.status==='approved');
+    const ns=live().filter(n=>n.cat===c.k&&n.status==='approved');
     let eT=0,cT=0;const e={},k={};
     for(const b of DB.ballots){const v=vmap[b.id];if(!v||!b.confirmed)continue;const p=(b.picks||{})[c.k];if(!p)continue;if(v.role==='ceo'){k[p]=(k[p]||0)+1;cT++}else{e[p]=(e[p]||0)+1;eT++}}
     const rows=ns.map(n=>{const es=eT?(e[n.id]||0)/eT:0,cs=cT?(k[n.id]||0)/cT:0;return {n,ev:e[n.id]||0,cv:k[n.id]||0,es,cs,score:(es+cs)/(((eT?1:0)+(cT?1:0))||1)}}).sort((a,b)=>b.score-a.score);
@@ -773,25 +838,33 @@ function renderResults(){
   }).join('')+'<p class="note">נספרות רק הצבעות שאושרו. כשאין עדיין קולות מנכ״לים, הניקוד מבוסס על קולות העובדים בלבד (ולהפך).</p>';
   const nm=Object.fromEntries(DB.noms.map(n=>[n.id,n]));
   const bl=DB.ballots.filter(b=>vmap[b.id]&&Object.keys(b.picks||{}).length).sort((a,b)=>b.ts-a.ts);
-  $('#resBallots').innerHTML=bl.length?bl.map(b=>{const v=vmap[b.id];return `<div class="bl"><div class="bl-h"><div><b>${esc(v.name)}</b> <span style="color:var(--dim);font-size:.85rem">· ${esc(v.dept)}</span></div><div style="display:flex;gap:8px;align-items:center">${b.confirmed?'<span class="st approved">אישר/ה</span>':'<span class="st pending">טיוטה</span>'}<span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span><span style="color:var(--dim);font-size:.8rem">${new Date(b.ts).toLocaleString('he-IL',{dateStyle:'short',timeStyle:'short'})}</span></div></div><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nm[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')}</ul></div>`}).join(''):'<div class="empty">עוד לא נשלחו פתקים.</div>';
+  $('#resBallots').innerHTML=bl.length?bl.map(b=>{const v=vmap[b.id];return `<div class="bl"><div class="bl-h"><div><b>${esc(v.name)}</b> <span style="color:var(--dim);font-size:.85rem">· ${esc(v.dept)}</span></div><div style="display:flex;gap:8px;align-items:center">${b.confirmed?'<span class="st approved">אישר/ה</span>':'<span class="st pending">טיוטה</span>'}<span class="role${v.role==='ceo'?' ceo':''}">${v.role==='ceo'?'מנכ״ל/ית':'עובד/ת'}</span><span style="color:var(--dim);font-size:.8rem">${fmtTs(b.ts)}</span></div></div><ul>${CATS.map(c=>(b.picks||{})[c.k]?`<li><span class="lat">${esc(c.en)}</span> · ${esc((nm[b.picks[c.k]]||{}).title||'(נמחקה)')}</li>`:'').join('')}</ul></div>`}).join(''):'<div class="empty">עוד לא נשלחו פתקים.</div>';
 }
 $('#resTabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;$$('#resTabs .tab').forEach(x=>x.classList.toggle('on',x===b));$('#resScore').hidden=b.dataset.t!=='score';$('#resBallots').hidden=b.dataset.t!=='ballots'});
 $('#nomFilter').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;nomFilt=b.dataset.f;renderAdmin()});
-function mkUser(){let n=DB.voters.length+1,u;do{u='bha'+(n++)}while(DB.voters.some(v=>v.user===u));return u}
 function showCred(v,pass){
   $('#newCred').innerHTML=`<div class="new-cred"><div><b>פרטי כניסה עבור ${esc(v.name)}</b><p>שם משתמש <span class="cred">${esc(v.user)}</span> · סיסמה <span class="cred">${esc(pass)}</span> · הסיסמה נשמרת מוצפנת ותוצג רק עכשיו.</p></div><div style="display:flex;gap:8px"><button class="btn small solid" type="button" id="credCopy">העתקה</button><button class="btn small ghost" type="button" id="credClose">סגירה</button></div></div>`;
   $('#credCopy').onclick=()=>{const t=`ממב״א 2026 · כניסה לקלפי\nשם משתמש: ${v.user}\nסיסמה: ${pass}`;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('הפרטים הועתקו'),()=>toast('סמנו את הפרטים והעתיקו ידנית'))};
   $('#credClose').onclick=()=>{$('#newCred').innerHTML=''};
 }
+// username: generated from the name, editable before saving
+let userTouched=false;
+const otherUsers=id=>DB.voters.filter(v=>v.id!==id).map(v=>v.user);
+$('#vfName').addEventListener('input',()=>{if(!userTouched)$('#vfUser').value=genUser($('#vfName').value,otherUsers())});
+$('#vfUser').addEventListener('input',()=>{userTouched=!!$('#vfUser').value.trim()});
+const USER_RE=/^[a-z0-9._-]{3,40}$/;
 $('#voterForm').addEventListener('submit',async e=>{
   e.preventDefault();const name=$('#vfName').value.trim();if(!name)return;
-  const pass=$('#vfPass').value.trim()||randStr(6),dept=$('#vfDept').value,role=$('#vfRole').value,user=mkUser();
+  const pass=$('#vfPass').value.trim()||randStr(6),dept=$('#vfDept').value,role=$('#vfRole').value;
+  const user=($('#vfUser').value.trim()||genUser(name,otherUsers())).toLowerCase();
+  if(!USER_RE.test(user)){toast(errMsg({code:'bad_user'}));return}
+  if(DB.voters.some(v=>v.user===user)){toast('שם המשתמש הזה כבר קיים. בחרו שם אחר.');return}
   let v;
   const ok=await safe(async()=>{
     if(B.sb){const id=await rpc('mmba_admin_add_voter',A({p_name:name,p_user:user,p_pass:pass,p_dept:dept,p_role:role}));v={id,name,user,dept,role};await after()}
     else{const salt=randStr(16);v={id:uid('v'),name,user,salt,hash:await kdf(pass,salt),dept,role};await put('voters',v)}
   });
-  if(ok){$('#vfName').value='';$('#vfPass').value='';renderAdmin();showCred(v,pass)}
+  if(ok){logEvent('הוספת מצביע',{who:'מנהל',dept,details:`${name} · ${user} · ${role==='ceo'?'מנכ״ל/ית':'עובד/ת'}`});$('#vfName').value='';$('#vfPass').value='';$('#vfUser').value='';userTouched=false;renderAdmin();showCred(v,pass)}
 });
 $('#hofForm').addEventListener('submit',async e=>{
   e.preventDefault();const y=parseInt($('#hfYear').value,10),c=$('#hfCat').value.trim(),t=$('#hfTitle').value.trim();
@@ -802,56 +875,105 @@ $('#hofForm').addEventListener('submit',async e=>{
     if(B.sb){await rpc('mmba_admin_save_hof',A({p:{year:y,cat:c,dept:$('#hfDept').value,title:t,imgs}}));await after()}
     else await put('hof',{id:uid('h'),year:y,cat:c,dept:$('#hfDept').value,title:t,imgs,order:Date.now()})},'הזוכה נוסף להיכל התהילה');
   btn.disabled=false;btn.textContent='הוספה';
-  if(ok){$('#hfTitle').value='';$('#hfCat').value='';$('#hfImgs').value='';renderAdmin();schedule()}
+  if(ok){logEvent('הוספת זוכה להיכל התהילה',{who:'מנהל',dept:$('#hfDept').value,details:`${y} · ${c} · ${t}`});$('#hfTitle').value='';$('#hfCat').value='';$('#hfImgs').value='';renderAdmin();schedule()}
 });
 const updHof=async h=>{if(B.sb){await rpc('mmba_admin_save_hof',A({p:{id:h.id,year:h.year,cat:h.cat,dept:h.dept,title:h.title,imgs:h.imgs||[]}}));await after()}else await put('hof',h)};
 let addImgTarget=null;
 $('#hofAdd').addEventListener('change',async()=>{
   const h=DB.hof.find(x=>x.id===addImgTarget),files=[...$('#hofAdd').files];$('#hofAdd').value='';if(!h||!files.length)return;
   toast('מעלים תמונות…');
-  await safe(async()=>{const imgs=await uploadMany(files);await updHof({...h,imgs:[...(h.imgs||[]),...imgs]})},'התמונות נשמרו');
+  if(await safe(async()=>{const imgs=await uploadMany(files);await updHof({...h,imgs:[...(h.imgs||[]),...imgs]})},'התמונות נשמרו'))logEvent('הוספת תמונה לזוכה',{who:'מנהל',details:`${h.year} · ${h.title} · ${files.length} תמונות`});
   renderAdmin();schedule();
 });
+$('#admin').addEventListener('keydown',e=>{if(e.target.id==='ueInput'){if(e.key==='Enter'){e.preventDefault();$('[data-a=saveuser]').click()}if(e.key==='Escape'){editUserId=null;renderAdmin()}}});
 $('#admin').addEventListener('click',async e=>{
   const b=e.target.closest('[data-a]');if(!b)return;const id=b.dataset.id,a=b.dataset.a;
   const n=DB.noms.find(x=>x.id===id),v=DB.voters.find(x=>x.id===id),h=DB.hof.find(x=>x.id===id);
+  const nomInfo=n?{who:'מנהל',dept:n.dept,cat:n.cat,details:n.title,ref:n.id}:{};
   const setStatus=st=>B.sb?rpc('mmba_admin_nom_status',A({p_id:id,p_status:st})).then(after):put('noms',{...n,status:st});
-  if(a==='approve')await safe(()=>setStatus('approved'),'אושרה ועלתה לקלפי');
-  if(a==='reject')await safe(()=>setStatus('rejected'),'נדחתה');
+  if(a==='approve'&&await safe(()=>setStatus('approved'),'אושרה ועלתה לקלפי'))logEvent('אישור מועמדות',nomInfo);
+  if(a==='reject'&&await safe(()=>setStatus('rejected'),'נדחתה'))logEvent('דחיית מועמדות',nomInfo);
+  if(a==='restorenom'&&await safe(async()=>{if(B.sb){await rpc('mmba_admin_restore_nom',A({p_id:id}));await after()}else await put('noms',{...n,deletedAt:null})},'המועמדות שוחזרה'))logEvent('שחזור מועמדות שנמחקה',nomInfo);
   if(a==='newpass'){const pass=randStr(6);let nv;
-    if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_set_pass',A({p_id:id,p_pass:pass}));nv=v}else{const salt=randStr(16);nv={...v,salt,hash:await kdf(pass,salt)};await put('voters',nv)}}))showCred(nv,pass)}
-  if(a==='reopen'){const bb=DB.ballots.find(x=>x.id===id);await safe(async()=>{if(B.sb){await rpc('mmba_admin_reopen_ballot',A({p_id:id}));await after()}else await put('ballots',{...bb,confirmed:false,confirmedAt:null})},'ההצבעה נפתחה מחדש לעריכה')}
+    if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_set_pass',A({p_id:id,p_pass:pass}));nv=v}else{const salt=randStr(16);nv={...v,salt,hash:await kdf(pass,salt)};await put('voters',nv)}})){showCred(nv,pass);logEvent('סיסמה חדשה למצביע',{who:'מנהל',dept:v.dept,details:`${v.name} · ${v.user}`})}}
+  if(a==='edituser'){editUserId=id;renderAdmin();return}
+  if(a==='canceluser'){editUserId=null;renderAdmin();return}
+  if(a==='saveuser'){
+    const nu=($('#ueInput').value||'').trim().toLowerCase();
+    if(nu===v.user){editUserId=null;renderAdmin();return}
+    if(!USER_RE.test(nu)){toast(errMsg({code:'bad_user'}));return}
+    if(DB.voters.some(x=>x.id!==id&&x.user===nu)){toast('שם המשתמש הזה כבר קיים.');return}
+    if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_set_username',A({p_id:id,p_user:nu}));await after()}else await put('voters',{...v,user:nu})},'שם המשתמש עודכן')){logEvent('שינוי שם משתמש',{who:'מנהל',dept:v.dept,details:`${v.name} · ${v.user} → ${nu}`});editUserId=null}
+  }
+  if(a==='reopen'){const bb=DB.ballots.find(x=>x.id===id);if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_reopen_ballot',A({p_id:id}));await after()}else await put('ballots',{...bb,confirmed:false,confirmedAt:null})},'ההצבעה נפתחה מחדש לעריכה'))logEvent('פתיחת הצבעה מחדש',{who:'מנהל',dept:v&&v.dept,details:v?v.name:''})}
   if(a==='addimg'){addImgTarget=id;$('#hofAdd').click();return}
   if(a==='delimg'){
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='?';setTimeout(()=>{if(b.isConnected){b.dataset.sure='';b.textContent='✕'}},2500);return}
-    const i=+b.dataset.i,ref=(h.imgs||[])[i];await safe(async()=>{await updHof({...h,imgs:h.imgs.filter((_,k)=>k!==i)});await deleteAsset(ref)},'התמונה הוסרה');schedule();
+    const i=+b.dataset.i,ref=(h.imgs||[])[i];if(await safe(async()=>{await updHof({...h,imgs:h.imgs.filter((_,k)=>k!==i)});await deleteAsset(ref)},'התמונה הוסרה'))logEvent('הסרת תמונה מזוכה',{who:'מנהל',details:`${h.year} · ${h.title}`});schedule();
   }
   if(['delnom','delvoter','delhof'].includes(a)){
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='בטוח?';setTimeout(()=>{if(b.isConnected){b.dataset.sure='';b.textContent=a==='delvoter'?'הסרה':'מחיקה'}},3000);return}
+    let ok;
     if(B.sb){
       const fn={delnom:'mmba_admin_delete_nom',delvoter:'mmba_admin_delete_voter',delhof:'mmba_admin_delete_hof'}[a];
-      await safe(async()=>{await rpc(fn,A({p_id:id}));await after()},'נמחק');
+      ok=await safe(async()=>{await rpc(fn,A({p_id:id}));await after()},a==='delnom'?'המועמדות הועברה לארכיון "נמחקו"':'נמחק');
     }else{
-      if(a==='delnom')await safe(async()=>{await drop('noms',id);for(const r of n.imgs||[])await deleteAsset(r);for(const bl of DB.ballots){if(Object.values(bl.picks||{}).includes(id)){const p={...bl.picks};for(const k in p)if(p[k]===id)delete p[k];await put('ballots',{...bl,picks:p})}}},'נמחקה');
-      if(a==='delvoter')await safe(async()=>{await drop('voters',id);if(DB.ballots.some(x=>x.id===id))await drop('ballots',id)},'הוסר/ה');
-      if(a==='delhof')await safe(async()=>{await drop('hof',id);for(const r of h.imgs||[])await deleteAsset(r)},'נמחק');
+      if(a==='delnom')ok=await safe(async()=>{await put('noms',{...n,deletedAt:Date.now()});for(const bl of DB.ballots){if(Object.values(bl.picks||{}).includes(id)){const p={...bl.picks};for(const k in p)if(p[k]===id)delete p[k];await put('ballots',{...bl,picks:p})}}},'המועמדות הועברה לארכיון "נמחקו"');
+      if(a==='delvoter')ok=await safe(async()=>{await drop('voters',id);if(DB.ballots.some(x=>x.id===id))await drop('ballots',id)},'הוסר/ה');
+      if(a==='delhof')ok=await safe(async()=>{await drop('hof',id);for(const r of h.imgs||[])await deleteAsset(r)},'נמחק');
     }
+    if(ok){if(a==='delnom')logEvent('מחיקת מועמדות (לארכיון)',nomInfo);if(a==='delvoter')logEvent('הסרת מצביע',{who:'מנהל',dept:v.dept,details:`${v.name} · ${v.user}`});if(a==='delhof')logEvent('מחיקת זוכה מההיכל',{who:'מנהל',details:`${h.year} · ${h.cat} · ${h.title}`})}
     schedule();
   }
   renderAdmin();
 });
-async function saveSettings(s){if(B.sb){await rpc('mmba_admin_settings',A({p_sub:!!s.subOpen,p_vote:!!s.voteOpen}));DB.settings=s;await after()}else await putDoc('settings',s)}
-$('#sSub').addEventListener('change',e=>safe(()=>saveSettings({...DB.settings,subOpen:e.target.checked}),e.target.checked?'ההגשות נפתחו':'ההגשות נסגרו'));
-$('#sVote').addEventListener('change',e=>safe(()=>saveSettings({...DB.settings,voteOpen:e.target.checked}),e.target.checked?'הקלפי נפתחה':'הקלפי נסגרה'));
-$('#sExport').addEventListener('click',()=>{const t=$('#exportBox');t.hidden=false;const {voters,...rest}=DB;t.value=JSON.stringify({...rest,voters:voters.map(({salt,hash,...v})=>v)},null,2);t.select();(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).then(()=>toast('הנתונים הועתקו'),()=>toast('סמנו והעתיקו מהתיבה'))});
+async function saveSettings(s){if(B.sb){await rpc('mmba_admin_settings',A({p_sub:!!s.subOpen,p_vote:!!s.voteOpen}));DB.settings={...DB.settings,...s};await after()}else await putDoc('settings',s)}
+$('#sSub').addEventListener('change',async e=>{const on=e.target.checked;if(await safe(()=>saveSettings({...DB.settings,subOpen:on}),on?'ההגשות נפתחו':'ההגשות נסגרו'))logEvent(on?'פתיחת ההגשות':'סגירת ההגשות',{who:'מנהל'})});
+$('#sVote').addEventListener('change',async e=>{const on=e.target.checked;if(await safe(()=>saveSettings({...DB.settings,voteOpen:on}),on?'הקלפי נפתחה':'הקלפי נסגרה'))logEvent(on?'פתיחת הקלפי':'סגירת הקלפי',{who:'מנהל'})});
+$('#logSave').addEventListener('click',async()=>{
+  const url=$('#logUrl').value.trim(),token=$('#logToken').value.trim();
+  if(url&&!/^https:\/\/script\.google\.com\//.test(url)){toast(errMsg({code:'bad_url'}));return}
+  if(await safe(async()=>{if(B.sb){await rpc('mmba_admin_set_log',A({p_url:url,p_token:token}));DB.settings={...DB.settings,logUrl:url,logToken:token};await after()}else await putDoc('settings',{...DB.settings,logUrl:url,logToken:token})},url?'הלוג חובר':'הלוג נותק')){if(url)logEvent('חיבור הלוג לגיליון',{who:'מנהל',details:'הלוג חובר בהצלחה'});renderAdmin()}
+});
+$('#logTest').addEventListener('click',()=>{if(!DB.settings.logUrl){toast('קודם שמרו כתובת');return}logEvent('בדיקת חיבור',{who:'מנהל',details:'שורת בדיקה מאזור הניהול'});toast('נשלחה שורת בדיקה. בדקו בגיליון בעוד כמה שניות.')});
+$('#sExport').addEventListener('click',()=>{const t=$('#exportBox');t.hidden=false;const {voters,...rest}=DB;t.value=JSON.stringify({...rest,voters:voters.map(({salt,hash,...v})=>v)},null,2);t.select();(navigator.clipboard?navigator.clipboard.writeText(t.value):Promise.reject()).then(()=>toast('הנתונים הועתקו'),()=>toast('סמנו והעתיקו מהתיבה'));logEvent('ייצוא נתונים (JSON)',{who:'מנהל'})});
 $('#resetWrap').addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='sReset'){$('#resetWrap').innerHTML='<span class="confirm-inline">למחוק הכל? <button class="btn small red" id="sReset2" type="button">כן, איפוס</button><button class="btn small ghost" id="sCancel" type="button">ביטול</button></span>';return}
-  if(b.id==='sReset2'){$('#resetWrap').innerHTML='<span class="confirm-inline">מוחקים…</span>';await safe(async()=>{
+  if(b.id==='sReset2'){$('#resetWrap').innerHTML='<span class="confirm-inline">מוחקים…</span>';if(await safe(async()=>{
     if(B.sb){await rpc('mmba_admin_reset',A({}));await after();return}
-    for(const n of [...DB.noms]){await drop('noms',n.id);for(const r of n.imgs||[])await deleteAsset(r)}for(const v of [...DB.voters])await drop('voters',v.id);for(const x of [...DB.ballots])await drop('ballots',x.id)},'הנתונים אופסו')}
+    for(const n of [...DB.noms]){await drop('noms',n.id);for(const r of n.imgs||[])await deleteAsset(r)}for(const v of [...DB.voters])await drop('voters',v.id);for(const x of [...DB.ballots])await drop('ballots',x.id)},'הנתונים אופסו'))logEvent('איפוס כל הנתונים',{who:'מנהל',details:'מועמדויות, מצביעים ופתקים נמחקו'})}
   $('#resetWrap').innerHTML='<button class="btn small red" id="sReset" type="button">איפוס</button>';renderAdmin();
 });
+
+/* ---------- PDF export of all nominations (browser print → Save as PDF) ---------- */
+async function exportPDF(){
+  if(B.server){toast('ייצוא PDF זמין באתר עצמו (ב־GitHub). בתצוגה המקדימה הדפדפן חוסם הדפסה.');return}
+  const L=live(),D=DB.noms.filter(n=>n.deletedAt);
+  if(!L.length&&!D.length){toast('אין עדיין מועמדויות לייצוא');return}
+  const card=n=>`<article class="pn">
+    <div class="pn-txt">
+      <div class="pn-top"><b>${esc(n.title)}</b><span class="pn-st ${n.deletedAt?'del':n.status}">${n.deletedAt?'נמחקה':SL[n.status]}</span></div>
+      <div class="pn-meta">${esc(n.team?n.team+' · ':'')}${esc(n.dept)}${(n.joint||[]).length?' + '+esc(n.joint.join(', ')):''} · לקוח: ${esc(n.client)} · הוגש ע״י ${esc(n.by)} · ${fmtTs(n.ts)}${n.deletedAt?' · נמחקה '+fmtTs(n.deletedAt):''}</div>
+      ${n.extra&&n.extra.consultant?`<div class="pn-meta">★ Rising Star: ${esc(n.extra.consultant)} · במשרד מ־${esc(fmtD(n.extra.startDate))} · המהלך ${esc(fmtD(n.extra.actionDate))}</div>`:''}
+      <p>${esc(n.desc)}</p>
+      ${n.link||n.video?`<div class="pn-links">${n.link?`קישור: <a href="${esc(n.link)}">${esc(n.link)}</a>`:''}${n.link&&n.video?' · ':''}${n.video?`סרטון: <a href="${esc(src(n.video))}">${esc(src(n.video))}</a>`:''}</div>`:''}
+    </div>
+    ${(n.imgs||[]).length?`<div class="pn-imgs">${n.imgs.slice(0,5).map(r=>`<img src="${esc(src(r))}" alt="">`).join('')}</div>`:''}
+  </article>`;
+  const section=(list,title)=>CATS.map(c=>{const g=list.filter(n=>n.cat===c.k);return g.length?`<section class="pc"><h2><span${c.heb?' class="heb"':''}>${esc(c.en)}</span> <small>${esc(c.he)} · ${g.length}</small></h2>${g.map(card).join('')}</section>`:''}).join('');
+  const count=st=>L.filter(n=>n.status===st).length;
+  $('#printArea').innerHTML=`<header class="ph"><img src="${$('.brand img').src}" alt=""><div><b>ממב״א 2026 · דוח מועמדויות</b><span>הופק ב־${fmtTs(Date.now())} · ${L.length} מועמדויות (${count('approved')} מאושרות, ${count('pending')} ממתינות, ${count('rejected')} נדחו)${D.length?` · ${D.length} נמחקו`:''}</span></div></header>
+    ${section(L)}${D.length?`<h1 class="pd">מועמדויות שנמחקו</h1>${section(D)}`:''}`;
+  toast('מכינים את הקובץ…');
+  await Promise.all([...$$('#printArea img')].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r;setTimeout(r,10000)})));
+  logEvent('ייצוא מועמדויות ל־PDF',{who:'מנהל',details:`${L.length} מועמדויות${D.length?' + '+D.length+' שנמחקו':''}`});
+  const t0=document.title;document.title=`ממב״א 2026 – מועמדויות – ${new Date().toLocaleDateString('he-IL').replace(/\./g,'-')}`;
+  window.print();
+  setTimeout(()=>{document.title=t0},1000);
+}
+$$('.pdf-btn').forEach(b=>b.addEventListener('click',exportPDF));
+addEventListener('afterprint',()=>{$('#printArea').innerHTML=''});
 
 /* ---------- homepage text editing with version history ---------- */
 let editing=false,dirty=false;
@@ -881,6 +1003,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('a,button,.cat')){e.preventDefault();e.stopPropagation()}
 },true);
 async function saveContent(texts,label){
+  logEvent('עריכת טקסטים בדף הבית',{who:'מנהל',details:`${label||'שמירה'} · ${Object.keys(texts).length} טקסטים שונו מהמקור`});
   if(B.sb){const ts=await rpc('mmba_admin_save_content',A({p_texts:texts,p_label:label||'שמירה'}));DB.content={texts,ts:+ts};await after();return}
   const ts=Date.now();
   await putDoc('content',{texts,ts});
